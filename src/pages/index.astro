@@ -1,10 +1,11 @@
 ---
 /**
  * Homepage — the main landing page for the ZenML Labs site, telling the
- * paid product's story: the AI engineer that reads an agent's traces next
- * to its evals and shows what they miss, then trains a cheaper fine-tuned
- * model on the same traces. The open-source products sit
- * underneath (the product doors) and have their own pages.
+ * paid product's story around the problems that come after an agent
+ * ships: evals that can't keep up, a model bill that keeps growing, and
+ * data that can't leave your infrastructure, with the AI engineer's fix
+ * for each. The open-source products sit underneath (the product doors)
+ * and have their own pages.
  *
  * Composes the Labs section components into a single page. Each section
  * takes its copy through a `content` prop; this page passes the LABS_*
@@ -14,11 +15,10 @@
  * Route: / (homepage)
  */
 import LabsCloseCta from "../components/labs/LabsCloseCta.astro";
-import LabsFindings from "../components/labs/LabsFindings.astro";
-import LabsFindingsLog from "../components/labs/LabsFindingsLog.astro";
 import LabsHero from "../components/labs/LabsHero.astro";
 import LabsModelCost from "../components/labs/LabsModelCost.astro";
 import LabsOnboardingSteps from "../components/labs/LabsOnboardingSteps.astro";
+import LabsProblemsCard from "../components/labs/LabsProblemsCard.astro";
 import LabsStackLayer from "../components/labs/LabsStackLayer.astro";
 import LogoMarquee from "../components/labs/LogoMarquee.astro";
 import ProductDoors from "../components/labs/ProductDoors.astro";
@@ -27,9 +27,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { buildHomepageJsonLd } from "../lib/homepageJsonLd";
 import {
   LABS_DOORS,
-  LABS_FINDINGS_LOG,
   LABS_HERO,
-  LABS_HERO_FINDINGS,
+  LABS_HERO_PROBLEMS,
   LABS_HOME_CLOSE,
   LABS_HOME_SEO,
   LABS_LOGO_GRID,
@@ -57,11 +56,10 @@ const homepageJsonLd = buildHomepageJsonLd({
 
   <main>
     <LabsHero content={LABS_HERO}>
-      <LabsFindings slot="visual" content={LABS_HERO_FINDINGS} />
+      <LabsProblemsCard slot="visual" content={LABS_HERO_PROBLEMS} />
     </LabsHero>
-    <LabsFindingsLog content={LABS_FINDINGS_LOG} />
-    <LabsModelCost content={LABS_MODEL_COST} />
     <LabsOnboardingSteps content={LABS_ONBOARDING} />
+    <LabsModelCost content={LABS_MODEL_COST} />
     <LabsStackLayer content={LABS_STACK_LAYER} />
     <LogoMarquee content={LABS_LOGO_GRID} />
     <ProductDoors content={LABS_DOORS} />

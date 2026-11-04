@@ -242,138 +242,65 @@ export type ModelMark =
 
 export const LABS_HERO: LabsProductBandContent = {
   headlineLines: ["AI systems should get", "better after they ship"],
-  deck: "ZenML Pro gives you an AI engineer that keeps working on your agents and models in production. It reads your traces, finds what’s wrong, and fixes it, from the eval that missed it to the model that costs too much.",
+  deck: "AI in production shouldn’t need babysitting. ZenML Pro’s AI engineer reads your traces, finds what broke, and gets the fix ready before your customers notice.",
   cta: LABS_HERO_SIGNUP,
   installLabel: "Or start open source",
   install: { cmd: KITARU_INSTALL_CMD, analytics: "Hero-Install-Kitaru" },
 };
 
 /* ---------------------------------------------------------------------- */
-/* Findings: the hero's rotating example                                   */
+/* Problems: the hero's example week                                        */
 /* ---------------------------------------------------------------------- */
 
-export interface Finding {
-  /** Tab label: the kind of problem. */
-  kind: string;
-  /** The agent, step or pipeline it was found in. */
-  where: string;
-  evidence: {
-    label: string;
-    /** `hot` marks the line that gives the problem away. */
-    lines: readonly { text: string; hot?: boolean }[];
-  };
-  finding: string;
-  impact: string;
-  fix: string;
+/** One row of the hero card: a problem the AI engineer found, the evidence
+ *  in a line, and what it got ready for you to approve. */
+export interface ProblemRow {
+  problem: string;
+  evidence: string;
+  result: string;
 }
 
-export interface FindingsContent {
+export interface ProblemsCardContent {
   /** Accessible description of the whole card. */
   label: string;
-  findings: readonly Finding[];
+  /** The agent the week belongs to, shown in the card header. */
+  agent: string;
+  problems: readonly ProblemRow[];
+  /** The public benchmark the example is drawn from. */
+  link: { label: string; href: string; analytics: string };
 }
 
-/** One column of the findings log: a kind of problem and a few
- *  one-line examples of it. */
-export interface FindingsLogColumn {
-  label: string;
-  items: readonly string[];
-}
-
-export interface FindingsLogContent {
-  eyebrow: string;
-  headline: string;
-  deck: string;
-  columns: readonly FindingsLogColumn[];
-  footer: string;
-}
-
-/** The homepage's breadth moment: what else the AI engineer turns up,
- *  none of it repeating the hero card. Illustrative, not customer results. */
-export const LABS_FINDINGS_LOG: FindingsLogContent = {
-  eyebrow: "What your evals miss",
-  headline:
-    "Most teams find out what broke from a customer, not from their evals.",
-  deck: "Your AI engineer reads every session, tool call and eval result. A few things it turned up last week, each with a fix drafted.",
-  columns: [
-    {
-      label: "Evals",
-      items: [
-        "tone_check hasn’t failed once since March. It stopped checking anything.",
-        "A new kind of question showed up last week. None of your evals cover it.",
-        "Your LLM judge disagrees with your reviewers on 1 in 5 sessions.",
-      ],
-    },
-    {
-      label: "Reliability",
-      items: [
-        "The hand-off to the billing agent drops the customer’s plan.",
-        "The search tool times out on 6% of calls and nothing retries.",
-        "The agent answers before the lookup tool returns.",
-      ],
-    },
-    {
-      label: "Cost",
-      items: [
-        "The same 9,000-token policy doc goes out on every turn.",
-        "Failed calls retry 3 times on the most expensive model.",
-        "The summarizer runs twice per session.",
-      ],
-    },
-    {
-      label: "Models and training",
-      items: [
-        "41,200 of your traces are ready to fine-tune on. The ZenML pipeline is drafted.",
-        "A newer model scores 4 points higher on your hardest sessions.",
-        "Your nightly retrain ran 9 times on data that hadn’t changed.",
-      ],
-    },
-  ],
-  footer:
-    "It reads your repos and traces through keys you can revoke. Your data stays where it is.",
-};
-
-/** The homepage hero's example week: two findings, one per tab.
- *  Illustrative, not a customer result. */
-export const LABS_HERO_FINDINGS: FindingsContent = {
+/** The homepage hero's example: one week on an insurance claims agent,
+ *  three problems that come up after an agent ships. Illustrative, not a
+ *  customer result; the benchmark link is the measured version. */
+export const LABS_HERO_PROBLEMS: ProblemsCardContent = {
   label:
-    "Two example findings from your AI engineer. Evals: the agent promised a 90 day refund on a 30 day policy and the reply_quality eval passed it, 41 times last week; it drafts a refund_within_policy check. Models: a model trained on 41,200 of your traces beats the frontier model on every field of the reply step and passes all your evals, at $0.10 a reply against $0.36.",
-  findings: [
+    "An example week from your AI engineer on an insurance claims agent. A switch to a cheaper model left appeals undecided: it found why, fixed the prompt and replayed 48 past appeals with no regressions. The decision_format eval passed every case but never checked prior authorization, in 212 decisions: it drafted a prior_auth_checked check. The model bill kept growing: it trained a model on 41,200 of your past claims that passes all 9 of your evals at $0.10 a decision instead of $0.36.",
+  agent: "claims-agent",
+  problems: [
     {
-      kind: "Evals",
-      where: "support-agent · session 3318",
-      evidence: {
-        label: "Session",
-        lines: [
-          { text: "customer: Can I return these? I bought them 7 weeks ago." },
-          { text: "agent: Of course! Full refund within 90 days.", hot: true },
-          { text: "reply_quality: pass" },
-        ],
-      },
-      finding:
-        "Your refund policy allows 30 days. Your eval passed 41 replies like this last week.",
-      impact: "41 sessions",
-      fix: "+ refund_within_policy",
+      problem: "A model switch left appeals undecided",
+      evidence: "Fixed the prompt · replayed 48 past appeals · 0 regressions",
+      result: "Fix ready",
     },
     {
-      kind: "Models",
-      where: "support-agent · reply step",
-      evidence: {
-        label: "Trained on 41,200 of your traces",
-        lines: [
-          { text: "                  yours    frontier" },
-          { text: "intent            93.8%    91.2%" },
-          { text: "order data        95.1%    94.6%" },
-          { text: "refund decision   96.0%    95.1%" },
-          { text: "cost per reply    $0.10    $0.36", hot: true },
-        ],
-      },
-      finding:
-        "A model trained on your traces beats your frontier model on every field and passes all your evals.",
-      impact: "−72% cost per reply",
-      fix: "Switch the reply step",
+      problem: "Your evals went stale",
+      evidence:
+        "decision_format passed 212 decisions that skipped prior authorization",
+      result: "+ prior_auth_checked",
+    },
+    {
+      problem: "The model bill keeps growing",
+      evidence:
+        "Trained on your claims · $0.36 → $0.10 a decision · 9 of 9 evals pass",
+      result: "Switch ready",
     },
   ],
+  link: {
+    label: "See the claims agent benchmark",
+    href: "/benchmarks/claims-over-time",
+    analytics: "Home-Hero-Benchmark",
+  },
 };
 
 /* ---------------------------------------------------------------------- */
@@ -529,9 +456,9 @@ export interface OnboardingStepsContent {
 export const AI_ENGINEER = "Your AI engineer";
 
 export const LABS_ONBOARDING: OnboardingStepsContent = {
-  eyebrow: "Eval therapy",
-  headline: "You answer a few questions. Good evals fall out.",
-  deck: "You don't write evals from scratch. Your AI engineer asks only what it can't work out alone.",
+  eyebrow: "Evals",
+  headline: "Your evals can’t keep up with production",
+  deck: "They get written once and drift as your agent changes. Your AI engineer reads your traces next to them, finds the gaps and drafts the checks. You answer a few questions. It works out the rest.",
   steps: [
     {
       title: "Connect your repos",
@@ -540,15 +467,15 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
         kind: "connect",
         repos: [
           {
-            name: "support-agent",
+            name: "claims-agent",
             role: "Agent",
-            detail: "OpenAI Agents SDK · 7 tools",
+            detail: "LangGraph · 6 tools",
           },
-          { name: "support-evals", role: "Evals", detail: "9 judges · pytest" },
+          { name: "claims-evals", role: "Evals", detail: "9 judges · pytest" },
           {
-            name: "help-center",
+            name: "coverage-rules",
             role: "Policies",
-            detail: "Refunds, returns · 38 rules",
+            detail: "Plans, exclusions · 38 rules",
           },
         ],
       },
@@ -558,7 +485,7 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
       body: "It asks about what it found. Talk it through or type.",
       widget: {
         kind: "call",
-        context: "reply_quality has passed every reply for 30 days.",
+        context: "decision_format has passed every case for 30 days.",
         question: "Do you trust it?",
         options: ["Yes", "Not really", "Never checked"],
         picked: "Not really",
@@ -569,15 +496,19 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
       body: "Right after, it shows what your evals missed, in the order you care about.",
       widget: {
         kind: "report",
-        // The hero's refund session (41 passed) and the thread's order
-        // lookup (58), so the numbers match down the page.
+        // The hero's prior-authorization gap (212) and the stack layer's
+        // missing plan lookup (58), so the numbers match down the page.
         items: [
           {
             kind: "wrong",
-            title: "Promises refunds it can't give",
-            count: "41",
+            title: "Approves without prior authorization",
+            count: "212",
           },
-          { kind: "missing", title: "Never looks up the order", count: "58" },
+          {
+            kind: "missing",
+            title: "Never checks the member’s plan",
+            count: "58",
+          },
         ],
         kindLabels: { wrong: "Eval wrong", missing: "No eval" },
       },
@@ -587,10 +518,10 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
       body: "It reads every new trace and asks you only when a session needs your call.",
       widget: {
         kind: "review",
-        session: "Session #3318 · refund",
+        session: "Case #3318 · appeal",
         excerpt:
-          "Customer: Can I return these shoes? Agent: Yes, full refund within 90 days. Policy: 30 days.",
-        question: "Should this reply have passed?",
+          "Member appeals a denied MRI. Agent: Approved, covered under the plan. Policy: needs prior authorization.",
+        question: "Should this decision have passed?",
         options: ["Pass", "Fail"],
         picked: "Fail",
       },
@@ -624,11 +555,11 @@ export interface ModelCostContent {
 }
 
 export const LABS_MODEL_COST: ModelCostContent = {
-  eyebrow: "Models",
-  headlineLines: ["Same agent.", "A fifth of the bill."],
-  deck: "Your traces are also training data. Your AI engineer fine-tunes an open model on them, holds it to your evals, and keeps a few calls on the frontier model to catch drift. The weights are yours: download them or run them in your own cloud.",
+  eyebrow: "Cost",
+  headlineLines: ["Your model bill", "keeps growing"],
+  deck: "Your traces are also training data. Your AI engineer fine-tunes an open model on them and only switches when it passes your evals. Same agent, a fifth of the bill. The weights are yours: run them in your own cloud.",
   chart: {
-    label: "Example: a support agent's model spend a month",
+    label: "Example: a claims agent's model spend a month",
     series: { frontier: "Frontier model", own: "Your fine-tuned model" },
     months: [
       { month: "Jan", frontier: 31.4, own: 0 },
@@ -644,7 +575,7 @@ export const LABS_MODEL_COST: ModelCostContent = {
     ],
     notes: [
       "Fine-tuned on 41,200 of your traces. The same 9 evals pass.",
-      "Return policy changed. More calls go back to the frontier model while it catches the drift.",
+      "Coverage rules changed. The frontier model covers while it retrains.",
       "Retrained on 2,318 new traces. 9 of 9 evals pass again.",
     ],
   },
@@ -690,9 +621,9 @@ export interface StackLayerContent {
 }
 
 export const LABS_STACK_LAYER: StackLayerContent = {
-  eyebrow: "How it fits",
-  headline: "An intelligence layer on the stack you already run",
-  deck: "Nothing to rewrite, no new framework. It reads your repos and traces through keys you can revoke.",
+  eyebrow: "Your data",
+  headline: "Your data can’t leave your infrastructure. It doesn’t have to.",
+  deck: "Nothing to rewrite, no new framework. It reads your repos and traces through keys you can revoke, and trained models run in your own cloud.",
   layer: {
     label: "Intelligence layer",
     title: AI_ENGINEER,
@@ -738,25 +669,25 @@ export const LABS_STACK_LAYER: StackLayerContent = {
     {
       tag: "Reads a trace",
       tone: "neutral",
-      title: "Session 2207 · refund",
-      detail: "Refunded without finding the order",
+      title: "Case 2207 · appeal",
+      detail: "Approved without checking the member’s plan",
     },
     {
       tag: "Finds a gap",
       tone: "missing",
-      title: "Answers before looking up the order",
+      title: "Decides before looking up the plan",
       detail: "58 sessions like it, no eval checks it",
     },
     {
       tag: "Writes a check",
       tone: "new",
-      title: "order_looked_up_first",
+      title: "plan_checked_first",
       detail: "Agrees with your reviewers 57 of 58 times",
     },
     {
       tag: "Tests the fix",
       tone: "pass",
-      title: "Prompt fix, replayed via OpenAI Agents SDK",
+      title: "Prompt fix, replayed via LangGraph",
       detail: "58 of 58 now pass",
     },
   ],
@@ -862,8 +793,8 @@ export const LABS_DOORS: ProductDoorsContent = {
     {
       name: "Kitaru",
       tint: "orange",
-      leadLine: "Test every agent update on real traces",
-      body: "Import the traces you already have, review sessions, turn your verdicts into evaluators, and replay any change before it ships.",
+      leadLine: "Find what your agent’s evals miss",
+      body: "Import the traces you already have, see where your evals pass the wrong thing, turn your verdicts into evaluators, and test any change on real sessions before it ships.",
       cta: {
         label: "Explore Kitaru",
         href: "/product/kitaru",
@@ -943,7 +874,7 @@ export interface StoryCardsContent {
 /* ---------------------------------------------------------------------- */
 
 export const LABS_HOME_CLOSE: LabsBandContent = {
-  headlineLines: ["Bring one agent", "and a week of traces"],
+  headlineLines: ["Start with the evals", "you already run"],
   deck: "Connect your repo and your tracing keys. By the end of the interview you know what your evals miss. 14 days free, no credit card.",
   cta: LABS_FINAL_SIGNUP,
 };
