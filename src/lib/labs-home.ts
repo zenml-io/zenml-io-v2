@@ -242,7 +242,7 @@ export type ModelMark =
 
 export const LABS_HERO: LabsProductBandContent = {
   headlineLines: ["AI systems should get", "better after they ship"],
-  deck: "ZenML Pro’s AI engineer finds what your agent’s evals miss. It reads your production traces next to the evals you already run, drafts the fix, and replays it before you merge.",
+  deck: "ZenML Pro gives you an AI engineer that keeps working on your agents and models in production. It reads your traces, finds what’s wrong, and fixes it, from the eval that missed it to the model that costs too much.",
   cta: LABS_HERO_SIGNUP,
   installLabel: "Or start open source",
   install: { cmd: KITARU_INSTALL_CMD, analytics: "Hero-Install-Kitaru" },
@@ -333,11 +333,11 @@ export const LABS_FINDINGS_LOG: FindingsLogContent = {
     "It reads your repos and traces through keys you can revoke. Your data stays where it is.",
 };
 
-/** The homepage hero's example week: four findings, one per tab.
+/** The homepage hero's example week: two findings, one per tab.
  *  Illustrative, not a customer result. */
 export const LABS_HERO_FINDINGS: FindingsContent = {
   label:
-    "Four example findings from your AI engineer. Evals: the agent promised a 90 day refund on a 30 day policy and the reply_quality eval passed it, 41 times last week; it drafts a refund_within_policy check. Reliability: the support agent loops on lookup_order when the customer gives no order ID, in 312 sessions; fix: ask for the order ID first. Cost: the system prompt starts with the current time, so the prompt cache never hits; about $3,870 a month; fix: move the time to the user turn. Models: an open model fine-tuned on 41,200 of your traces with a ZenML pipeline passes all 212 evals on the triage step at 81% lower cost.",
+    "Two example findings from your AI engineer. Evals: the agent promised a 90 day refund on a 30 day policy and the reply_quality eval passed it, 41 times last week; it drafts a refund_within_policy check. Models: a model trained on 41,200 of your traces beats the frontier model on every field of the reply step and passes all your evals, at $0.10 a reply against $0.36.",
   findings: [
     {
       kind: "Evals",
@@ -356,54 +356,22 @@ export const LABS_HERO_FINDINGS: FindingsContent = {
       fix: "+ refund_within_policy",
     },
     {
-      kind: "Reliability",
-      where: "support-agent · order lookups",
-      evidence: {
-        label: "Session 4471",
-        lines: [
-          { text: "lookup_order(order_id=None)   error" },
-          { text: "lookup_order(order_id=None)   error", hot: true },
-          { text: "… 41 more calls, then a timeout" },
-        ],
-      },
-      finding:
-        "Your agent loops on lookup_order when the customer gives no order ID. It never asks for one.",
-      impact: "312 sessions",
-      fix: "Ask for the order ID first",
-    },
-    {
-      kind: "Cost",
-      where: "support-agent",
-      evidence: {
-        label: "System prompt",
-        lines: [
-          { text: "You are the support agent for a shoe store." },
-          { text: "Current time: 2026-11-03 14:02:31", hot: true },
-          { text: "Cache read: 0 tokens on 18,402 of 18,402 calls", hot: true },
-        ],
-      },
-      finding:
-        "Your prompt cache never hits. Line 2 changes on every call, so the whole prompt is written again each time.",
-      impact: "$3,870 a month",
-      fix: "Move the time to the user turn",
-    },
-    {
       kind: "Models",
-      where: "triage step",
+      where: "support-agent · reply step",
       evidence: {
-        label: "Fine-tuned on 41,200 of your traces",
+        label: "Trained on 41,200 of your traces",
         lines: [
-          { text: "frontier model      212/212 evals   $0.021 a call" },
-          {
-            text: "fine-tuned open 8B  212/212 evals   $0.004 a call",
-            hot: true,
-          },
+          { text: "                  yours    frontier" },
+          { text: "intent            93.8%    91.2%" },
+          { text: "order data        95.1%    94.6%" },
+          { text: "refund decision   96.0%    95.1%" },
+          { text: "cost per reply    $0.10    $0.36", hot: true },
         ],
       },
       finding:
-        "An open model, fine-tuned on your traces with a ZenML pipeline, passes all 212 of your evals on this step.",
-      impact: "−81% cost",
-      fix: "Switch the triage step",
+        "A model trained on your traces beats your frontier model on every field and passes all your evals.",
+      impact: "−72% cost per reply",
+      fix: "Switch the reply step",
     },
   ],
 };

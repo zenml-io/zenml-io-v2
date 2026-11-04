@@ -1,8 +1,8 @@
 ---
 /**
  * LabsFindings (`labs.findings`) — the homepage hero's example: the AI
- * engineer's message card holding four findings, one per tab (Evals,
- * Reliability, Cost, Models). Each panel shows where it was found, the
+ * engineer's message card holding a few findings, one per tab (today
+ * Evals and Models). Each panel shows where it was found, the
  * evidence (a few mono lines, the giveaway lit), the finding on the red
  * tint, then its impact and the drafted fix.
  *
@@ -31,7 +31,7 @@ const LABEL =
       <span class="shrink-0 font-mono text-[12px] leading-4 text-(--color-cream-700)">{content.findings.length} findings this week</span>
     </LabsAiEngineerRow>
 
-    <div class="grid grid-cols-4 border-b border-(--color-border)">
+    <div class="grid border-b border-(--color-border)" style={`grid-template-columns: repeat(${content.findings.length}, minmax(0, 1fr))`}>
       {content.findings.map((finding, index) => (
         <button
           type="button"
