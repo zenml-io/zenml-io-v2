@@ -241,8 +241,8 @@ export type ModelMark =
   | "chip";
 
 export const LABS_HERO: LabsProductBandContent = {
-  headlineLines: ["Your traces have the answers.", "Nobody’s reading them."],
-  deck: "ZenML Pro’s AI engineer reads every trace your agents produce, finds the root cause, and brings you the fix to approve.",
+  headlineLines: ["AI systems should get", "better after they ship"],
+  deck: "ZenML Pro’s AI engineer finds what your agent’s evals miss. It reads your production traces next to the evals you already run, drafts the fix, and replays it before you merge.",
   cta: LABS_HERO_SIGNUP,
   installLabel: "Or start open source",
   install: { cmd: KITARU_INSTALL_CMD, analytics: "Hero-Install-Kitaru" },
@@ -291,24 +291,25 @@ export interface FindingsLogContent {
 /** The homepage's breadth moment: what else the AI engineer turns up,
  *  none of it repeating the hero card. Illustrative, not customer results. */
 export const LABS_FINDINGS_LOG: FindingsLogContent = {
-  eyebrow: "What it finds",
-  headline: "It reads everything. Here’s what turns up.",
-  deck: "Every session, every tool call, every eval result. A few things your AI engineer found last week, each with a fix drafted.",
+  eyebrow: "What your evals miss",
+  headline:
+    "Most teams find out what broke from a customer, not from their evals.",
+  deck: "Your AI engineer reads every session, tool call and eval result. A few things it turned up last week, each with a fix drafted.",
   columns: [
+    {
+      label: "Evals",
+      items: [
+        "tone_check hasn’t failed once since March. It stopped checking anything.",
+        "A new kind of question showed up last week. None of your evals cover it.",
+        "Your LLM judge disagrees with your reviewers on 1 in 5 sessions.",
+      ],
+    },
     {
       label: "Reliability",
       items: [
         "The hand-off to the billing agent drops the customer’s plan.",
         "The search tool times out on 6% of calls and nothing retries.",
         "The agent answers before the lookup tool returns.",
-      ],
-    },
-    {
-      label: "Quality",
-      items: [
-        "tone_check hasn’t failed once since March. It stopped checking anything.",
-        "A new kind of question showed up last week. None of your evals cover it.",
-        "Your LLM judge disagrees with your reviewers on 1 in 5 sessions.",
       ],
     },
     {
@@ -328,15 +329,32 @@ export const LABS_FINDINGS_LOG: FindingsLogContent = {
       ],
     },
   ],
-  footer: "Agents or models, the same engineer reads all of it.",
+  footer:
+    "It reads your repos and traces through keys you can revoke. Your data stays where it is.",
 };
 
 /** The homepage hero's example week: four findings, one per tab.
  *  Illustrative, not a customer result. */
 export const LABS_HERO_FINDINGS: FindingsContent = {
   label:
-    "Four example findings from your AI engineer. Reliability: the support agent loops on lookup_order when the customer gives no order ID, in 312 sessions; fix: ask for the order ID first. Quality: the agent promised a 90 day refund on a 30 day policy and the reply_quality eval passed it, 41 times last week; it drafts a refund_within_policy check. Cost: the system prompt starts with the current time, so the prompt cache never hits; about $3,870 a month; fix: move the time to the user turn. Models: an open model fine-tuned on 41,200 of your traces with a ZenML pipeline passes all 212 evals on the triage step at 81% lower cost.",
+    "Four example findings from your AI engineer. Evals: the agent promised a 90 day refund on a 30 day policy and the reply_quality eval passed it, 41 times last week; it drafts a refund_within_policy check. Reliability: the support agent loops on lookup_order when the customer gives no order ID, in 312 sessions; fix: ask for the order ID first. Cost: the system prompt starts with the current time, so the prompt cache never hits; about $3,870 a month; fix: move the time to the user turn. Models: an open model fine-tuned on 41,200 of your traces with a ZenML pipeline passes all 212 evals on the triage step at 81% lower cost.",
   findings: [
+    {
+      kind: "Evals",
+      where: "support-agent · session 3318",
+      evidence: {
+        label: "Session",
+        lines: [
+          { text: "customer: Can I return these? I bought them 7 weeks ago." },
+          { text: "agent: Of course! Full refund within 90 days.", hot: true },
+          { text: "reply_quality: pass" },
+        ],
+      },
+      finding:
+        "Your refund policy allows 30 days. Your eval passed 41 replies like this last week.",
+      impact: "41 sessions",
+      fix: "+ refund_within_policy",
+    },
     {
       kind: "Reliability",
       where: "support-agent · order lookups",
@@ -352,23 +370,6 @@ export const LABS_HERO_FINDINGS: FindingsContent = {
         "Your agent loops on lookup_order when the customer gives no order ID. It never asks for one.",
       impact: "312 sessions",
       fix: "Ask for the order ID first",
-    },
-
-    {
-      kind: "Quality",
-      where: "support-agent · session 3318",
-      evidence: {
-        label: "Session",
-        lines: [
-          { text: "customer: Can I return these? I bought them 7 weeks ago." },
-          { text: "agent: Of course! Full refund within 90 days.", hot: true },
-          { text: "reply_quality: pass" },
-        ],
-      },
-      finding:
-        "Your refund policy allows 30 days. Your eval passed 41 replies like this last week.",
-      impact: "41 sessions",
-      fix: "+ refund_within_policy",
     },
     {
       kind: "Cost",
