@@ -10,8 +10,9 @@
  * fine-tuned model. Then the feed
  * loops.
  *
- * Without JS, or with reduced motion, every entry shows at once, anchored
- * to the bottom (the latest entries stay in view). The figcaption carries
+ * The feed scrolls: scrolling or touching it stops the loop and shows every
+ * entry. Without JS, or with reduced motion, every entry shows at once from
+ * the top. The figcaption carries
  * the whole story as text; the drawn window is aria-hidden. A text link to the public benchmark sits under it. Copy
  * arrives through `content` (LABS_HERO_DEMO).
  */
@@ -84,8 +85,8 @@ const INK_BUTTON =
             </span>
           </div>
 
-          <div class="pd-viewport relative h-[460px] overflow-hidden sm:h-[420px]">
-            <ol data-pd-list class="pd-list absolute inset-x-0 bottom-0 flex flex-col gap-5 p-4">
+          <div data-pd-viewport class="pd-viewport h-[460px] overflow-y-auto overscroll-contain sm:h-[420px]">
+            <ol data-pd-list class="flex flex-col gap-5 p-4">
               {content.items.map((item, i) => (
                 <li data-pd-item={i} class="pd-item">
                   <p class="flex items-center gap-2 font-sans text-[13.5px] leading-5 text-(--color-cream-900)">
@@ -182,19 +183,15 @@ const INK_BUTTON =
 
 <style>
   .pd-viewport {
-    mask-image: linear-gradient(to bottom, transparent, black 56px);
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-cream-300) transparent;
   }
-  [data-playing] .pd-viewport:not([data-overflow]) {
-    mask-image: none;
+  /* A soft top edge once the feed has scrolled. */
+  .pd-viewport[data-scrolled] {
+    mask-image: linear-gradient(to bottom, transparent, black 48px);
   }
   [data-playing] .pd-item:not([data-shown]) {
     display: none;
-  }
-  /* While playing, the feed fills from the top and only scrolls once it
-     overflows; the script sets the offset. */
-  [data-playing] .pd-list {
-    top: 0;
-    bottom: auto;
   }
   @media (prefers-reduced-motion: no-preference) {
     .pd-window {
@@ -230,49 +227,56 @@ const INK_BUTTON =
   /** Time between entries, and how long the full feed holds before it loops. */
   const STEP_MS = 1700;
   const HOLD_MS = 3500;
-  const SLIDE = "transform 500ms var(--ease-out-quint)";
   const FADE = "opacity 400ms var(--ease-out-quint)";
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    for (const demo of document.querySelectorAll<HTMLElement>("[data-demo]")) {
-      const list = demo.querySelector<HTMLElement>("[data-pd-list]");
-      if (!list) continue;
-      const items = [...demo.querySelectorAll<HTMLElement>("[data-pd-item]")];
+  for (const demo of document.querySelectorAll<HTMLElement>("[data-demo]")) {
+    const viewport = demo.querySelector<HTMLElement>("[data-pd-viewport]");
+    const list = demo.querySelector<HTMLElement>("[data-pd-list]");
+    if (!viewport || !list) continue;
+    const items = [...demo.querySelectorAll<HTMLElement>("[data-pd-item]")];
 
-      const viewport = list.parentElement;
-      /** Shift the list up just enough to keep its newest entry in view. */
-      const settle = () => {
-        const overflow = list.offsetHeight - (viewport?.clientHeight ?? 0);
-        list.style.transition = SLIDE;
-        list.style.transform = `translateY(${-Math.max(overflow, 0)}px)`;
-        viewport?.toggleAttribute("data-overflow", overflow > 0);
-      };
+    viewport.addEventListener(
+      "scroll",
+      () => viewport.toggleAttribute("data-scrolled", viewport.scrollTop > 4),
+      { passive: true },
+    );
+    if (reduced) continue;
 
-      const reveal = (n: number) => {
-        items[n]?.setAttribute("data-shown", "");
-        settle();
-      };
+    let timer: number | undefined;
+    const toBottom = () => viewport.scrollTo({ top: viewport.scrollHeight, behavior: "smooth" });
 
-      const restart = () => {
-        list.style.transition = FADE;
-        list.style.opacity = "0";
-        window.setTimeout(() => {
-          for (const el of items) el.removeAttribute("data-shown");
-          list.style.transition = "none";
-          list.style.transform = "translateY(0)";
-          list.style.opacity = "1";
-          play(0);
-        }, 450);
-      };
+    const play = (n: number) => {
+      items[n]?.setAttribute("data-shown", "");
+      toBottom();
+      const last = n === items.length - 1;
+      timer = window.setTimeout(() => (last ? restart() : play(n + 1)), last ? HOLD_MS : STEP_MS);
+    };
 
-      const play = (n: number) => {
-        reveal(n);
-        const last = n === items.length - 1;
-        window.setTimeout(() => (last ? restart() : play(n + 1)), last ? HOLD_MS : STEP_MS);
-      };
+    const restart = () => {
+      list.style.transition = FADE;
+      list.style.opacity = "0";
+      timer = window.setTimeout(() => {
+        for (const el of items) el.removeAttribute("data-shown");
+        viewport.scrollTop = 0;
+        list.style.opacity = "1";
+        play(0);
+      }, 450);
+    };
 
-      demo.setAttribute("data-playing", "");
-      window.setTimeout(() => play(0), 300);
+    /** A visitor who scrolls or touches the feed takes over: the loop stops,
+     *  every entry shows, and the scroll position stays theirs. */
+    const stop = () => {
+      window.clearTimeout(timer);
+      list.style.opacity = "1";
+      demo.removeAttribute("data-playing");
+      for (const type of ["wheel", "touchstart", "pointerdown"]) viewport.removeEventListener(type, stop);
+    };
+    for (const type of ["wheel", "touchstart", "pointerdown"]) {
+      viewport.addEventListener(type, stop, { passive: true });
     }
+
+    demo.setAttribute("data-playing", "");
+    timer = window.setTimeout(() => play(0), 300);
   }
 </script>
