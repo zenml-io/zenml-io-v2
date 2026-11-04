@@ -51,7 +51,7 @@ Keeping an agent good means reading traces, deciding which failures matter, writ
 
 So the next tool we're building is an agent itself: an AI engineer, built on ZenML and Kitaru. It does the work and shows you the evidence. You decide what ships.
 
-*[Image: claims-feed. Your AI engineer at work on a claims agent: imports traces, reads the code, finds a gap in the evals, tests a fix against what runs today, and trains a cheaper model. Upload to R2.]*
+![Your AI engineer at work on a claims agent: imports traces, reads the code, finds a gap in the evals, tests a fix against what runs today, and trains a cheaper model](https://assets.zenml.io/content/blog/introducing-zenml-labs/81520729/claims-feed.avif)
 
 Our goal is simple. AI in production shouldn't need babysitting. It should keep getting better after it ships.
 
@@ -77,13 +77,13 @@ Take a claims agent. After a switch to a cheaper model, 31 of 214 appeals ended 
 
 Our AI engineer flags the pattern and drafts a `decision_made` check to catch the next one.
 
-*[Image: claims-insights. Insights for a claims agent: appeals end without a decision on the new model, and why appeals failed. Upload to R2.]*
+![Insights for a claims agent: appeals end without a decision on the new model, and why appeals failed](https://assets.zenml.io/content/blog/introducing-zenml-labs/8f315e65/claims-insights.avif)
 
 You don't write evals from scratch. Connect GitHub and it finds your agent, your evals and your policies. It asks only what it can't work out alone.
 
 When it has a fix, it runs it as an experiment on past appeals, side by side with what runs today. Appeals decided go from 86% to 100%. Agreement with your reviewers goes up. None of the 40 good appeals change. That is the evidence you see before anything ships.
 
-*[Image: claims-experiment. An experiment on 214 past appeals: with the fix, appeals decided go from 86% to 100%, agreement with reviewers from 91.2% to 93.8%, and 0 of 40 good appeals change. Upload to R2.]*
+![An experiment on 214 past appeals: with the fix, appeals decided go from 86% to 100%, agreement with reviewers from 91.2% to 93.8%, and 0 of 40 good appeals change](https://assets.zenml.io/content/blog/introducing-zenml-labs/9d4c2bb8/claims-experiment.avif)
 
 ## Then the model bill
 
