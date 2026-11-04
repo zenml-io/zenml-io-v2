@@ -228,9 +228,9 @@ const INK_BUTTON =
 
 <script>
   /** Time between entries, and how long the full feed holds before it loops. */
-  const STEP_MS = 2600;
-  const HOLD_MS = 4500;
-  const SLIDE = "transform 650ms var(--ease-out-quint)";
+  const STEP_MS = 1700;
+  const HOLD_MS = 3500;
+  const SLIDE = "transform 500ms var(--ease-out-quint)";
   const FADE = "opacity 400ms var(--ease-out-quint)";
 
   if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -272,7 +272,7 @@ const INK_BUTTON =
       };
 
       demo.setAttribute("data-playing", "");
-      window.setTimeout(() => play(0), 500);
+      window.setTimeout(() => play(0), 300);
     }
   }
 </script>

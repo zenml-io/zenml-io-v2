@@ -1409,7 +1409,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "The homepage hero's visual, mounted in LabsHero's `visual` slot on `/`, from `content: ProductDemoContent` (LABS_HERO_DEMO). The ZenML Pro app drawn after the product prototype (icon rail, inset card, breadcrumb with a Working pill) showing the AI engineer's work feed on one claims agent: traces imported from Langfuse, LangSmith and Braintrust, the agent's code read on GitHub, a gap in the evals, a fix opened as a PR and replayed, and a cheaper fine-tuned model. Entries arrive every 2.6s, fill the feed from the top and scroll under a top fade once it overflows; the feed loops after a 4.5s hold. Reduced motion and no JS show every entry at once, anchored to the bottom. A text link to the benchmark sits under it. The figcaption carries the story as text; the drawn window is aria-hidden.",
+      "The homepage hero's visual, mounted in LabsHero's `visual` slot on `/`, from `content: ProductDemoContent` (LABS_HERO_DEMO). The ZenML Pro app drawn after the product prototype (icon rail, inset card, breadcrumb with a Working pill) showing the AI engineer's work feed on one claims agent: traces imported from Langfuse, LangSmith and Braintrust, the agent's code read on GitHub, a gap in the evals, a fix opened as a PR and replayed, and a cheaper fine-tuned model. Entries arrive every 1.7s, fill the feed from the top and scroll under a top fade once it overflows; the feed loops after a 3.5s hold. Reduced motion and no JS show every entry at once, anchored to the bottom. A text link to the benchmark sits under it. The figcaption carries the story as text; the drawn window is aria-hidden.",
     stage: false,
     demoProps: {},
   },
