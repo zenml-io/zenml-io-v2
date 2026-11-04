@@ -4,19 +4,17 @@
  * security band and a data-privacy FAQ. They are pages to send to a buyer,
  * linked from the footer and the sitemap, not from the nav.
  *
- * Every page reuses the homepage sections (hero with the gap card, problem,
- * eval therapy steps, logos, close) with its own copy. Security facts
+ * Every page reuses the homepage sections (hero with the AI engineer's work
+ * feed, problem, benchmarks, logos, close) with its own copy. Security facts
  * (certifications, deployment options, governance) are the ones /pro and
  * /pricing already publish; the badges come from PRO_COMPLIANCE.
  */
 import type { Surface } from "./analytics";
-import {
-  type GapReportVisualContent,
-  LABS_ONBOARDING,
-  type LabsCta,
-  type LabsProductBandContent,
-  type OnboardingStepsContent,
-  type ProblemBandContent,
+import type {
+  LabsCta,
+  LabsProductBandContent,
+  ProblemBandContent,
+  ProductDemoContent,
 } from "./labs-home";
 import type { FaqData } from "./marketingPageTypes";
 import { PRO_COMPLIANCE } from "./pro";
@@ -55,9 +53,8 @@ export interface IndustryPageContent {
   analytics: string;
   seo: { title: string; description: string; surface: Surface };
   hero: LabsProductBandContent;
-  gapReport: GapReportVisualContent;
+  demo: ProductDemoContent;
   problem: ProblemBandContent;
-  onboarding: OnboardingStepsContent;
   trust: TrustBandContent;
   /** Absent when no published benchmark fits the industry. */
   benchmarks?: BenchmarkBandContent;
@@ -70,8 +67,6 @@ const DEMO = { label: "Request demo", href: "/book-your-demo" } as const;
 function demo(analytics: string): LabsCta {
   return { ...DEMO, analytics };
 }
-
-const KIND_LABELS = { wrong: "Eval wrong", missing: "No eval" } as const;
 
 const TRUST_POINTS: readonly TrustPoint[] = [
   {
@@ -153,101 +148,65 @@ function faq(extra: FaqData["items"]): FaqData {
 /* Insurance                                                               */
 /* ---------------------------------------------------------------------- */
 
-const INSURANCE_GAPS: GapReportVisualContent = {
+const INSURANCE_DEMO: ProductDemoContent = {
   label:
-    "An example of what your AI engineer tells you about an insurance underwriting agent, Oct 21 to 27. The team's evals pass 91% of last week's sessions; by the team's own underwriting manual, 74% should pass. A completeness judge passed 41 quotes without the flood exclusion, 58 quotes were priced on loss runs older than 90 days, and 37 took a sprinkler credit with no inspection report. No eval checks the last two.",
-  eyebrow: "Missed this week",
+    "Your AI engineer at work on an insurance underwriting agent. It imports 1,482 quotes' traces from Langfuse, LangSmith and Braintrust where they already live. It reads the agent's code on GitHub and finds the prompt, 12 evals and the underwriting manual. It finds a gap in the evals: quote_completeness passed 41 quotes that left out the flood exclusion for properties in a flood zone, so it drafts a flood_exclusion check. It tests a fix as an experiment on 1,482 past quotes against what runs today: required exclusions go from 97% to 100%, agreement with underwriters from 88.4% to 93.1%, and none of 60 good quotes change. Then it fine-tunes an open model on 36,900 of your quotes that passes 12 of 12 evals at $0.11 a quote instead of $0.41.",
   agent: "underwriting-agent",
-  window: "1,482 sessions",
-  scores: [
-    { label: "Your evals", value: 91 },
-    { label: "Your manual", value: 74 },
-  ],
-  kindLabels: KIND_LABELS,
   items: [
     {
-      kind: "wrong",
-      title: "No flood exclusion",
-      count: "41",
+      kind: "sources",
+      text: "Imported your traces from where they already live.",
+      sources: [
+        { name: "Langfuse", logo: "/compare/langfuse.svg" },
+        { name: "LangSmith", logo: "/compare/langsmith.svg" },
+        { name: "Braintrust", logo: "/compare/braintrust.svg" },
+      ],
+      count: "1,482 quotes",
     },
     {
-      kind: "missing",
-      title: "Stale loss runs",
-      count: "58",
+      kind: "repo",
+      text: "Read your agent’s code and your manual on GitHub.",
+      repo: "acme/underwriting-agent",
+      files: ["prompt.py", "evals/ · 12 evals", "uw_manual.md"],
     },
     {
-      kind: "missing",
-      title: "Uninspected sprinkler credit",
-      count: "37",
+      kind: "gap",
+      text: "Found a gap in your evals.",
+      title: "41 quotes left out the flood exclusion",
+      body: "All for properties in FEMA flood zones. quote_completeness passed every one.",
+      check: "+ flood_exclusion check",
+    },
+    {
+      kind: "experiment",
+      text: "Tested a fix against what runs today.",
+      title: "Experiment · 1,482 past quotes, 3 runs each",
+      columns: ["", "Today", "With the fix"],
+      rows: [
+        { label: "Required exclusions", current: "97%", candidate: "100%" },
+        {
+          label: "Agrees with underwriters",
+          current: "88.4%",
+          candidate: "93.1%",
+        },
+        { label: "Good quotes changed", current: "", candidate: "0 of 60" },
+      ],
+      result: "39 of 41 quotes fixed · 2 flagged for an underwriter",
+    },
+    {
+      kind: "finetune",
+      text: "Trained a cheaper model on your quotes.",
+      model: "uw-8b, fine-tuned on 36,900 quotes",
+      rows: [
+        { label: "Evals passed", value: "12 of 12" },
+        { label: "Cost a quote", value: "$0.41 → $0.11", hot: true },
+      ],
     },
   ],
-};
-
-const INSURANCE_ONBOARDING: OnboardingStepsContent = {
-  ...LABS_ONBOARDING,
-  eyebrow: "How it works",
-  steps: [
-    {
-      title: "Connect your repos",
-      body: "Add the GitHub app and your tracing keys. Revoke them any time.",
-      widget: {
-        kind: "connect",
-        repos: [
-          {
-            name: "underwriting-agent",
-            role: "Agent",
-            detail: "PydanticAI · 9 tools",
-          },
-          { name: "uw-evals", role: "Evals", detail: "12 judges · pytest" },
-          {
-            name: "uw-guidelines",
-            role: "Manual",
-            detail: "UW manual · 46 rules",
-          },
-        ],
-      },
-    },
-    {
-      title: "A short interview",
-      body: "A few questions about what it found. Tap to answer.",
-      widget: {
-        kind: "call",
-        context: "quote_completeness has passed every quote for 30 days.",
-        question: "Do you trust it?",
-        options: ["Yes", "Not really", "Never checked"],
-        picked: "Not really",
-      },
-    },
-    {
-      title: "Hear what your evals miss",
-      body: "What your evals missed last week, in your order.",
-      widget: {
-        kind: "report",
-        items: [
-          { kind: "wrong", title: "Passes quotes over authority", count: "22" },
-          {
-            kind: "missing",
-            title: "Uninspected sprinkler credit",
-            count: "37",
-          },
-        ],
-        kindLabels: KIND_LABELS,
-      },
-    },
-    {
-      title: "It keeps watching",
-      body: "It reads every new quote and asks you only when one needs an underwriter's call.",
-      widget: {
-        kind: "review",
-        session: "Session #3318 · quote",
-        excerpt:
-          "Premium $4,180 · Limit $1.2M · Deductible $5,000. Property in FEMA zone A.",
-        question: "Should this quote have passed?",
-        options: ["Pass", "Fail"],
-        picked: "Fail",
-      },
-    },
-  ],
+  link: {
+    label: "See the underwriting benchmark",
+    href: "/benchmarks/underwriting",
+    analytics: "Insurance-Hero-Benchmark",
+  },
 };
 
 export const INSURANCE_PAGE: IndustryPageContent = {
@@ -261,7 +220,7 @@ export const INSURANCE_PAGE: IndustryPageContent = {
   },
   hero: {
     headlineLines: ["Evals your underwriters", "would sign off on"],
-    deck: "Our AI engineer reads your agent's traces next to your evals and your underwriting guidelines, and shows you what the evals miss.",
+    deck: "Our AI engineer reads your agent's traces next to your evals and your underwriting guidelines, finds what the evals miss, and tests every fix against what runs today before anything ships.",
     cta: demo("Insurance-Hero-Demo"),
     secondaryCta: {
       label: "See benchmarks",
@@ -269,7 +228,7 @@ export const INSURANCE_PAGE: IndustryPageContent = {
       analytics: "Insurance-Hero-Benchmarks",
     },
   },
-  gapReport: INSURANCE_GAPS,
+  demo: INSURANCE_DEMO,
   problem: {
     eyebrow: "The problem",
     headlineLines: [
@@ -292,7 +251,6 @@ export const INSURANCE_PAGE: IndustryPageContent = {
       },
     ],
   },
-  onboarding: INSURANCE_ONBOARDING,
   trust: trust(
     "Run it on-prem and policyholder data, loss runs and inspection reports never leave your walls. You choose where it runs and which models it calls.",
   ),
@@ -330,94 +288,61 @@ export const INSURANCE_PAGE: IndustryPageContent = {
 /* Financial services                                                      */
 /* ---------------------------------------------------------------------- */
 
-const FINANCE_GAPS: GapReportVisualContent = {
+const FINANCE_DEMO: ProductDemoContent = {
   label:
-    "An example of what your AI engineer tells you about a KYC review agent, Oct 21 to 27. The team's evals pass 93% of last week's cases; by the team's own procedures, 71% should pass. A completeness judge passed 33 cases with no source-of-funds check, 46 cases treated adverse-media hits older than 12 months as clear, and 21 closed a PEP match without a second reviewer. No eval checks the last two.",
-  eyebrow: "Missed this week",
-  agent: "kyc-review-agent",
-  window: "2,106 cases",
-  scores: [
-    { label: "Your evals", value: 93 },
-    { label: "Your procedures", value: 71 },
-  ],
-  kindLabels: KIND_LABELS,
+    "Your AI engineer at work on a KYC review agent. It imports 940 cases' traces from Langfuse, LangSmith and Braintrust where they already live. It reads the agent's code on GitHub and finds the prompt, 10 evals and the KYC procedures. It finds a gap in the evals: case_summary_quality passed 29 high-risk cases that closed without a source-of-funds check, so it drafts a source_of_funds check. It tests a fix as an experiment on 940 past cases against what runs today: source of funds checked goes from 81% to 100%, agreement with analysts from 90.2% to 94.0%, and none of 50 good cases change. Then it fine-tunes an open model on 28,400 of your cases that passes 10 of 10 evals at $0.13 a case instead of $0.52.",
+  agent: "kyc-agent",
   items: [
     {
-      kind: "wrong",
-      title: "No source-of-funds check",
-      count: "33",
+      kind: "sources",
+      text: "Imported your traces from where they already live.",
+      sources: [
+        { name: "Langfuse", logo: "/compare/langfuse.svg" },
+        { name: "LangSmith", logo: "/compare/langsmith.svg" },
+        { name: "Braintrust", logo: "/compare/braintrust.svg" },
+      ],
+      count: "940 cases",
     },
     {
-      kind: "missing",
-      title: "Stale adverse media",
-      count: "46",
+      kind: "repo",
+      text: "Read your agent’s code and your procedures on GitHub.",
+      repo: "acme/kyc-agent",
+      files: ["prompt.py", "evals/ · 10 evals", "kyc_procedures.md"],
     },
     {
-      kind: "missing",
-      title: "PEP closed by one reviewer",
-      count: "21",
+      kind: "gap",
+      text: "Found a gap in your evals.",
+      title: "29 high-risk cases closed without a source-of-funds check",
+      body: "Every one an enhanced due diligence case. case_summary_quality passed them all.",
+      check: "+ source_of_funds check",
+    },
+    {
+      kind: "experiment",
+      text: "Tested a fix against what runs today.",
+      title: "Experiment · 940 past cases, 3 runs each",
+      columns: ["", "Today", "With the fix"],
+      rows: [
+        { label: "Source of funds checked", current: "81%", candidate: "100%" },
+        { label: "Agrees with analysts", current: "90.2%", candidate: "94.0%" },
+        { label: "Good cases changed", current: "", candidate: "0 of 50" },
+      ],
+      result: "28 of 29 cases fixed · 1 flagged for an analyst",
+    },
+    {
+      kind: "finetune",
+      text: "Trained a cheaper model on your cases.",
+      model: "kyc-8b, fine-tuned on 28,400 cases",
+      rows: [
+        { label: "Evals passed", value: "10 of 10" },
+        { label: "Cost a case", value: "$0.52 → $0.13", hot: true },
+      ],
     },
   ],
-};
-
-const FINANCE_ONBOARDING: OnboardingStepsContent = {
-  ...LABS_ONBOARDING,
-  eyebrow: "How it works",
-  steps: [
-    {
-      title: "Connect your repos",
-      body: "Install the GitHub app and add your tracing keys. It finds your agent, the evals you already run and the procedures they should follow.",
-      widget: {
-        kind: "connect",
-        repos: [
-          {
-            name: "kyc-review-agent",
-            role: "Agent",
-            detail: "LangGraph · 7 tools",
-          },
-          { name: "kyc-evals", role: "Evals", detail: "9 judges · pytest" },
-          {
-            name: "kyc-procedures",
-            role: "Manual",
-            detail: "KYC procedures · 31 rules",
-          },
-        ],
-      },
-    },
-    {
-      title: "A short interview",
-      body: "Your AI engineer asks you a few questions about what it found, in the browser or in Slack. Tap to answer.",
-      widget: {
-        kind: "call",
-        context: "case_completeness has passed every case for 30 days.",
-        question: "Do you trust it?",
-        options: ["Yes", "Not really", "Never checked"],
-        picked: "Not really",
-      },
-    },
-    {
-      title: "Hear what your evals miss",
-      body: "Right after, it tells you what your evals missed last week, in the order you said you care about. More follows in Slack.",
-      widget: {
-        kind: "report",
-        items: FINANCE_GAPS.items.slice(0, 2),
-        kindLabels: KIND_LABELS,
-      },
-    },
-    {
-      title: "It keeps watching",
-      body: "It reads every new case and asks you only when one needs an analyst's call. Your answers become calibrated checks.",
-      widget: {
-        kind: "review",
-        session: "Case #8812 · onboarding",
-        excerpt:
-          "Business account · UK Ltd · Turnover £2.4M. Source of funds: not provided.",
-        question: "Should this case have passed?",
-        options: ["Pass", "Fail"],
-        picked: "Fail",
-      },
-    },
-  ],
+  link: {
+    label: "See all benchmarks",
+    href: "/benchmarks",
+    analytics: "Finance-Hero-Benchmark",
+  },
 };
 
 export const FINANCIAL_SERVICES_PAGE: IndustryPageContent = {
@@ -431,10 +356,10 @@ export const FINANCIAL_SERVICES_PAGE: IndustryPageContent = {
   },
   hero: {
     headlineLines: ["Evals your risk team", "can stand behind"],
-    deck: "Our AI engineer reads your agent's traces next to your evals and your procedures, and shows you what the evals miss.",
+    deck: "Our AI engineer reads your agent's traces next to your evals and your procedures, finds what the evals miss, and tests every fix against what runs today before anything ships.",
     cta: demo("Finance-Hero-Demo"),
   },
-  gapReport: FINANCE_GAPS,
+  demo: FINANCE_DEMO,
   problem: {
     eyebrow: "The problem",
     headlineLines: [
@@ -457,7 +382,6 @@ export const FINANCIAL_SERVICES_PAGE: IndustryPageContent = {
       },
     ],
   },
-  onboarding: FINANCE_ONBOARDING,
   trust: trust(
     "Run it on-prem and customer records, transactions and case files never leave your walls. You choose where it runs and which models it calls.",
   ),
