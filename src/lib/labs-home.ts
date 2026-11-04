@@ -289,8 +289,6 @@ export interface ProductDemoContent {
   label: string;
   /** The agent the feed belongs to, first in the breadcrumb. */
   agent: string;
-  /** One label per feed item, shown as the progress row under the window. */
-  steps: readonly string[];
   items: readonly DemoFeedItem[];
   /** The public benchmark the example is drawn from. */
   link: { label: string; href: string; analytics: string };
@@ -303,7 +301,6 @@ export const LABS_HERO_DEMO: ProductDemoContent = {
   label:
     "Your AI engineer at work on an insurance claims agent. It imports 18,402 traces from Langfuse, LangSmith and Braintrust where they already live. It reads the agent's code on GitHub and finds the prompt, 9 evals and 38 coverage rules. It finds a gap in the evals: decision_format passed 31 appeals that never reached a decision, so it drafts a decision_made check. It opens a pull request with a prompt fix, replayed on 48 past appeals: 7 of 8 fixed, 40 of 40 unchanged. Then it fine-tunes an open model on 41,200 of your traces that passes 9 of 9 evals at $0.10 a decision instead of $0.36.",
   agent: "claims-agent",
-  steps: ["Traces", "Code", "Eval gaps", "Fix", "Cost"],
   items: [
     {
       kind: "sources",
