@@ -249,53 +249,128 @@ export const LABS_HERO: LabsProductBandContent = {
 };
 
 /* ---------------------------------------------------------------------- */
-/* Problems: the hero's example week                                        */
+/* Product demo: the hero's walk through one claims case                    */
 /* ---------------------------------------------------------------------- */
 
-/** One row of the hero card: a problem the AI engineer found, the evidence
- *  in a line, and what it got ready for you to approve. */
-export interface ProblemRow {
-  problem: string;
-  evidence: string;
-  result: string;
-}
-
-export interface ProblemsCardContent {
-  /** Accessible description of the whole card. */
+export interface ProductDemoContent {
+  /** Accessible description of the whole demo. */
   label: string;
-  /** The agent the week belongs to, shown in the card header. */
+  /** The agent the case belongs to, first in the breadcrumb. */
   agent: string;
-  problems: readonly ProblemRow[];
+  /** The three step labels under the window, one per scene. */
+  steps: readonly [string, string, string];
+  /** Scene 1: the agent's Insights tab. */
+  insight: {
+    crumb: string;
+    source: string;
+    action: string;
+    title: string;
+    body: string;
+    link: string;
+    chartTitle: string;
+    chartSub: string;
+    /** Slices, largest (the finding) first. */
+    rows: readonly { label: string; value: number }[];
+  };
+  /** Scene 2: the fix, replayed on past sessions. */
+  replay: {
+    crumb: string;
+    message: string;
+    eyebrow: string;
+    headline: string;
+    sub: string;
+    columns: readonly [string, string, string, string];
+    rows: readonly {
+      id: string;
+      before: string;
+      after: string;
+      result: string;
+    }[];
+    fold: string;
+    yourCall: { id: string; before: string; after: string; result: string };
+    unchanged: { label: string; after: string; result: string };
+  };
+  /** Scene 3: the merge decision. */
+  approve: {
+    message: string;
+    title: string;
+    file: string;
+    diff: string;
+    secondary: string;
+    primary: string;
+    merged: string;
+    /** The AI engineer's note after the merge. */
+    after: string;
+  };
   /** The public benchmark the example is drawn from. */
   link: { label: string; href: string; analytics: string };
 }
 
-/** The homepage hero's example: one week on an insurance claims agent,
- *  three problems that come up after an agent ships. Illustrative, not a
- *  customer result; the benchmark link is the measured version. */
-export const LABS_HERO_PROBLEMS: ProblemsCardContent = {
+/** The homepage hero: one claims case in the product, from the insight to
+ *  the merge. Illustrative, not a customer result; the benchmark is the
+ *  measured version. */
+export const LABS_HERO_DEMO: ProductDemoContent = {
   label:
-    "An example week from your AI engineer on an insurance claims agent. A switch to a cheaper model left appeals undecided: it found why, fixed the prompt and replayed 48 past appeals with no regressions. The decision_format eval passed every case but never checked prior authorization, in 212 decisions: it drafted a prior_auth_checked check. The model bill kept growing: it trained a model on 41,200 of your past claims that passes all 9 of your evals at $0.10 a decision instead of $0.36.",
+    "A walk through ZenML Pro on an insurance claims agent. Insights: in 31 of 214 appeals since Tuesday the agent stopped before deciding; every one ran on the cheaper model, and decision_format passed all 31. Your AI engineer fixes the prompt and replays 48 past appeals: 7 of 8 fixed, 40 of 40 good ones unchanged, one left for your call. You approve: it asks you to merge PR #87, and you merge it. It saves the 48 appeals as a regression set that every future fix replays first.",
   agent: "claims-agent",
-  problems: [
-    {
-      problem: "A model switch left appeals undecided",
-      evidence: "Fixed the prompt · replayed 48 past appeals · 0 regressions",
-      result: "Fix ready",
+  steps: ["Finds it", "Tests the fix", "You approve"],
+  insight: {
+    crumb: "Insights",
+    source: "Langfuse · 214 appeals",
+    action: "Improve your agent",
+    title: "Appeals end without a decision on the new model",
+    body: "In 31 of 214 appeals since Tuesday the agent stopped before deciding. Every one ran on the cheaper model, and decision_format passed all 31.",
+    link: "Investigate this insight",
+    chartTitle: "Why appeals failed",
+    chartSub: "54 failed appeals",
+    rows: [
+      { label: "No decision", value: 31 },
+      { label: "Wrong plan read", value: 14 },
+      { label: "Tool error", value: 6 },
+      { label: "Other", value: 3 },
+    ],
+  },
+  replay: {
+    crumb: "Appeals left undecided",
+    message: "Fixed the prompt and replayed the appeals that failed.",
+    eyebrow: "Replay · 48 appeals, 3 runs each",
+    headline: "7 of 8 fixed",
+    sub: "40 of 40 unchanged",
+    columns: ["Appeal", "Before", "After", "Result"],
+    rows: [
+      { id: "1", before: "No decision", after: "Approved", result: "Fixed" },
+      {
+        id: "2",
+        before: "No decision",
+        after: "Denied, no prior auth",
+        result: "Fixed",
+      },
+      { id: "3", before: "No decision", after: "Approved", result: "Fixed" },
+    ],
+    fold: "Show 4 more · Appeals 4–7 · all decided",
+    yourCall: {
+      id: "8",
+      before: "No decision",
+      after: "Sent to a reviewer",
+      result: "Your call",
     },
-    {
-      problem: "Your evals went stale",
-      evidence:
-        "decision_format passed 212 decisions that skipped prior authorization",
-      result: "+ prior_auth_checked",
+    unchanged: {
+      label: "40 past good appeals",
+      after: "Same decisions",
+      result: "Unchanged",
     },
-    {
-      problem: "The model bill keeps growing",
-      evidence:
-        "Trained on your claims · $0.36 → $0.10 a decision · 9 of 9 evals pass",
-      result: "Switch ready",
-    },
-  ],
+  },
+  approve: {
+    message: "Every appeal now ends with a decision. Ready when you are.",
+    title: "Merge PR #87?",
+    file: "claims_agent/prompt.py",
+    diff: "+9 −2",
+    secondary: "Open in GitHub",
+    primary: "Merge",
+    merged: "You merged PR #87",
+    after:
+      "Saved the 48 appeals as a regression set. Every future fix replays them first.",
+  },
   link: {
     label: "See the claims agent benchmark",
     href: "/benchmarks/claims-over-time",

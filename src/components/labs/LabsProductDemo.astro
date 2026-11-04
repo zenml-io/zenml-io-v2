@@ -1,0 +1,387 @@
+---
+/**
+ * LabsProductDemo (`labs.product-demo`) — the homepage hero's visual: the
+ * ZenML Pro app drawn after the product prototype (the icon rail on the
+ * page background, one inset white card with a breadcrumb header),
+ * walking one claims case through three scenes:
+ * 1 Finds it: the agent's Insights tab, lead insight banner and a donut.
+ * 2 Tests the fix: the AI engineer's message with the replay card.
+ * 3 You approve: the merge decision card, where a cursor clicks Merge and
+ *   the merged chip appears.
+ * The step row under the window shows where it is.
+ *
+ * Scenes advance on their own every few seconds and stop once a visitor
+ * clicks a step. Without JS, or with reduced motion, the first scene shows
+ * and the steps still switch on click when JS runs. The figcaption carries
+ * the whole case as text; the drawn window is aria-hidden. A text link to
+ * the public benchmark sits under it. Copy arrives through `content`
+ * (LABS_HERO_DEMO).
+ */
+import type { ProductDemoContent } from "../../lib/labs-home";
+import LabsOrb from "./LabsOrb.astro";
+
+interface Props {
+  content: ProductDemoContent;
+}
+const { content } = Astro.props;
+const { insight, replay, approve } = content;
+
+/* Donut slices: r=38 on a 100 box, 2-unit gaps, largest first. */
+const R = 38;
+const C = 2 * Math.PI * R;
+const total = insight.rows.reduce((sum, row) => sum + row.value, 0);
+const SLICE_TONES = [
+  "text-destructive",
+  "text-destructive/65",
+  "text-destructive/40",
+  "text-destructive/20",
+];
+let offset = 0;
+const slices = insight.rows.map((row, i) => {
+  const length = (row.value / total) * C;
+  const slice = {
+    dash: `${Math.max(length - 2, 0)} ${C}`,
+    offset: -offset,
+    tone: SLICE_TONES[i] ?? SLICE_TONES[3],
+  };
+  offset += length;
+  return slice;
+});
+const tone = (i: number) => SLICE_TONES[i] ?? SLICE_TONES[3];
+
+/* Rail icons, after the prototype's lucide set: House, Inbox, Bot, Zap. */
+const RAIL = [
+  [
+    "M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8",
+    "M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z",
+  ],
+  [
+    "M22 12h-6l-2 3h-4l-2-3H2",
+    "M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z",
+  ],
+  [
+    "M12 8V4H8",
+    "M6 8h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2z",
+    "M2 14h2",
+    "M20 14h2",
+    "M15 13v2",
+    "M9 13v2",
+  ],
+  [
+    "M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z",
+  ],
+];
+/* The Kitaru workspace group: Agents (active), Evaluators. */
+const WORKSPACE = [
+  ["M12 14l4-4", "M3.34 19a10 10 0 1 1 17.32 0"],
+  [
+    "M9 11l3 3L22 4",
+    "M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11",
+  ],
+];
+const ICON =
+  "size-5 fill-none stroke-current [stroke-linecap:round] [stroke-linejoin:round] [stroke-width:1.75]";
+const REPLAY_GRID =
+  "grid grid-cols-[1fr_1.25fr_4.5rem] gap-2 px-4 sm:grid-cols-[3.5rem_1fr_1.25fr_4.5rem]";
+const ID_CELL = "hidden text-(--color-cream-700) sm:block";
+const CRUMBS = [insight.crumb, replay.crumb, replay.crumb];
+const [foldLead, ...foldRest] = replay.fold.split(" · ");
+---
+
+<div data-demo>
+  <figure class="pd-window overflow-hidden rounded-[14px] border border-(--color-border) bg-background shadow-[0_1px_2px_rgba(65,61,55,0.04),0_12px_32px_rgba(65,61,55,0.08)]">
+    <figcaption class="sr-only">{content.label}</figcaption>
+    <div aria-hidden="true" class="flex">
+      <div class="hidden w-14 shrink-0 flex-col items-center gap-1.5 py-3 sm:flex">
+        <span class="grid size-8 place-items-center rounded-[8px] bg-(--color-sage-700) font-sans text-[13px] font-semibold text-(--color-primary-foreground)">A</span>
+        <span class="my-1 h-px w-5 bg-(--color-cream-300)"></span>
+        {RAIL.map((paths, i) => (
+          <span class="relative grid size-8 place-items-center rounded-[8px] text-(--color-cream-700)">
+            <svg viewBox="0 0 24 24" class={ICON}>{paths.map((d) => <path d={d} />)}</svg>
+            {i === 0 && <span class="absolute top-1 right-1 size-2 rounded-full border-2 border-background bg-(--color-orange-500)"></span>}
+          </span>
+        ))}
+        <span class="mt-1 flex w-10 flex-col items-center gap-1 rounded-[10px] border border-(--color-border) bg-(--color-cream-50) py-1">
+          <span class="grid size-7 place-items-center rounded-[6px] bg-(--color-orange-100) font-sans text-[11px] font-semibold text-(--color-orange-600)">C</span>
+          {WORKSPACE.map((paths, i) => (
+            <span class:list={["grid size-8 place-items-center rounded-[8px]", i === 0 ? "bg-card text-(--color-cream-900) shadow-[0_1px_2px_rgba(65,61,55,0.12),0_0_0_1px_var(--color-border)]" : "text-(--color-cream-700)"]}>
+              <svg viewBox="0 0 24 24" class={ICON}>{paths.map((d) => <path d={d} />)}</svg>
+            </span>
+          ))}
+        </span>
+      </div>
+
+      <div class="min-w-0 flex-1 p-1.5 sm:pl-0">
+        <div class="overflow-hidden rounded-[10px] border border-(--color-border) bg-card">
+          <div class="flex h-11 items-center border-b border-(--color-border) px-4 font-sans text-[13px] leading-5">
+            <span class="text-(--color-cream-700)">{content.agent}</span>
+            <span class="px-1.5 text-(--color-cream-400)">/</span>
+            <span class="grid min-w-0">
+              {CRUMBS.map((crumb, i) => (
+                <span data-pd-part={i} data-active={i === 0 ? "" : undefined} class="pd-part col-start-1 row-start-1 truncate text-(--color-cream-900)">{crumb}</span>
+              ))}
+            </span>
+          </div>
+
+          <div class="grid">
+            <section data-pd-scene="0" data-active class="pd-scene col-start-1 row-start-1 flex flex-col">
+              <div class="flex h-11 items-center gap-2 border-b border-(--color-cream-100) px-4">
+                <span class="truncate rounded-[4px] border border-(--color-border) px-2 py-1 font-sans text-[12px] leading-4 text-(--color-cream-800)">{insight.source}</span>
+                <span class="ml-auto shrink-0 rounded-[6px] bg-(--color-cream-900) px-2.5 py-1 font-sans text-[12px] leading-4 font-medium text-(--color-primary-foreground)">✦ {insight.action}</span>
+              </div>
+              <div class="flex flex-col gap-3 p-4">
+                <div class="rounded-[8px] border border-(--color-sage-400) bg-(--color-sage-50) p-3.5">
+                  <p class="font-sans text-[14px] leading-5 font-medium text-(--color-cream-900)">{insight.title}</p>
+                  <p class="mt-1 font-sans text-[13px] leading-5 text-pretty text-(--color-cream-700)">{insight.body}</p>
+                  <p class="mt-2 font-sans text-[13px] leading-5 text-(--color-cream-900)">{insight.link} <span class="text-(--color-cream-600)">→</span></p>
+                </div>
+                <div class="flex items-center gap-5 rounded-[8px] border border-(--color-border) p-3.5">
+                  <svg viewBox="0 0 100 100" class="pd-donut size-20 shrink-0 -rotate-90">
+                    {slices.map((slice) => (
+                      <circle cx="50" cy="50" r={R} fill="none" stroke="currentColor" stroke-width="14" stroke-dasharray={slice.dash} stroke-dashoffset={slice.offset} class={slice.tone} />
+                    ))}
+                  </svg>
+                  <div class="min-w-0 flex-1">
+                    <p class="font-sans text-[13px] leading-5 font-medium text-(--color-cream-900)">{insight.chartTitle}</p>
+                    <p class="font-sans text-[11.5px] leading-4 text-(--color-cream-600)">{insight.chartSub}</p>
+                    <ul class="mt-2 flex flex-col gap-1">
+                      {insight.rows.map((row, i) => (
+                        <li class="flex items-center gap-2 font-sans text-[12px] leading-4 text-(--color-cream-800)">
+                          <span class:list={["size-2 shrink-0 rounded-[2px] bg-current", tone(i)]}></span>
+                          <span class="flex-1 truncate">{row.label}</span>
+                          <span class="font-mono text-(--color-cream-900)">{row.value}</span>
+                          <span class="w-11 text-right font-mono text-(--color-cream-600)">{((row.value / total) * 100).toFixed(1)}%</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section data-pd-scene="1" class="pd-scene col-start-1 row-start-1 flex flex-col gap-3 p-4">
+              <p class="flex items-center gap-2 font-sans text-[13px] leading-5 text-(--color-cream-900)">
+                <LabsOrb size={20} />
+                <span class="font-semibold">Your AI engineer</span>
+              </p>
+              <p class="font-sans text-[14px] leading-5 text-(--color-cream-900)">{replay.message}</p>
+              <div class="overflow-hidden rounded-[8px] border border-(--color-border)">
+                <div class="px-4 pt-3 pb-2.5">
+                  <p class="font-label text-[10.5px] leading-4 uppercase tracking-[0.04em] text-(--color-cream-600)">{replay.eyebrow}</p>
+                  <p class="mt-0.5 flex flex-wrap items-baseline gap-x-2.5">
+                    <span class="font-sans text-[22px] leading-8 font-semibold tracking-[-0.015em] text-(--color-cream-900)">{replay.headline}</span>
+                    <span class="font-sans text-[13px] leading-5 text-(--color-cream-700)">{replay.sub}</span>
+                  </p>
+                </div>
+                <div class:list={[REPLAY_GRID, "border-y border-(--color-border) bg-(--color-cream-50) py-1.5 font-sans text-[11.5px] leading-4 font-medium text-(--color-cream-700)"]}>
+                  {replay.columns.map((column, i) => <span class={i === 0 ? "hidden sm:block" : undefined}>{column}</span>)}
+                </div>
+                {replay.rows.map((row, i) => (
+                  <div class:list={[REPLAY_GRID, "pd-row border-b border-(--color-cream-100) py-2 font-sans text-[12.5px] leading-4"]} style={`animation-delay: ${120 + i * 120}ms`}>
+                    <span class={ID_CELL}>{row.id}</span>
+                    <span class="truncate text-destructive">{row.before}</span>
+                    <span class="truncate text-(--color-cream-900)">{row.after}</span>
+                    <span class="font-medium text-(--color-sage-700)">{row.result}</span>
+                  </div>
+                ))}
+                <div class="pd-row truncate border-b border-(--color-cream-100) px-4 py-2 font-sans text-[12.5px] leading-4" style="animation-delay: 480ms">
+                  <span class="font-medium text-(--color-cream-900)">{foldLead}</span>
+                  <span class="text-(--color-cream-600)"> · {foldRest.join(" · ")}</span>
+                </div>
+                <div class:list={[REPLAY_GRID, "pd-row border-b border-(--color-cream-100) bg-(--color-orange-50) py-2 font-sans text-[12.5px] leading-4"]} style="animation-delay: 600ms">
+                  <span class={ID_CELL}>{replay.yourCall.id}</span>
+                  <span class="truncate text-(--color-cream-900)">{replay.yourCall.before}</span>
+                  <span class="truncate text-(--color-cream-900)">{replay.yourCall.after}</span>
+                  <span class="font-medium text-(--color-orange-600)">{replay.yourCall.result}</span>
+                </div>
+                <div class:list={[REPLAY_GRID, "pd-row py-2 font-sans text-[12.5px] leading-4"]} style="animation-delay: 720ms">
+                  <span class="truncate font-medium text-(--color-cream-900) sm:col-span-2">{replay.unchanged.label}</span>
+                  <span class="truncate text-(--color-cream-800)">{replay.unchanged.after}</span>
+                  <span class="text-(--color-cream-600)">{replay.unchanged.result}</span>
+                </div>
+              </div>
+            </section>
+
+            <section data-pd-scene="2" class="pd-scene col-start-1 row-start-1 flex flex-col gap-3 p-4">
+              <p class="flex items-center gap-2 font-sans text-[13px] leading-5 text-(--color-cream-900)">
+                <LabsOrb size={20} blink={2} />
+                <span class="font-semibold">Your AI engineer</span>
+              </p>
+              <p class="font-sans text-[14px] leading-5 text-(--color-cream-900)">{approve.message}</p>
+              <div class="rounded-[8px] border border-(--color-cream-300) bg-card shadow-[0_1px_2px_rgba(65,61,55,0.06)]">
+                <div class="flex flex-wrap items-center gap-3 px-4 py-3.5">
+                  <span class="grid size-9 shrink-0 place-items-center rounded-[8px] bg-(--color-sage-100) text-(--color-sage-800)">
+                    <svg viewBox="0 0 24 24" class={ICON}><circle cx="18" cy="18" r="3" /><circle cx="6" cy="6" r="3" /><path d="M13 6h3a2 2 0 0 1 2 2v7" /><path d="M6 9v12" /></svg>
+                  </span>
+                  <span class="min-w-0 flex-1">
+                    <span class="block font-sans text-[14px] leading-5 font-semibold text-(--color-cream-900)">{approve.title}</span>
+                    <span class="mt-0.5 block truncate font-sans text-[12px] leading-4 text-(--color-cream-700)">
+                      <span class="rounded-[4px] border border-(--color-border) bg-(--color-cream-50) px-1 font-mono text-[11.5px] text-(--color-cream-900)">{approve.file}</span>
+                      · {approve.diff}
+                    </span>
+                  </span>
+                  <span class="flex shrink-0 gap-2">
+                    <span class="rounded-[6px] border border-(--color-cream-300) px-2.5 py-1.5 font-sans text-[12.5px] leading-4 text-(--color-cream-900)">{approve.secondary}</span>
+                    <span class="pd-merge relative rounded-[6px] bg-(--color-cream-900) px-3 py-1.5 font-sans text-[12.5px] leading-4 font-medium text-(--color-primary-foreground)">
+                      {approve.primary}
+                      <svg class="pd-cursor pointer-events-none absolute top-3 left-6 size-5 text-(--color-cream-900)" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 8-6 1.5L10 19z" stroke="var(--color-primary-foreground)" stroke-width="1.5" stroke-linejoin="round"></path></svg>
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <p class="pd-merged flex items-center gap-2 self-end rounded-[12px] bg-(--color-cream-100) px-3 py-2 font-sans text-[13px] leading-5 text-(--color-cream-900)">
+                <span class="grid size-5 place-items-center rounded-[4px] bg-(--color-sage-700) text-[11px] text-(--color-primary-foreground)">✓</span>
+                {approve.merged}
+              </p>
+              <p class="pd-after flex items-start gap-2 font-sans text-[14px] leading-5 text-(--color-cream-900)">
+                <LabsOrb size={20} blink={3} />
+                <span>{approve.after}</span>
+              </p>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </figure>
+
+  <div aria-hidden="true" class="mt-3 grid grid-cols-3 gap-2">
+    {content.steps.map((step, i) => (
+      <button
+        type="button"
+        tabindex="-1"
+        data-pd-step={i}
+        data-active={i === 0 ? "" : undefined}
+        class="pd-step relative cursor-pointer overflow-hidden rounded-full border border-(--color-border) px-2 py-1.5 font-label text-[10.5px] whitespace-nowrap sm:text-[11px] leading-4 uppercase tracking-[0.05em] text-(--color-cream-600) transition-colors duration-200 ease-out hover:text-(--color-cream-900) data-active:border-(--color-cream-900) data-active:text-(--color-cream-900)"
+      >
+        <span class="pd-fill absolute inset-y-0 left-0 w-full origin-left bg-(--color-sage-100)"></span>
+        <span class="relative"><span class="hidden sm:inline">{i + 1} · </span>{step}</span>
+      </button>
+    ))}
+  </div>
+
+  <a
+    href={content.link.href}
+    data-analytics={content.link.analytics}
+    class="mt-4 inline-flex items-center gap-1.5 font-mono text-[12px] leading-4 uppercase tracking-[0.05em] text-(--color-cream-800) underline-offset-4 transition-colors duration-200 ease-out hover:text-(--color-cream-900) hover:underline"
+  >
+    {content.link.label} <span aria-hidden="true">→</span>
+  </a>
+</div>
+
+<style>
+  .pd-scene:not([data-active]),
+  .pd-part:not([data-active]) {
+    visibility: hidden;
+    opacity: 0;
+  }
+  .pd-fill {
+    transform: scaleX(0);
+  }
+  .pd-cursor {
+    opacity: 0;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .pd-window {
+      animation: pd-in 900ms var(--ease-out-expo) 100ms backwards;
+    }
+    .pd-scene[data-active] {
+      animation: pd-fade 450ms var(--ease-out-quint) backwards;
+    }
+    .pd-scene[data-active] .pd-donut {
+      animation: pd-spin 900ms var(--ease-out-quint) 150ms backwards;
+    }
+    .pd-scene[data-active] .pd-row {
+      animation: pd-fade 400ms var(--ease-out-quint) backwards;
+    }
+    [data-rotating] .pd-step[data-active] .pd-fill {
+      animation: pd-progress var(--pd-interval) linear both;
+    }
+    [data-rotating] .pd-scene[data-active] .pd-cursor {
+      animation: pd-cursor 1.6s var(--ease-out-quint) 500ms both;
+    }
+    [data-rotating] .pd-scene[data-active] .pd-merge {
+      animation: pd-press 200ms ease-out 1.6s both;
+    }
+    [data-rotating] .pd-scene[data-active] .pd-merged {
+      animation: pd-fade 400ms var(--ease-out-quint) 1.9s backwards;
+    }
+    [data-rotating] .pd-scene[data-active] .pd-after {
+      animation: pd-fade 400ms var(--ease-out-quint) 2.6s backwards;
+    }
+  }
+  @keyframes pd-in {
+    from {
+      opacity: 0;
+      filter: blur(8px);
+      transform: translateY(24px) scale(0.97);
+    }
+  }
+  @keyframes pd-fade {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+  }
+  @keyframes pd-spin {
+    from {
+      opacity: 0;
+      transform: rotate(-240deg) scale(0.9);
+    }
+  }
+  @keyframes pd-progress {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+  @keyframes pd-press {
+    50% {
+      transform: scale(0.94);
+    }
+  }
+  @keyframes pd-cursor {
+    0% {
+      opacity: 0;
+      transform: translate(-90px, 70px);
+    }
+    25% {
+      opacity: 1;
+    }
+    75%,
+    100% {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+  }
+</style>
+
+<script>
+  const INTERVAL = 5600;
+  for (const demo of document.querySelectorAll<HTMLElement>("[data-demo]")) {
+    const steps = [...demo.querySelectorAll<HTMLElement>("[data-pd-step]")];
+    const scenes = [...demo.querySelectorAll<HTMLElement>("[data-pd-scene]")];
+    const parts = [...demo.querySelectorAll<HTMLElement>("[data-pd-part]")];
+    let active = 0;
+    let timer: number | undefined;
+    const show = (next: number) => {
+      active = next;
+      for (const group of [steps, scenes, parts]) {
+        for (const [i, el] of group.entries()) el.toggleAttribute("data-active", i === next);
+      }
+    };
+    for (const step of steps) {
+      step.addEventListener("click", () => {
+        window.clearInterval(timer);
+        demo.removeAttribute("data-rotating");
+        show(Number(step.dataset.pdStep));
+      });
+    }
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      demo.style.setProperty("--pd-interval", `${INTERVAL}ms`);
+      demo.setAttribute("data-rotating", "");
+      timer = window.setInterval(() => show((active + 1) % scenes.length), INTERVAL);
+    }
+  }
+</script>

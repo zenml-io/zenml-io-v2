@@ -9,7 +9,7 @@ import {
 import {
   LABS_DOORS,
   LABS_HERO,
-  LABS_HERO_PROBLEMS,
+  LABS_HERO_DEMO,
   LABS_HOME_CLOSE,
   LABS_HOME_SEO,
   LABS_LOGO_GRID,
@@ -36,8 +36,8 @@ export function GET(): Response {
       "## Summary",
       LABS_HERO.headlineLines.join(" "),
       LABS_HERO.deck,
-      LABS_HERO_PROBLEMS.label,
-      markdownLink(LABS_HERO_PROBLEMS.link.label, LABS_HERO_PROBLEMS.link.href),
+      LABS_HERO_DEMO.label,
+      markdownLink(LABS_HERO_DEMO.link.label, LABS_HERO_DEMO.link.href),
     ),
     joinMarkdownSections(
       "## Main CTA",
