@@ -27,17 +27,9 @@ If you've been around since August, you may have already noticed: a new logo, ne
 
 ZenML Labs is now the company behind [**ZenML**](https://github.com/zenml-io/zenml), [**Kitaru**](https://github.com/zenml-io/kitaru) and [**ZenML Pro**](https://www.zenml.io/pro).
 
-For years, "ZenML" meant the company, the orchestration product and the paid platform at once. That stopped working once there was more than one product. So the company became ZenML Labs. New name, same team, same open-source core.
-
 Why "Labs"? Because we keep building what teams running AI in production need next. The new name reflects where we are and where we're going.
 
-The new symbol is two stacked layers: our platform on top, your infrastructure underneath. Your data stays in the bottom layer. Green replaces purple, with warm neutrals and orange alongside.
-
-![The ZenML Labs symbol](https://assets.zenml.io/content/blog/introducing-zenml-labs/1c92e2c9/zenml-labs-symbol.avif)
-
-![The new palette: a green scale, warm neutrals and orange](https://assets.zenml.io/content/blog/introducing-zenml-labs/924469db/brand-palette.avif)
-
-![Brand textures: orange and green glass blocks, pale green hexagonal glass, orange glass](https://assets.zenml.io/content/blog/introducing-zenml-labs/8a2c61e2/brand-textures.avif)
+*[Placeholder: ZenML Labs film]*
 
 ## From notebooks to agents
 
@@ -55,15 +47,13 @@ So we built Kitaru. It reads your agent's sessions next to its evals and shows y
 
 Building Kitaru taught us something.
 
-Keeping an agent good means reading traces, deciding which failures matter, writing the check and testing the fix. That's exactly the kind of work agents have become good at.
+Keeping an agent good means reading traces, deciding which failures matter, writing the check and testing the fix. The kind of work agents have become good at.
 
 So the next tool we're building is an agent itself: an AI engineer, built on ZenML and Kitaru. It does the work and shows you the evidence. You decide what ships.
 
 *[Image: claims-feed. Your AI engineer at work on a claims agent: imports traces, reads the code, finds a gap in the evals, tests a fix against what runs today, and trains a cheaper model. Upload to R2.]*
 
 Our goal is simple. AI in production shouldn't need babysitting. It should keep getting better after it ships.
-
-*[Placeholder: ZenML Labs film]*
 
 ## What we heard
 
@@ -85,7 +75,7 @@ The AI engineer reads all of them, next to the evals you already run. It groups 
 
 Take a claims agent. After a switch to a cheaper model, 31 of 214 appeals ended without a decision. The `decision_format` eval passed every one, because each reply was well formed. Nothing checked that the agent actually decided.
 
-The AI engineer flags the pattern and drafts a `decision_made` check to catch the next one.
+Our AI engineer flags the pattern and drafts a `decision_made` check to catch the next one.
 
 *[Image: claims-insights. Insights for a claims agent: appeals end without a decision on the new model, and why appeals failed. Upload to R2.]*
 
@@ -133,7 +123,17 @@ Both now share one sign-in at [cloud.zenml.io](https://cloud.zenml.io). Every ac
 
 ![The new cloud.zenml.io home: what needs you, automations and this week's activity](https://assets.zenml.io/content/blog/introducing-zenml-labs/0f6bd4f4/cloud-home.avif)
 
-### If you already run ZenML
+## Our new brand
+
+The new symbol is two stacked layers: our platform on top, your infrastructure underneath. Your data stays in the bottom layer. Green replaces purple, with warm neutrals and orange alongside.
+
+![The ZenML Labs symbol](https://assets.zenml.io/content/blog/introducing-zenml-labs/1c92e2c9/zenml-labs-symbol.avif)
+
+![The new palette: a green scale, warm neutrals and orange](https://assets.zenml.io/content/blog/introducing-zenml-labs/924469db/brand-palette.avif)
+
+![Brand textures: orange and green glass blocks, pale green hexagonal glass, orange glass](https://assets.zenml.io/content/blog/introducing-zenml-labs/8a2c61e2/brand-textures.avif)
+
+## If you already run ZenML
 
 ZenML isn't the old product. It's half of the plan. Agents end up needing everything ML needed: training data, fine-tuning runs, evaluation pipelines, models you can version and roll back. When the AI engineer fine-tunes a cheaper model on your traces, it runs as a ZenML pipeline on your infrastructure. So we keep investing in the open-source core, and nothing you depend on goes away.
 
