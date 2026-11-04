@@ -269,19 +269,19 @@ export type DemoFeedItem =
       check: string;
     }
   | {
-      kind: "pr";
+      kind: "experiment";
       text: string;
       title: string;
-      diff: readonly { sign: "-" | "+"; line: string }[];
+      /** Column heads: the metric, what runs today, the candidate. */
+      columns: readonly [string, string, string];
+      rows: readonly { label: string; current: string; candidate: string }[];
       result: string;
-      action: string;
     }
   | {
       kind: "finetune";
       text: string;
       model: string;
       rows: readonly { label: string; value: string; hot?: true }[];
-      action: string;
     };
 
 export interface ProductDemoContent {
@@ -299,7 +299,7 @@ export interface ProductDemoContent {
  *  customer result; the benchmark is the measured version. */
 export const LABS_HERO_DEMO: ProductDemoContent = {
   label:
-    "Your AI engineer at work on an insurance claims agent. It imports 18,402 traces from Langfuse, LangSmith and Braintrust where they already live. It reads the agent's code on GitHub and finds the prompt, 9 evals and 38 coverage rules. It finds a gap in the evals: decision_format passed 31 appeals that never reached a decision, so it drafts a decision_made check. It opens a pull request with a prompt fix, replayed on 48 past appeals: 7 of 8 fixed, 40 of 40 unchanged. Then it fine-tunes an open model on 41,200 of your traces that passes 9 of 9 evals at $0.10 a decision instead of $0.36.",
+    "Your AI engineer at work on an insurance claims agent. It imports 18,402 traces from Langfuse, LangSmith and Braintrust where they already live. It reads the agent's code on GitHub and finds the prompt, 9 evals and 38 coverage rules. It finds a gap in the evals: decision_format passed 31 appeals that never reached a decision, so it drafts a decision_made check. It tests a prompt fix as an experiment on 214 past appeals against what runs today: appeals decided go from 86% to 100%, agreement with reviewers from 91.2% to 93.8%, and none of 40 good appeals change. Then it fine-tunes an open model on 41,200 of your traces that passes 9 of 9 evals at $0.10 a decision instead of $0.36.",
   agent: "claims-agent",
   items: [
     {
@@ -331,15 +331,20 @@ export const LABS_HERO_DEMO: ProductDemoContent = {
       check: "+ decision_made check",
     },
     {
-      kind: "pr",
-      text: "Opened a fix and tested it on past appeals.",
-      title: "PR #87 · Finish every appeal with a decision",
-      diff: [
-        { sign: "-", line: "Summarize the appeal for the reviewer." },
-        { sign: "+", line: "End with approve, deny or refer, always." },
+      kind: "experiment",
+      text: "Tested a fix against what runs today.",
+      title: "Experiment · 214 past appeals, 3 runs each",
+      columns: ["", "Today", "With the fix"],
+      rows: [
+        { label: "Appeals decided", current: "86%", candidate: "100%" },
+        {
+          label: "Agrees with reviewers",
+          current: "91.2%",
+          candidate: "93.8%",
+        },
+        { label: "Good appeals changed", current: "", candidate: "0 of 40" },
       ],
-      result: "Replayed 48 appeals · 7 of 8 fixed · 40 of 40 unchanged",
-      action: "Merge",
+      result: "7 of 8 failed appeals fixed · 1 flagged for your review",
     },
     {
       kind: "finetune",
@@ -349,7 +354,6 @@ export const LABS_HERO_DEMO: ProductDemoContent = {
         { label: "Evals passed", value: "9 of 9" },
         { label: "Cost a decision", value: "$0.36 → $0.10", hot: true },
       ],
-      action: "Switch",
     },
   ],
   link: {

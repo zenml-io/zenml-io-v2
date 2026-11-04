@@ -6,7 +6,7 @@
  * AI engineer's work feed on one claims agent. Entries arrive one at a
  * time from the bottom and push older ones up, telling the whole story:
  * traces imported from where they live, the agent's code read on GitHub,
- * a gap in the evals, a fix opened as a PR and replayed, and a cheaper
+ * a gap in the evals, a fix tested as an experiment against what runs today, and a cheaper
  * fine-tuned model. Then the feed
  * loops.
  *
@@ -48,13 +48,9 @@ const RAIL = [
 ];
 const ICON =
   "size-5 fill-none stroke-current [stroke-linecap:round] [stroke-linejoin:round] [stroke-width:1.75]";
-const SMALL_ICON =
-  "size-4 fill-none stroke-current [stroke-linecap:round] [stroke-linejoin:round] [stroke-width:1.75]";
 const CARD = "mt-2 ml-7 rounded-[8px] border border-(--color-border) bg-card";
 const CHIP =
   "inline-flex items-center gap-1.5 rounded-[6px] border border-(--color-border) bg-(--color-cream-50) px-2 py-1 font-sans text-[12px] leading-4 text-(--color-cream-900)";
-const INK_BUTTON =
-  "shrink-0 rounded-[6px] bg-(--color-cream-900) px-3 py-1.5 font-sans text-[12.5px] leading-4 font-medium text-(--color-primary-foreground)";
 ---
 
 <div data-demo>
@@ -129,21 +125,28 @@ const INK_BUTTON =
                     </div>
                   )}
 
-                  {item.kind === "pr" && (
+                  {item.kind === "experiment" && (
                     <div class:list={[CARD, "overflow-hidden"]}>
-                      <p class="flex items-center gap-2 px-3 pt-3 font-sans text-[13px] leading-5 font-semibold text-(--color-cream-900)">
-                        <svg viewBox="0 0 24 24" class:list={[SMALL_ICON, "text-(--color-sage-700)"]}><circle cx="18" cy="18" r="3" /><circle cx="6" cy="6" r="3" /><path d="M13 6h3a2 2 0 0 1 2 2v7" /><path d="M6 9v12" /></svg>
-                        <span class="truncate">{item.title}</span>
-                      </p>
-                      <div class="mx-3 mt-2 overflow-hidden rounded-[6px] border border-(--color-border) font-mono text-[11.5px] leading-[18px]">
-                        {item.diff.map((d) => (
-                          <p class:list={["truncate px-2", d.sign === "-" ? "bg-destructive/5 text-destructive" : "bg-(--color-sage-50) text-(--color-sage-800)"]}>{d.sign} {d.line}</p>
-                        ))}
-                      </div>
-                      <div class="flex items-center gap-3 px-3 py-2.5">
-                        <span class="min-w-0 flex-1 font-sans text-[12px] leading-4 text-(--color-cream-700)">{item.result}</span>
-                        <span class={INK_BUTTON}>{item.action}</span>
-                      </div>
+                      <p class="px-3 pt-3 font-sans text-[13px] leading-5 font-semibold text-(--color-cream-900)">{item.title}</p>
+                      <table class="mt-2 w-full border-t border-(--color-border) font-sans text-[12.5px] leading-4">
+                        <thead>
+                          <tr class="bg-(--color-cream-50) text-left text-[11.5px] text-(--color-cream-700)">
+                            {item.columns.map((column, i) => (
+                              <th class:list={["px-3 py-1.5 font-medium", i > 0 && "text-right"]}>{column}</th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {item.rows.map((row) => (
+                            <tr class="border-t border-(--color-cream-100)">
+                              <td class="px-3 py-1.5 text-(--color-cream-800)">{row.label}</td>
+                              <td class="px-3 py-1.5 text-right tabular-nums text-(--color-cream-600)">{row.current || "–"}</td>
+                              <td class="px-3 py-1.5 text-right font-semibold tabular-nums text-(--color-sage-700)">{row.candidate}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                      <p class="border-t border-(--color-border) px-3 py-2 font-sans text-[12px] leading-4 text-(--color-cream-700)">{item.result}</p>
                     </div>
                   )}
 
@@ -159,7 +162,6 @@ const INK_BUTTON =
                             </div>
                           ))}
                         </dl>
-                        <span class={INK_BUTTON}>{item.action}</span>
                       </div>
                     </div>
                   )}
