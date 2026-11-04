@@ -11,10 +11,12 @@
  * routes, customer logos) are imported from their canonical constants,
  * never retyped here.
  */
+
 import type { Surface } from "./analytics";
 import { cloudSignupUrl } from "./constants";
 import type { FeatureIconId } from "./featureIcons";
 import { type CaseStudyCard, LOGO_CLOUD, type LogoItem } from "./homepage";
+import type { BenchmarkBandContent } from "./labs-industries";
 import {
   KITARU_CLOUD_PRICE,
   KITARU_DOCS_URL,
@@ -585,54 +587,20 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
 };
 
 /* ---------------------------------------------------------------------- */
-/* Model cost: a fine-tuned model from the same traces                    */
+/* Benchmarks: the proof behind the hero                                   */
 /* ---------------------------------------------------------------------- */
 
-/** One month of model spend, in thousands of dollars, split by where calls went. */
-export interface CostMonth {
-  month: string;
-  frontier: number;
-  own: number;
-  /** Numbered note pinned above this month's bar. */
-  note?: number;
-}
-
-export interface ModelCostContent {
-  eyebrow: string;
-  headlineLines: readonly [string, string];
-  deck: string;
-  chart: {
-    label: string;
-    series: { frontier: string; own: string };
-    months: readonly CostMonth[];
-    notes: readonly string[];
-  };
-}
-
-export const LABS_MODEL_COST: ModelCostContent = {
-  eyebrow: "Cost",
-  headlineLines: ["Your model bill", "keeps growing"],
-  deck: "Your traces are also training data. Your AI engineer fine-tunes an open model on them and only switches when it passes your evals. Same agent, a fifth of the bill. The weights are yours: run them in your own cloud.",
-  chart: {
-    label: "Example: a claims agent's model spend a month",
-    series: { frontier: "Frontier model", own: "Your fine-tuned model" },
-    months: [
-      { month: "Jan", frontier: 31.4, own: 0 },
-      { month: "Feb", frontier: 31.9, own: 0 },
-      { month: "Mar", frontier: 32.7, own: 0 },
-      { month: "Apr", frontier: 1.6, own: 5.3, note: 1 },
-      { month: "May", frontier: 1.6, own: 5.4 },
-      { month: "Jun", frontier: 1.7, own: 5.3 },
-      { month: "Jul", frontier: 9.8, own: 4.1, note: 2 },
-      { month: "Aug", frontier: 1.7, own: 5.4, note: 3 },
-      { month: "Sep", frontier: 1.6, own: 5.3 },
-      { month: "Oct", frontier: 1.6, own: 5.3 },
-    ],
-    notes: [
-      "Fine-tuned on 41,200 of your traces. The same 9 evals pass.",
-      "Coverage rules changed. The frontier model covers while it retrains.",
-      "Retrained on 2,318 new traces. 9 of 9 evals pass again.",
-    ],
+/** The homepage's proof section: published benchmarks on real claims,
+ *  appeals and underwriting work (labs.benchmark-band). */
+export const LABS_HOME_BENCHMARKS: BenchmarkBandContent = {
+  eyebrow: "Benchmarks",
+  headline: "Measured on real work, published in full",
+  deck: "We run real claims, appeals and underwriting cases through open and frontier models, test model swaps, and let our AI engineer improve the agent batch after batch. Every result publishes its method, its noise and its limits.",
+  slugs: ["claims-over-time", "underwriting", "decision-agents", "swapbench"],
+  link: {
+    label: "All benchmarks",
+    href: "/benchmarks",
+    analytics: "Home-Benchmarks-All",
   },
 };
 
@@ -652,14 +620,6 @@ export interface StackColumn {
   marks: readonly StackMark[];
 }
 
-/** One stop of the example session's journey through the diagram. */
-export interface JourneyStep {
-  tag: string;
-  tone: "neutral" | "missing" | "new" | "pass";
-  title: string;
-  detail: string;
-}
-
 export interface StackLayerContent {
   eyebrow: string;
   headline: string;
@@ -670,17 +630,15 @@ export interface StackLayerContent {
   };
   columns: readonly [StackColumn, StackColumn, StackColumn];
   /** Four stops, in order: traces, layer, layer, agent. */
-  journey: readonly [JourneyStep, JourneyStep, JourneyStep, JourneyStep];
-  journeyLabel: string;
   link: LabsCta;
 }
 
 export const LABS_STACK_LAYER: StackLayerContent = {
-  eyebrow: "Your data",
-  headline: "Your data can’t leave your infrastructure. It doesn’t have to.",
-  deck: "Nothing to rewrite, no new framework. It reads your repos and traces through keys you can revoke, and trained models run in your own cloud.",
+  eyebrow: "How it fits",
+  headline: "Plugs into the stack you already run",
+  deck: "Nothing to rewrite, no new framework. It reads your repos and traces through keys you can revoke, and the models it trains run in your own cloud.",
   layer: {
-    label: "Intelligence layer",
+    label: "reads all of it, on top of what you already run",
     title: AI_ENGINEER,
   },
   columns: [
@@ -720,33 +678,6 @@ export const LABS_STACK_LAYER: StackLayerContent = {
       ],
     },
   ],
-  journey: [
-    {
-      tag: "Reads a trace",
-      tone: "neutral",
-      title: "Case 2207 · appeal",
-      detail: "Approved without checking the member’s plan",
-    },
-    {
-      tag: "Finds a gap",
-      tone: "missing",
-      title: "Decides before looking up the plan",
-      detail: "58 sessions like it, no eval checks it",
-    },
-    {
-      tag: "Writes a check",
-      tone: "new",
-      title: "plan_checked_first",
-      detail: "Agrees with your reviewers 57 of 58 times",
-    },
-    {
-      tag: "Tests the fix",
-      tone: "pass",
-      title: "Prompt fix, replayed via LangGraph",
-      detail: "58 of 58 now pass",
-    },
-  ],
-  journeyLabel: "One session's journey",
   link: {
     label: "Security and trust",
     href: "https://security.zenml.io",

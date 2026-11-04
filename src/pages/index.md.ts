@@ -10,10 +10,10 @@ import {
   LABS_DOORS,
   LABS_HERO,
   LABS_HERO_DEMO,
+  LABS_HOME_BENCHMARKS,
   LABS_HOME_CLOSE,
   LABS_HOME_SEO,
   LABS_LOGO_GRID,
-  LABS_ONBOARDING,
   LABS_STACK_LAYER,
 } from "../lib/labs-home";
 
@@ -49,10 +49,11 @@ export function GET(): Response {
       LABS_HERO.install ? `Install Kitaru: \`${LABS_HERO.install.cmd}\`` : "",
     ),
     joinMarkdownSections(
-      `## ${LABS_ONBOARDING.headline}`,
-      LABS_ONBOARDING.deck,
-      ...LABS_ONBOARDING.steps.map((step, i) =>
-        joinMarkdownSections(`### ${i + 1}. ${step.title}`, step.body),
+      `## ${LABS_HOME_BENCHMARKS.headline}`,
+      LABS_HOME_BENCHMARKS.deck,
+      markdownLink(
+        LABS_HOME_BENCHMARKS.link.label,
+        LABS_HOME_BENCHMARKS.link.href,
       ),
     ),
     joinMarkdownSections(
@@ -63,12 +64,6 @@ export function GET(): Response {
         LABS_STACK_LAYER.columns.map(
           (column) =>
             `${column.title}: ${column.marks.map((mark) => mark.name).join(", ")}`,
-        ),
-      ),
-      `### ${LABS_STACK_LAYER.journeyLabel}`,
-      markdownBulletList(
-        LABS_STACK_LAYER.journey.map(
-          (step) => `${step.tag}: ${step.title} (${step.detail})`,
         ),
       ),
       markdownLink(LABS_STACK_LAYER.link.label, LABS_STACK_LAYER.link.href),

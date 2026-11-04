@@ -1550,7 +1550,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      'Homepage "how it fits" diagram from `content: StackLayerContent` (LABS_STACK_LAYER on `/`), drawn as one session\'s thread on a stone (secondary-fill) panel, laid out as the Paper "C3 · How it fits — Thread" board: a track with a dot over each of the four journey cards (numeral, tone tag, title, detail), then a divider and four source columns (each a row of service-mark tiles, names that have no mark as text chips, the AI engineer layer with the product\'s sage orb). Below lg the cards stack and the track becomes a rail down their left edge. Scroll-scrubbed through `initScrollProgress()`: a solid line fills the dashed track and each stop it reaches turns done, the newest active (ringed dot, sage card), the rest future (hollow dot, an empty dashed outline whose content settles in when reached); source column i lights up with stop i, its marks popping in one after another; scrolling back reverses it. The server renders the finished thread (three done, the last active), which JS off and reduced motion show. Install chip and trust-center link below, the underline on the label only.',
+      "The homepage's how-it-fits section from `content: StackLayerContent` (LABS_STACK_LAYER on `/`): eyebrow, headline, deck, then a stone panel with the AI engineer as a white layer across the top and three columns under it (the traces and evals it reads, the agent frameworks), logo marks first and plain names after, three across from md, and a text link to the trust center. House reveal only. No island.",
     stage: false,
     demoProps: {},
   },
@@ -1681,20 +1681,6 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 0,
     notes:
       "Headline block (no eyebrow, headline and deck both optional — absence collapses each independently) over the auto-cycling FeatureTabsSlider island (vertical 40% tab menu + 60% figure panel, collapsing to a stacked column below 1024). The panes are server-rendered here as the island's children: each tab draws its inline SVG highlight figure (highlights/<product>/<slug>.astro) or, without a figure id, its image; the island only toggles the current pane. Below 768px each figure shows its narrow portrait drawing instead of the shrunk wide one. Tab switches get a pane rise/fade plus the figure's play-once staggered reveal (edges draw in), all under 1.2s and off under reduced motion. Mounts FeatureTabsSlider with client:load, defaultIndex min(3, tabs − 1) (the fourth tab where there are that many, else the last — /deployments ships three), autoDurationMs 9000 — the page's one non-ambient island; its auto-cycle is user-pausable interaction (click resets), not a motion moment. Content comes from ZENML_FEATURE_TABS (FeatureTabsContent: headline?, deck?, tabs). The old stats grid is not ported.",
-    stage: false,
-    demoProps: {},
-  },
-  {
-    id: "labs.model-cost",
-    kind: "template",
-    componentPath: "src/components/labs/LabsModelCost.astro",
-    variantAxes: ["month note"],
-    tones: ["default"],
-    responsive: "reflow",
-    island: false,
-    paperPage: 0,
-    notes:
-      'Homepage "beyond evals" moment from `content: ModelCostContent` (LABS_MODEL_COST on `/`): text on the left (eyebrow, headline, deck, numbered notes), a stone chart panel on the right (stacked below lg). Stacked monthly bars split frontier model (orange-500, top, 4px rounded) and fine-tuned model (sage-700, under a 2px gap), recessive $10k gridlines, direct total labels on the first and last bars, numbered dark markers above the months the notes point to, and a legend in the caption. Each bar is focusable and shows its split in a tooltip on hover or focus; a visually hidden table carries the same numbers. Bars render at final height; house reveal only. No island.',
     stage: false,
     demoProps: {},
   },

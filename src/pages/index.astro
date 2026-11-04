@@ -1,10 +1,9 @@
 ---
 /**
  * Homepage — the main landing page for the ZenML Labs site, telling the
- * paid product's story around the problems that come after an agent
- * ships: evals that can't keep up, a model bill that keeps growing, and
- * data that can't leave your infrastructure, with the AI engineer's fix
- * for each. The open-source products sit underneath (the product doors)
+ * paid product's story: the AI engineer at work on one agent (the hero's
+ * feed), the published benchmarks behind it, and how it plugs into the
+ * stack a team already runs. The open-source products sit underneath (the product doors)
  * and have their own pages.
  *
  * Composes the Labs section components into a single page. Each section
@@ -14,10 +13,9 @@
  *
  * Route: / (homepage)
  */
+import LabsBenchmarkBand from "../components/labs/LabsBenchmarkBand.astro";
 import LabsCloseCta from "../components/labs/LabsCloseCta.astro";
 import LabsHero from "../components/labs/LabsHero.astro";
-import LabsModelCost from "../components/labs/LabsModelCost.astro";
-import LabsOnboardingSteps from "../components/labs/LabsOnboardingSteps.astro";
 import LabsProductDemo from "../components/labs/LabsProductDemo.astro";
 import LabsStackLayer from "../components/labs/LabsStackLayer.astro";
 import LogoMarquee from "../components/labs/LogoMarquee.astro";
@@ -29,11 +27,10 @@ import {
   LABS_DOORS,
   LABS_HERO,
   LABS_HERO_DEMO,
+  LABS_HOME_BENCHMARKS,
   LABS_HOME_CLOSE,
   LABS_HOME_SEO,
   LABS_LOGO_GRID,
-  LABS_MODEL_COST,
-  LABS_ONBOARDING,
   LABS_STACK_LAYER,
 } from "../lib/labs-home";
 import { defaultOgImage, ORGANIZATION_NAME } from "../lib/seo";
@@ -58,8 +55,7 @@ const homepageJsonLd = buildHomepageJsonLd({
     <LabsHero content={LABS_HERO}>
       <LabsProductDemo slot="visual" content={LABS_HERO_DEMO} />
     </LabsHero>
-    <LabsOnboardingSteps content={LABS_ONBOARDING} />
-    <LabsModelCost content={LABS_MODEL_COST} />
+    <LabsBenchmarkBand content={LABS_HOME_BENCHMARKS} />
     <LabsStackLayer content={LABS_STACK_LAYER} />
     <LogoMarquee content={LABS_LOGO_GRID} />
     <ProductDoors content={LABS_DOORS} />
