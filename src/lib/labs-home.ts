@@ -299,7 +299,7 @@ export interface ProductDemoContent {
  *  customer result; the benchmark is the measured version. */
 export const LABS_HERO_DEMO: ProductDemoContent = {
   label:
-    "Your AI engineer at work on an insurance claims agent. It imports 18,402 traces from Langfuse, LangSmith and Braintrust where they already live. It reads the agent's code on GitHub and finds the prompt, 9 evals and 38 coverage rules. It finds a gap in the evals: decision_format passed 31 appeals that never reached a decision, so it drafts a decision_made check. It tests a prompt fix as an experiment on 214 past appeals against what runs today: appeals decided go from 86% to 100%, agreement with reviewers from 91.2% to 93.8%, and none of 40 good appeals change. Then it fine-tunes an open model on 41,200 of your traces that passes 9 of 9 evals at $0.10 a decision instead of $0.36.",
+    "Your AI engineer at work on an insurance claims agent. It imports 18,402 traces from Langfuse, LangSmith and Braintrust where they already live. It reads the agent's code on GitHub and finds the prompt and 9 evals. It finds a gap in the evals: decision_format passed 31 appeals that never reached a decision, so it drafts a decision_made check. It tests a prompt fix as an experiment on 214 past appeals against what runs today: appeals decided go from 86% to 100%, agreement with reviewers from 91.2% to 93.8%, and none of 40 good appeals change. Then it fine-tunes an open model on 41,200 of your traces that passes 9 of 9 evals at $0.10 a decision instead of $0.36.",
   agent: "claims-agent",
   items: [
     {
@@ -316,12 +316,7 @@ export const LABS_HERO_DEMO: ProductDemoContent = {
       kind: "repo",
       text: "Read your agent’s code on GitHub.",
       repo: "acme/claims-agent",
-      files: [
-        "agent.py",
-        "prompt.py",
-        "evals/ · 9 evals",
-        "coverage_rules.yaml · 38 rules",
-      ],
+      files: ["agent.py", "prompt.py", "evals/ · 9 evals"],
     },
     {
       kind: "gap",
@@ -349,7 +344,7 @@ export const LABS_HERO_DEMO: ProductDemoContent = {
     {
       kind: "finetune",
       text: "Trained a cheaper model on your traces.",
-      model: "claims-8b · fine-tuned on 41,200 traces",
+      model: "claims-8b, fine-tuned on 41,200 traces",
       rows: [
         { label: "Evals passed", value: "9 of 9" },
         { label: "Cost a decision", value: "$0.36 → $0.10", hot: true },
