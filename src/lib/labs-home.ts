@@ -261,7 +261,7 @@ export const LABS_HERO: LabsProductBandContent = {
     analytics: "Hero-Announcement-Labs-Launch",
   },
   headlineLines: ["AI systems should get", "better after they ship"],
-  deck: "AI in production shouldn’t need babysitting. ZenML Pro gives you a team of AI engineers that constantly watch your agents and ML pipelines, find what’s broken and prove the fix works.",
+  deck: "AI in production shouldn’t need babysitting. ZenML Pro gives you a team of AI engineers that constantly watch your AI systems, find what’s broken and prove the fix works.",
   cta: LABS_HERO_SIGNUP,
   installLabel: "Or start open source",
   install: { cmd: KITARU_INSTALL_CMD, analytics: "Hero-Install-Kitaru" },
