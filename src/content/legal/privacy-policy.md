@@ -10,9 +10,10 @@ seo:
 <p>This Privacy Policy explains how ZenML GmbH, Schellingstrasse 36, 80799 Munich, Germany ("ZenML", "we", "us" or "our") handles personal data as the controller under the EU General Data Protection Regulation (GDPR). ZenML Labs is a brand of ZenML GmbH. It covers our website at zenml.io and related web properties (the "Site"), your account and its use of ZenML Pro, including Kitaru features and Bots (the "Services"), and our marketing, events and sales contacts.</p>
 <p>For privacy questions and to exercise your rights, contact <a href="mailto:security@zenml.io">security@zenml.io</a>.</p>
 <p>Our security certifications, reports, policies and data processing agreement are in our <a href="https://security.zenml.io">Trust Center</a>.</p>
+<p>This policy is a notice about how we handle personal data. It is not a contract and does not change our Terms of Service or any agreement with your organization.</p>
 
 <h2>2. Data You Process in the Services</h2>
-<p>This policy does not cover the data you or your organization put into the Services, such as repositories, agent traces, prompts, attachments, secrets and call content ("Customer Data"). For that data, your organization is the controller and we act as its processor under our <a href="https://security.zenml.io/resources?s=70yvkxmq3vwozebu0jga1i&name=zen-ml-data-processing-agreement.pdf">data processing agreement</a> (DPA). If your organization's traces or files include information about you, please contact your organization first. Section 12 of our <a href="/terms-of-service">Terms of Service</a> lists the service providers that power features such as sandboxes, language models and voice calls, and the data each one handles.</p>
+<p>This policy does not cover the data you or your organization put into the Services, such as repositories, agent traces, prompts, attachments, secrets and call content ("Customer Data"). For that data, your organization is the controller and we act as its processor under our <a href="https://security.zenml.io/resources?s=70yvkxmq3vwozebu0jga1i&name=zen-ml-data-processing-agreement.pdf">data processing agreement</a> (DPA). If your organization's traces or files include information about you, please contact your organization first. Section 12 of our <a href="/terms-of-service">Terms of Service</a> lists the service providers that power features such as sandboxes, language models and voice calls, and the data each one handles. Your organization is responsible for having a legal basis for the data it submits, for informing the people concerned, and for handling their requests. If we receive such a request directly, we may pass it to your organization.</p>
 
 <h2>3. Data We Collect, Why, and Our Legal Basis</h2>
 <ul>
@@ -25,6 +26,7 @@ seo:
   <li><strong>Marketing and newsletters.</strong> Your email and interactions with our messages. We send newsletters with your consent (Art. 6(1)(a) GDPR). We may send existing customers information about similar products where the law allows it (Art. 6(1)(f) GDPR, Section 7(3) of the German Unfair Competition Act). Each message lets you unsubscribe. We may also combine business contact details from public or commercial sources to identify companies who may benefit from our products, based on our legitimate interest in direct marketing (Art. 6(1)(f) GDPR). You can object at any time.</li>
   <li><strong>Security and legal needs.</strong> Logs and records needed to detect abuse, enforce our agreements, and meet legal duties. Legal basis: Art. 6(1)(c) and (f) GDPR.</li>
 </ul>
+<p>If you give us personal data about someone else, such as a colleague, please make sure you are allowed to do so and that they know about it.</p>
 <p>You do not have to give us personal data to browse the Site. Without your account details, we cannot provide the Services. We do not make decisions producing legal or similarly significant effects on you based solely on automated processing.</p>
 
 <h2>4. Cookies, Analytics and Marketing Tools</h2>
@@ -50,22 +52,22 @@ seo:
 <p>Some recipients are outside the European Economic Area, including in the United States. Where a country does not have an EU adequacy decision, or a recipient is not certified under one such as the EU-US Data Privacy Framework, we rely on the European Commission's standard contractual clauses and additional safeguards as needed (Art. 44 to 46 GDPR). You can ask us for a copy of the safeguards at the address in Section 1.</p>
 
 <h2>7. How Long We Keep Data</h2>
-<p>We keep personal data only as long as needed for the purposes above. Account data is kept for the life of the account and deleted afterward, subject to the periods in our Terms of Service and any legal duty to retain it. Commercial and tax records are generally kept for six to ten years under German law. Inquiries and sales contacts are deleted when they are no longer relevant, unless you become a customer. Data we process based on consent is kept until you withdraw consent, unless another legal basis applies. Cookie lifetimes are shown in the cookie settings or the provider's documentation.</p>
+<p>We keep personal data only as long as needed for the purposes above. Account data is kept for the life of the account and deleted afterward, subject to the periods in our Terms of Service and any legal duty to retain it. Commercial and tax records are generally kept for six to ten years under German law. We may also keep data as long as needed to establish, exercise or defend legal claims, and to document that we met our legal duties, such as records of consent or opt-out. Inquiries and sales contacts are deleted when they are no longer relevant, unless you become a customer. Data we process based on consent is kept until you withdraw consent, unless another legal basis applies. Cookie lifetimes are shown in the cookie settings or the provider's documentation.</p>
 
 <h2>8. Your Rights</h2>
 <p>Under the GDPR, and subject to its conditions, you have the right to access your personal data (Art. 15), to correct it (Art. 16), to have it erased (Art. 17), to restrict its processing (Art. 18), and to receive it in a portable format (Art. 20). Where processing is based on consent, you can withdraw consent at any time, with effect for the future (Art. 7(3)).</p>
 <p><strong>Right to object (Art. 21 GDPR).</strong> Where we process your personal data based on legitimate interests, you can object at any time for reasons arising from your particular situation. You can object to direct marketing at any time, without giving a reason, and we will then stop using your data for it.</p>
-<p>To exercise your rights, write to <a href="mailto:security@zenml.io">security@zenml.io</a>.</p>
+<p>To exercise your rights, write to <a href="mailto:security@zenml.io">security@zenml.io</a>. We may ask you to confirm your identity first. We generally respond within one month. These rights have legal limits, for example where we must keep data by law or need it for legal claims. We may refuse or charge a reasonable fee for requests that are manifestly unfounded or excessive (Art. 12(5) GDPR).</p>
 <p>You also have the right to complain to a data protection supervisory authority (Art. 77 GDPR), in particular in the EU Member State where you live or work or where the alleged violation took place. The authority responsible for us is the Bavarian State Office for Data Protection Supervision (Bayerisches Landesamt für Datenschutzaufsicht, BayLDA), Promenade 18, 91522 Ansbach, Germany.</p>
 
 <h2>9. Children</h2>
 <p>The Site and Services are for businesses and are not directed to children under 16. We do not knowingly collect their personal data. If you believe a child has given us personal data, please contact us and we will delete it.</p>
 
 <h2>10. Links to Other Websites</h2>
-<p>The Site links to websites that we do not control, including social media services. Their own privacy policies apply when you use them.</p>
+<p>The Site and Services link to and connect with websites and services that we do not control, including social media services and tools you connect yourself, such as GitHub, Slack or your tracing provider. Their own privacy policies apply, and we are not responsible for how they handle data.</p>
 
 <h2>11. Security</h2>
-<p>We use appropriate technical and organizational safeguards to protect personal data. Details are in our <a href="https://security.zenml.io">Trust Center</a>. No system is completely secure, so please tell us at <a href="mailto:security@zenml.io">security@zenml.io</a> if you suspect a problem.</p>
+<p>We use appropriate technical and organizational safeguards to protect personal data. Details are in our <a href="https://security.zenml.io">Trust Center</a>. No system is completely secure, and we cannot guarantee absolute security. Please tell us at <a href="mailto:security@zenml.io">security@zenml.io</a> if you suspect a problem.</p>
 
 <h2>12. Changes to This Policy</h2>
 <p>We may update this policy when our practices or the law change. We will post the new version here with a new date, and tell you directly if the law requires it or a change materially affects you.</p>
