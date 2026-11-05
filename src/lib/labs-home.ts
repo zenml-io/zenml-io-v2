@@ -261,7 +261,7 @@ export const LABS_HERO: LabsProductBandContent = {
     analytics: "Hero-Announcement-Labs-Launch",
   },
   headlineLines: ["AI that keeps", "getting better"],
-  deck: "Always-on AI engineers that watch your agents, find what’s broken, and prove the fix works.",
+  deck: "An always-on AI engineering team that watches your agents, finds what’s broken, and proves the fix works.",
   cta: LABS_HERO_SIGNUP,
   installLabel: "Or start open source",
   install: { cmd: KITARU_INSTALL_CMD, analytics: "Hero-Install-Kitaru" },

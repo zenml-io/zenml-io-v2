@@ -221,7 +221,7 @@ export const INSURANCE_PAGE: IndustryPageContent = {
   },
   hero: {
     headlineLines: ["Evals your underwriters", "would sign off on"],
-    deck: "Always-on AI engineers that check your agents against your underwriting guidelines, find what’s broken, and prove the fix works.",
+    deck: "An always-on AI engineering team that checks your agents against your underwriting guidelines, finds what’s broken, and proves the fix works.",
     cta: demo("Insurance-Hero-Demo"),
     secondaryCta: {
       label: "See benchmarks",
@@ -358,7 +358,7 @@ export const FINANCIAL_SERVICES_PAGE: IndustryPageContent = {
   },
   hero: {
     headlineLines: ["Evals your risk team", "can stand behind"],
-    deck: "Always-on AI engineers that check your agents against your procedures, find what’s broken, and prove the fix works.",
+    deck: "An always-on AI engineering team that checks your agents against your procedures, finds what’s broken, and proves the fix works.",
     cta: demo("Finance-Hero-Demo"),
   },
   demo: FINANCE_DEMO,
