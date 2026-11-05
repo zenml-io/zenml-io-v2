@@ -1,48 +1,23 @@
 ---
 /**
  * LabsStackLayer (`labs.stack-layer`) — the "how it fits" section on `/` and
- * `/pro`: eyebrow, headline and deck, then two cards. Connect holds a group of
- * named tool pills (traces, evals, agent) above a dark panel saying what the
- * team does with that group. Deploy holds a segmented choice of where the team
- * runs above a diagram: the team's box, your stack's box, and a boundary that
- * grows to wrap both as the choice moves into your own cloud. Then a caption,
- * the compliance badges and the trust link. Clicking a pill or an option swaps its panel. Without JS every
- * panel shows, so nothing depends on the script; reduced motion drops the
- * fade. Copy arrives through `content` (LABS_STACK_LAYER).
+ * `/pro`: eyebrow, headline and deck, then one card. Three columns of named
+ * tools (traces, evals, agent) sit above a single trust strip: where it runs,
+ * the compliance badges and the trust link. Static. Copy arrives through
+ * `content` (LABS_STACK_LAYER).
  */
 import type { StackLayerContent } from "../../lib/labs-home";
 import "../../styles/labs-scroll-reveal.css";
 import { LABS_EYEBROW_CLASS } from "../templates/pageHeaderPresets";
-import LabsOrb from "./LabsOrb.astro";
 import LabsTextLink from "./LabsTextLink.astro";
 
 interface Props {
   content: StackLayerContent;
 }
 const { content } = Astro.props;
-
-const CARD =
-  "flex min-w-0 flex-col rounded-[24px] border border-(--color-border) bg-card p-6 md:p-8";
-const CARD_TITLE =
-  "font-display text-[28px] leading-[34px] text-(--color-cream-900)";
-const CARD_NOTE =
-  "mt-1 font-sans text-[16px] leading-6 text-(--color-cream-700)";
-const ZONE_LABEL =
-  "font-sans text-[13px] leading-5 font-semibold text-(--color-cream-900)";
-const BOX =
-  "flex flex-1 flex-col justify-center rounded-[12px] border border-(--color-border) p-4";
-const ITEM =
-  "inline-flex items-center gap-1.5 rounded-full border border-(--color-border) bg-card px-3 py-1 font-sans text-[14px] leading-5 text-(--color-cream-800)";
-const BOUNDARY = "gap-2 rounded-[14px] border-2 p-3";
-const BOUNDARY_SOLID = "border-(--color-sage-700) bg-(--color-sage-100)";
-const BOUNDARY_SEALED =
-  "border-dashed border-(--color-cream-900) bg-(--color-sage-100)";
-const CHOICE =
-  "inline-flex cursor-pointer items-center gap-2 border font-sans text-[14px] leading-5 transition-colors duration-200 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-sage-700) aria-pressed:border-(--color-sage-700) aria-pressed:bg-(--color-sage-100) aria-pressed:text-(--color-cream-900)";
-const firstMark = (index: number) => content.columns[index].marks[0].name;
 ---
 
-<section class="py-24 md:py-32" aria-labelledby="stack-layer-title" data-stack>
+<section class="py-24 md:py-32" aria-labelledby="stack-layer-title">
   <div class="scroll-reveal-section mx-auto max-w-content px-gutter">
     <p class:list={["reveal-child", LABS_EYEBROW_CLASS]}>{content.eyebrow}</p>
     <h2 id="stack-layer-title" class="reveal-child mt-3 max-w-[860px] font-display text-[32px] leading-[38px] text-balance text-(--color-cream-900) md:text-[48px] md:leading-[54px]">
@@ -52,121 +27,33 @@ const firstMark = (index: number) => content.columns[index].marks[0].name;
       {content.deck}
     </p>
 
-    <div class="reveal-child stagger-2 mt-space-xl grid grid-cols-1 gap-4 lg:grid-cols-2">
-      <div class={CARD}>
-        <h3 class={CARD_TITLE}>{content.connect.title}</h3>
-        <p class={CARD_NOTE}>{content.connect.note}</p>
-
-        <div class="mt-6 flex flex-col gap-5">
-          {content.columns.map((column, columnIndex) => (
-            <div>
-              <h4 class="font-sans text-[13px] leading-5 font-semibold text-(--color-cream-900)">{column.title}</h4>
-              <ul class="mt-2 flex flex-wrap gap-2">
-                {column.marks.map((mark, markIndex) => (
-                  <li>
-                    <button
-                      type="button"
-                      class:list={[CHOICE, "rounded-full border-(--color-border) bg-card py-1.5 pr-3.5 pl-2.5 text-(--color-cream-800) hover:border-(--color-cream-400)", !mark.logo && "pl-3.5"]}
-                      data-tool={columnIndex}
-                      data-name={mark.name}
-                      aria-pressed={columnIndex === 0 && markIndex === 0 ? "true" : "false"}
-                    >
-                      {mark.logo && <img src={mark.logo} alt="" aria-hidden="true" width="20" height="20" class="size-5 object-contain" loading="lazy" />}
-                      {mark.name}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-
-        <div class="mt-6 flex flex-1 flex-col justify-end">
-          {content.columns.map((column, columnIndex) => (
-            <div class:list={["stack-panel rounded-[16px] bg-(--color-cream-900) p-5 text-(--color-primary-foreground)", columnIndex === 0 && "is-active"]} data-tool-panel={columnIndex}>
-              <p class="flex items-center gap-2.5 font-sans text-[14px] leading-5">
-                <LabsOrb size={20} blink={columnIndex + 1} />
-                <span>{content.connect.panelLead} <span class="font-semibold" data-tool-name>{firstMark(columnIndex)}</span></span>
-              </p>
-              <dl class="mt-4 flex flex-col gap-2.5">
-                {column.panel.map((row) => (
-                  <div class="flex flex-wrap justify-between gap-x-4 font-sans text-[14px] leading-5">
-                    <dt class="opacity-60">{row.label}</dt>
-                    <dd>{row.value}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          ))}
-        </div>
+    <div class="reveal-child stagger-2 mt-space-xl rounded-[24px] border border-(--color-border) bg-card p-6 md:p-8">
+      <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+        {content.columns.map((column) => (
+          <div class="min-w-0">
+            <h3 class="font-display text-[22px] leading-[28px] text-(--color-cream-900)">{column.title}</h3>
+            <ul class="mt-4 flex flex-col gap-3">
+              {column.marks.map((mark) => (
+                <li class="flex items-center gap-3 font-sans text-[16px] leading-6 text-(--color-cream-800)">
+                  {mark.logo ? (
+                    <img src={mark.logo} alt="" aria-hidden="true" width="28" height="28" class="size-7 shrink-0 object-contain" loading="lazy" />
+                  ) : (
+                    <span aria-hidden="true" class="size-7 shrink-0"></span>
+                  )}
+                  {mark.name}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
 
-      <div class={CARD}>
-        <h3 class={CARD_TITLE}>{content.deploy.title}</h3>
-        <p class={CARD_NOTE}>{content.deploy.note}</p>
-
-        <ul class="mt-6 grid grid-cols-3 gap-2">
-          {content.deploy.options.map((option, index) => (
-            <li>
-              <button
-                type="button"
-                class:list={[CHOICE, "w-full justify-center rounded-[12px] border-(--color-border) bg-card px-2 py-2.5 text-(--color-cream-800) hover:border-(--color-cream-400)"]}
-                data-option={index}
-                aria-pressed={index === 0 ? "true" : "false"}
-              >
-                {option.name}
-              </button>
-            </li>
-          ))}
-        </ul>
-
-        <div class="mt-4 flex flex-1 flex-col">
-          {content.deploy.options.map((option, index) => (
-            <div class:list={["stack-panel flex flex-1 flex-col", index === 0 && "is-active"]} data-option-panel={index}>
-              <div class="flex flex-1 flex-col rounded-[16px] bg-(--secondary-fill) p-3 md:p-4">
-                <div
-                  class:list={[
-                    "flex flex-1 flex-col",
-                    option.boundary === "all" && BOUNDARY,
-                    option.boundary === "all" && (option.sealed ? BOUNDARY_SEALED : BOUNDARY_SOLID),
-                  ]}
-                >
-                  {option.boundary === "all" && <p class={ZONE_LABEL}>{option.boundaryLabel}</p>}
-                  <div class:list={[BOX, "bg-card"]}>
-                    <p class={ZONE_LABEL}>{content.deploy.team.label}</p>
-                    <ul class="mt-2 flex flex-wrap gap-2">
-                      {content.deploy.team.items.map((item, itemIndex) => (
-                        <li class={ITEM}>
-                          {itemIndex === 0 && <LabsOrb size={18} blink={index + 1} />}
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div class="flex flex-col items-center" aria-hidden="true">
-                    <span class="h-3 w-px bg-(--color-cream-400)"></span>
-                    <span class="rounded-full bg-(--color-cream-900) px-3 py-1 font-sans text-[12px] leading-4 text-(--color-primary-foreground)">{option.link}</span>
-                    <span class="h-3 w-px bg-(--color-cream-400)"></span>
-                  </div>
-                  <div class:list={[BOX, option.boundary === "data" ? `${BOUNDARY_SOLID} border-2` : "bg-card"]}>
-                    {option.boundary === "data" && <p class={ZONE_LABEL}>{option.boundaryLabel}</p>}
-                    <ul class:list={["flex flex-wrap gap-2", option.boundary === "data" && "mt-2"]}>
-                      {content.deploy.yours.map((item) => (
-                        <li class={ITEM}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <p class="mt-3 font-sans text-[15px] leading-[22px] text-(--color-cream-800)">{option.caption}</p>
-            </div>
-          ))}
-        </div>
-
-        <div class="mt-6 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+      <div class="mt-8 flex flex-col gap-4 rounded-[16px] bg-(--secondary-fill) p-5 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
+        <p class="max-w-[640px] font-sans text-[16px] leading-6 text-(--color-cream-900)">{content.trust.line}</p>
+        <div class="flex shrink-0 flex-wrap items-center gap-x-4 gap-y-2">
           <ul class="flex flex-wrap gap-2">
-            {content.deploy.badges.map((badge) => (
-              <li class="rounded-full border border-(--color-border) px-3 py-1 font-sans text-[13px] leading-5 text-(--color-cream-800)">{badge}</li>
+            {content.trust.badges.map((badge) => (
+              <li class="rounded-full border border-(--color-border) bg-card px-3 py-1 font-sans text-[13px] leading-5 text-(--color-cream-800)">{badge}</li>
             ))}
           </ul>
           <LabsTextLink cta={content.link} external />
@@ -175,64 +62,3 @@ const firstMark = (index: number) => content.columns[index].marks[0].name;
     </div>
   </div>
 </section>
-
-<style>
-  [data-armed] .stack-panel:not(.is-active) {
-    display: none;
-  }
-  /* Without JS every panel shows, so give stacked panels some room. */
-  .stack-panel + .stack-panel {
-    margin-top: 0.75rem;
-  }
-  [data-armed] .stack-panel + .stack-panel {
-    margin-top: 0;
-  }
-  @media (prefers-reduced-motion: no-preference) {
-    [data-armed] .stack-panel.is-active {
-      animation: stack-fade var(--duration-base) var(--ease-out-quint);
-    }
-  }
-  @keyframes stack-fade {
-    from {
-      opacity: 0;
-      transform: translateY(4px);
-    }
-  }
-</style>
-
-<script>
-  document.querySelectorAll<HTMLElement>("[data-stack]").forEach((section) => {
-    section.toggleAttribute("data-armed", true);
-
-    const select = (
-      buttons: HTMLElement[],
-      panels: HTMLElement[],
-      button: HTMLElement,
-      index: number,
-    ) => {
-      for (const other of buttons) {
-        other.setAttribute("aria-pressed", String(other === button));
-      }
-      panels.forEach((panel, i) => panel.classList.toggle("is-active", i === index));
-    };
-
-    const tools = [...section.querySelectorAll<HTMLElement>("[data-tool]")];
-    const toolPanels = [...section.querySelectorAll<HTMLElement>("[data-tool-panel]")];
-    for (const tool of tools) {
-      tool.addEventListener("click", () => {
-        const index = Number(tool.dataset.tool);
-        select(tools, toolPanels, tool, index);
-        const name = toolPanels[index].querySelector("[data-tool-name]");
-        if (name) name.textContent = tool.dataset.name ?? "";
-      });
-    }
-
-    const options = [...section.querySelectorAll<HTMLElement>("[data-option]")];
-    const optionPanels = [...section.querySelectorAll<HTMLElement>("[data-option-panel]")];
-    for (const option of options) {
-      option.addEventListener("click", () => {
-        select(options, optionPanels, option, Number(option.dataset.option));
-      });
-    }
-  });
-</script>

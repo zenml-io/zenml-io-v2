@@ -75,7 +75,7 @@ Your evals are probably right most of the time. Say 80%. The rest of your proble
 
 Your AI engineers read all of them, next to the evals you already run. They group the sessions that went wrong the same way and put the few worth your time at the top. You review what matters, not everything.
 
-Take an insurance claims agent. In one test we made, after a switch to a cheaper model, 31 of 214 appeals ended without a decision. The `decision_format` eval passed every one, because each reply was well formed. Nothing checked that the agent actually decided.
+Picture an insurance claims agent. After a switch to a cheaper model, 31 of 214 appeals end without a decision. The `decision_format` eval passes every one, because each reply is well formed. Nothing checks that the agent actually decided.
 
 Your AI engineers flag patterns like this and draft a `decision_made` check to catch the next one.
 

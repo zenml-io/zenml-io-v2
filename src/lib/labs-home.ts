@@ -643,52 +643,19 @@ export interface StackMark {
   logo?: string;
 }
 
-/** A label and value in one of the section's panels. */
-export interface StackPanelRow {
-  label: string;
-  value: string;
-}
-
 export interface StackColumn {
   id: "traces" | "evals" | "agent";
   title: string;
   marks: readonly StackMark[];
-  /** What the team does with this group of tools. */
-  panel: readonly StackPanelRow[];
-}
-
-/** One deployment: how far the "yours" boundary reaches in the diagram. */
-export interface StackDeployOption {
-  name: string;
-  /** "data" wraps only your stack; "all" also wraps the AI engineers. */
-  boundary: "data" | "all";
-  boundaryLabel: string;
-  /** Draws the boundary dashed: no outside connection. */
-  sealed?: true;
-  /** The label on the link between the two boxes. */
-  link: string;
-  caption: string;
 }
 
 export interface StackLayerContent {
   eyebrow: string;
   headline: string;
   deck: string;
-  connect: {
-    title: string;
-    note: string;
-    /** Leads the panel, before the picked tool's name. */
-    panelLead: string;
-  };
   columns: readonly [StackColumn, StackColumn, StackColumn];
-  deploy: {
-    title: string;
-    note: string;
-    /** The box the AI engineers sit in, and what's in it. */
-    team: { label: string; items: readonly string[] };
-    /** What's always yours, in the other box. */
-    yours: readonly string[];
-    options: readonly StackDeployOption[];
+  trust: {
+    line: string;
     badges: readonly string[];
   };
   link: LabsCta;
@@ -698,11 +665,6 @@ export const LABS_STACK_LAYER: StackLayerContent = {
   eyebrow: "How it fits",
   headline: "Plugs into the stack you already run",
   deck: "Nothing to rewrite, no new framework. Your AI engineering team works from the tools you already use, wherever you need it to run.",
-  connect: {
-    title: "Keep your tools",
-    note: "No code changes.",
-    panelLead: "Connected to",
-  },
   columns: [
     {
       id: "traces",
@@ -715,11 +677,6 @@ export const LABS_STACK_LAYER: StackLayerContent = {
         { name: "MLflow", logo: "/images/service-logos/mlflow.svg" },
         { name: "Logfire", logo: "/compare/logfire.svg" },
       ],
-      panel: [
-        { label: "Reads", value: "Every trace, where it already lives" },
-        { label: "Access", value: "Keys you can revoke" },
-        { label: "Your traces", value: "Stay in your tracing tool" },
-      ],
     },
     {
       id: "evals",
@@ -730,11 +687,6 @@ export const LABS_STACK_LAYER: StackLayerContent = {
         { name: "promptfoo", logo: "/images/service-logos/promptfoo.svg" },
         { name: "DeepEval", logo: "/images/service-logos/deepeval.svg" },
         { name: "Scores in your tracer" },
-      ],
-      panel: [
-        { label: "Reads", value: "Your evals and their results" },
-        { label: "Finds", value: "What they miss" },
-        { label: "Adds", value: "The checks you’re missing" },
       ],
     },
     {
@@ -748,44 +700,10 @@ export const LABS_STACK_LAYER: StackLayerContent = {
         { name: "Vercel AI SDK", logo: "/images/service-logos/vercel.svg" },
         { name: "Mastra", logo: "/images/service-logos/mastra.svg" },
       ],
-      panel: [
-        { label: "Reads", value: "Your agent’s code on GitHub" },
-        { label: "Tests", value: "Every fix against what runs today" },
-        { label: "Framework", value: "Keep the one you have" },
-      ],
     },
   ],
-  deploy: {
-    title: "Keep your data",
-    note: "Run it wherever your security team wants it.",
-    team: { label: "ZenML Pro", items: ["AI engineers", "Metadata"] },
-    yours: ["Traces", "Data and artifacts", "Compute"],
-    options: [
-      {
-        name: "Our cloud",
-        boundary: "data",
-        boundaryLabel: "Your stack",
-        link: "Keys you can revoke",
-        caption:
-          "Your traces stay in your tracing tool. We store only metadata.",
-      },
-      {
-        name: "Your cloud",
-        boundary: "all",
-        boundaryLabel: "Your cloud",
-        link: "Your own LLM endpoint",
-        caption:
-          "Everything runs inside your cloud. Nothing leaves your infrastructure.",
-      },
-      {
-        name: "Air-gapped",
-        boundary: "all",
-        boundaryLabel: "Your network",
-        sealed: true,
-        link: "No outside connection",
-        caption: "On-prem and sealed off, with your own LLM endpoint.",
-      },
-    ],
+  trust: {
+    line: "Run it in our cloud, your cloud or air-gapped. Your traces stay where they are, read through keys you can revoke.",
     badges: ["SOC 2 Type II", "ISO 27001"],
   },
   link: {

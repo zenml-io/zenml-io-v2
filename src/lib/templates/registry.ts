@@ -1550,7 +1550,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "The how-it-fits section on `/` and `/pro` from `content: StackLayerContent` (LABS_STACK_LAYER): eyebrow, headline, deck, then two cards. Connect has named tool pills in three groups (traces, evals, agent) above a dark panel on what the team does with that group; Deploy has a segmented choice of where the team runs above a diagram whose boundary grows to wrap the team in your own cloud, a caption, the compliance badges and the trust link. Clicking a pill or option swaps its panel through a small inline script; without JS every panel shows. House reveal only. No island.",
+      "The how-it-fits section on `/` and `/pro` from `content: StackLayerContent` (LABS_STACK_LAYER): eyebrow, headline, deck, then one card with three columns of named tools (traces, evals, agent) above a trust strip: where it runs, the compliance badges and the trust link. Static. House reveal only. No island.",
     stage: false,
     demoProps: {},
   },
