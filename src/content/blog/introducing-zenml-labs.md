@@ -57,7 +57,7 @@ So the job of a tool changes too. It has to give an agent context, limits, and a
 
 Keeping AI good in production means reading traces, deciding which failures matter, writing the check, testing the fix, training a better model and getting it deployed. That's exactly the work agents are now good at.
 
-That's why we shipped our own harness in ZenML Pro last week: **Bots**. They come with ZenML and Kitaru skills built in, tuned for the whole job of running AI in production: writing evals that hold up and fixing what breaks today, and soon fine-tuning models on your traces and deploying them. Agents or classic ML models.
+That's why we built **Bots**, our own harness inside ZenML Pro. It powers our new agent-first experience. Bots come with ZenML and Kitaru skills built in, tuned for the whole job of running AI in production: writing evals that hold up and fixing what breaks today, and soon fine-tuning models on your traces and deploying them. Agents or classic ML models.
 
 Think of each bot as an AI engineer on your team. Spin up one per agent, model or job. Each one does the work and shows you the evidence. You decide what ships. [More on Bots](https://www.zenml.io/blog/introducing-bots-zenml-pro).
 
@@ -65,9 +65,11 @@ Think of each bot as an AI engineer on your team. Spin up one per agent, model o
 
 Our goal is simple. AI in production shouldn't need babysitting. It should keep getting better after it ships.
 
-## It starts with your evals
+## We start with agents
 
-Most teams find out what broke from a customer, not from their evals.
+Agents are where teams hurt most right now, so that's where we start. But an agent isn't separate from ML. Keeping one good takes training data, fine-tuning runs, evaluation pipelines and models you can roll back. That's ML engineering, and it's what ZenML has done for five years. So the same team covers both: when a pipeline run fails, your AI engineers work out why and test the fix.
+
+On an agent, the first job is the evals. Most teams find out what broke from a customer, not from their evals.
 
 Your evals are probably right most of the time. Say 80%. The rest of your problems hides in thousands of traces, and that last 20% is where your customers get hurt. Nobody can read every trace. Reading a random sample misses the pattern.
 
@@ -95,7 +97,7 @@ They read your repos and traces through keys you can revoke. Your data stays whe
 
 ## If you already run ZenML
 
-ZenML isn't the old product. It's half of the plan. Agents end up needing everything ML needed: training data, fine-tuning runs, evaluation pipelines, models you can version and roll back. When your AI engineers fine-tune a model on your traces, that will run as a ZenML pipeline on your infrastructure. So we keep investing in the open-source core, and nothing you depend on goes away.
+ZenML isn't the old product. It's half of the plan. When your AI engineers fine-tune a model on your traces, that will run as a ZenML pipeline on your infrastructure. So we keep investing in the open-source core, and nothing you depend on goes away.
 
 - **Your pipelines keep running.** Same SDK, same stacks, same integrations. No code changes.
 - **The dashboard looks new.** Same runs, models and artifacts, in the new design.
