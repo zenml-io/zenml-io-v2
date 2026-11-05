@@ -64,8 +64,6 @@ export const TRACKING_SCRIPTS: ScriptDefinition[] = [
     src: "https://js-eu1.hs-scripts.com/144099597.js",
     attrs: { async: "", defer: "", id: "hs-script-loader" },
   },
-  // NOTE: RB2B moved out of consent-gated scripts — it loads directly in
-  // BaseLayout/MinimalLayout (hostname-gated only), matching original Webflow behavior.
   {
     id: "reo",
     category: "marketing",
