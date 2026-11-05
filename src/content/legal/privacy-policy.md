@@ -1,82 +1,74 @@
 ---
 title: "Privacy Policy"
+lastUpdated: "05.11.2026"
 seo:
   title: "Privacy Policy — ZenML"
   description: "ZenML GmbH privacy policy. Learn how we collect, use, and protect your personal information."
 ---
 
-<h2>1. Introduction</h2>
-<p>Welcome to the website (the "Website") of ZenML GmbH, ("ZenML" "we," "us," or "our"). This Privacy Policy explains what personal information we collect, how we use and share that information and your choices concerning our information practices when you use our Website ("Site") and ZenML Cloud ("Cloud"). The Site is directed toward our customers and potential customers. It should not be used for personal, family, or household purposes. We treat all personal information covered by this Privacy Policy as pertaining to individuals acting as business representatives, rather than in their personal capacity.</p>
+<h2>1. Who We Are and What This Policy Covers</h2>
+<p>This Privacy Policy explains how ZenML GmbH, Schellingstrasse 36, 80799 Munich, Germany ("ZenML", "we", "us" or "our") handles personal data as the controller under the EU General Data Protection Regulation (GDPR). ZenML Labs is a brand of ZenML GmbH. It covers our website at zenml.io and related web properties (the "Site"), your account and its use of ZenML Pro, including Kitaru features and Bots (the "Services"), and our marketing, events and sales contacts.</p>
+<p>For privacy questions and to exercise your rights, contact <a href="mailto:security@zenml.io">security@zenml.io</a>.</p>
+<p>Our security certifications, reports, policies and data processing agreement are in our <a href="https://security.zenml.io">Trust Center</a>.</p>
 
-<h2>2. Personal Information Collection</h2>
-<p>Personal Information You Provide:</p>
+<h2>2. Data You Process in the Services</h2>
+<p>This policy does not cover the data you or your organization put into the Services, such as repositories, agent traces, prompts, attachments, secrets and call content ("Customer Data"). For that data, your organization is the controller and we act as its processor under our <a href="https://security.zenml.io/resources?s=70yvkxmq3vwozebu0jga1i&name=zen-ml-data-processing-agreement.pdf">data processing agreement</a> (DPA). If your organization's traces or files include information about you, please contact your organization first. Section 12 of our <a href="/terms-of-service">Terms of Service</a> lists the service providers that power features such as sandboxes, language models and voice calls, and the data each one handles.</p>
+
+<h2>3. Data We Collect, Why, and Our Legal Basis</h2>
 <ul>
-  <li><strong>Biographical Information</strong>: We may collect biographical and identification information, such as your name, email address, profile information, and company name through the Site or through our social media platforms.</li>
-  <li><strong>Communication Information</strong>: we may collect any information included in your communications with us.</li>
+  <li><strong>Visiting the Site.</strong> Your browser sends us technical data such as IP address, device and browser type, pages viewed and time of access. We use it to deliver and secure the Site. Legal basis: our legitimate interest in running a secure website (Art. 6(1)(f) GDPR).</li>
+  <li><strong>Forms, demos and contact.</strong> Name, business email, company, your message, and booking details when you contact us, request or book a demo, or download a resource. We use them to respond and to discuss a possible business relationship. Legal basis: steps prior to a contract (Art. 6(1)(b) GDPR) and our legitimate interest in answering business inquiries (Art. 6(1)(f) GDPR).</li>
+  <li><strong>Sales and customer calls.</strong> Notes about our conversations and, if we tell you in advance and you agree, a recording or transcript of a call. Legal basis: legitimate interest in managing business relationships (Art. 6(1)(f) GDPR) and, for recordings, your consent (Art. 6(1)(a) GDPR).</li>
+  <li><strong>Accounts and billing.</strong> Name, email, organization, role, login data, and billing and payment information. We use them to provide the Services, manage your subscription, provide support and send service messages. Legal basis: performance of a contract (Art. 6(1)(b) GDPR) and, where you act for your employer, our legitimate interest in performing our contract with it (Art. 6(1)(f) GDPR). We keep billing records because the law requires it (Art. 6(1)(c) GDPR).</li>
+  <li><strong>Product usage.</strong> How accounts use the Services, such as features used, errors and performance. We use it to operate, secure, support and improve the Services and to understand how customers use them. Legal basis: legitimate interest in running and improving our product (Art. 6(1)(f) GDPR).</li>
+  <li><strong>Voice calls with agents.</strong> If you start a voice call, we process your name, your phone number if you give one, call audio, transcripts and call metadata to provide the call, as described in Section 12 of our Terms of Service. Legal basis: performance of a contract (Art. 6(1)(b) GDPR) and, where applicable, your consent to recording (Art. 6(1)(a) GDPR).</li>
+  <li><strong>Marketing and newsletters.</strong> Your email and interactions with our messages. We send newsletters with your consent (Art. 6(1)(a) GDPR). We may send existing customers information about similar products where the law allows it (Art. 6(1)(f) GDPR, Section 7(3) of the German Unfair Competition Act). Each message lets you unsubscribe. We may also combine business contact details from public or commercial sources to identify companies who may benefit from our products, based on our legitimate interest in direct marketing (Art. 6(1)(f) GDPR). You can object at any time.</li>
+  <li><strong>Security and legal needs.</strong> Logs and records needed to detect abuse, enforce our agreements, and meet legal duties. Legal basis: Art. 6(1)(c) and (f) GDPR.</li>
 </ul>
-<p>Please note that the ZenML Cloud Terms prohibit uploading any confidential information, personal information or personal data (as defined under any privacy law or regulation), or otherwise sensitive information.</p>
-<p>ZenML GmbH has a legitimate interest in understanding how members, customers and potential customers use its website. This assists ZenML GmbH with providing more relevant products and services, with communicating value to our sponsors and corporate members, and with providing appropriate staffing to meet member and customer needs.</p>
-<p>Internet Activity Information: When you visit the Site, we may automatically log the following information:</p>
+<p>You do not have to give us personal data to browse the Site. Without your account details, we cannot provide the Services. We do not make decisions producing legal or similarly significant effects on you based solely on automated processing.</p>
+
+<h2>4. Cookies, Analytics and Marketing Tools</h2>
+<p>We use strictly necessary cookies and local storage to run the Site and remember your choices. These do not need consent (Section 25(2) of the German TDDDG). All other tools that store or read information on your device only run if you consent through our cookie banner (Section 25(1) TDDDG, Art. 6(1)(a) GDPR). You can change or withdraw your consent at any time through the cookie settings on the Site, with effect for the future.</p>
 <ul>
-  <li><strong>Device Information</strong>: the manufacturer and model, operating system, IP address, and unique identifiers of the device, as well as the browser that you use to access the Site. The information that we collect may vary based on your device type and settings.</li>
-  <li><strong>Usage Information</strong>: information about how you use our Sites, such as the types of content that you view or engage with, the features you use, the actions you take, and the time, frequency, and duration of your activities. We may use web analytics services to help collect and analyze Usage Information.</li>
+  <li><strong>Analytics:</strong> Google Analytics, Segment and Hotjar help us understand how visitors use the Site.</li>
+  <li><strong>Marketing:</strong> HubSpot, Reo, Ortto, Apollo and RB2B help us understand which companies are interested in our products, identify business visitors, and run our marketing.</li>
+  <li><strong>Personalization:</strong> GitHub buttons show our star count. HubSpot provides our chat.</li>
 </ul>
-<p>The following technologies may be used to collect Internet Activity Information:</p>
+<p>We also use Plausible, a cookieless analytics tool that does not store information on your device, based on our legitimate interest in understanding overall use of the Site (Art. 6(1)(f) GDPR).</p>
+
+<h2>5. Who Receives Your Data</h2>
+<p>We share personal data only as needed for the purposes above, with:</p>
 <ul>
-  <li>Local storage technologies, like HTML5, that provide cookie-equivalent functionality but can store larger amounts of data, including on your device outside of your browser in connection with specific applications.</li>
-  <li>Web beacons, also known as pixel tags or clear GIFs, which are used to demonstrate that a webpage or email was accessed or opened, or that certain content was viewed or clicked.</li>
+  <li><strong>Service providers</strong> who process it for us under our instructions, in categories such as hosting and cloud infrastructure, customer relationship management, email and newsletters, scheduling, meeting recording, analytics, support and payment processing, and the tools named in Section 4.</li>
+  <li><strong>Professional advisors</strong>, such as lawyers, auditors and accountants.</li>
+  <li><strong>Parties to a business transaction</strong>, such as a merger, acquisition, financing or sale of assets, under appropriate confidentiality terms.</li>
+  <li><strong>Authorities and others</strong> where the law requires it, or where needed to establish, exercise or defend legal claims.</li>
 </ul>
+<p>We do not sell your personal data.</p>
 
-<h2>3. Personal Information Use</h2>
-<p>We do not reveal your personal data to non ZenML GmbH persons or businesses for their independent use unless: (1) you request or authorize it; (2) it's in connection with ZenML GmbH-hosted and ZenML GmbH co-sponsored conferences (3) the information is provided to comply with the law (for example, compelled by law enforcement to comply with a search warrant, subpoena, or court order), enforce an agreement we have with you, or to protect our rights, property or safety, or the rights, property or safety of our employees or others; (4) the information is provided to our agents, vendors or service providers who perform functions on our behalf; (5) to address emergencies or acts of God; or (6) to address disputes, claims, or to persons demonstrating legal authority to act on your behalf. We may also gather aggregated data about our services and website visitors and disclose the results of such aggregated (but not personally identifiable) information to our partners, service providers, advertisers, and/or other third parties for marketing or promotional purposes.</p>
+<h2>6. International Transfers</h2>
+<p>Some recipients are outside the European Economic Area, including in the United States. Where a country does not have an EU adequacy decision, or a recipient is not certified under one such as the EU-US Data Privacy Framework, we rely on the European Commission's standard contractual clauses and additional safeguards as needed (Art. 44 to 46 GDPR). You can ask us for a copy of the safeguards at the address in Section 1.</p>
 
-<h2>4. Personal Information Sharing</h2>
-<p>In certain circumstances we may share your personal information with:</p>
-<ul>
-  <li>Service Providers: including hosting services, cloud services, and other information technology services, email communication software and email newsletter services, advertising and marketing services, customer relationship management and customer support services, and analytics services. Pursuant to our instructions, these parties will access, process, or store personal information in the course of performing their duties to us.</li>
-  <li>Professional Advisors: such as lawyers and accountants where doing so is necessary to facilitate the services they render to us.</li>
-  <li>Business Transaction Recipients: such as counterparties and others assisting with a merger, acquisition, financing, reorganization, bankruptcy, receivership, dissolution, asset sale, or similar transaction, and with a successor or affiliate as part of or following that transaction.</li>
-  <li>Government Authorities: we do not volunteer your personal information to government authorities or regulators, but we may disclose your personal information where required to do so for the Compliance and Protection purposes described above.</li>
-</ul>
-<p>The specifications pertaining to the aforementioned matters are further detailed within our data processing agreement (<a href="https://security.zenml.io/resources?s=70yvkxmq3vwozebu0jga1i&name=zen-ml-data-processing-agreement.pdf">https://security.zenml.io/resources?s=70yvkxmq3vwozebu0jga1i&name=zen-ml-data-processing-agreement.pdf</a>):</p>
-<ul>
-  <li>Sharing information with third parties</li>
-  <li>Data Subject rights</li>
-  <li>Data Transfer</li>
-  <li>Data storage and retention</li>
-</ul>
+<h2>7. How Long We Keep Data</h2>
+<p>We keep personal data only as long as needed for the purposes above. Account data is kept for the life of the account and deleted afterward, subject to the periods in our Terms of Service and any legal duty to retain it. Commercial and tax records are generally kept for six to ten years under German law. Inquiries and sales contacts are deleted when they are no longer relevant, unless you become a customer. Data we process based on consent is kept until you withdraw consent, unless another legal basis applies. Cookie lifetimes are shown in the cookie settings or the provider's documentation.</p>
 
-<h2>5. Children</h2>
-<p>Our Site is not directed to children who are under the age of 16. ZenML does not knowingly collect personal information from children under the age of 16. If you believe that a child under the age of 16 provided personal information to ZenML, then please contact us and we will delete that information.</p>
+<h2>8. Your Rights</h2>
+<p>Under the GDPR, and subject to its conditions, you have the right to access your personal data (Art. 15), to correct it (Art. 16), to have it erased (Art. 17), to restrict its processing (Art. 18), and to receive it in a portable format (Art. 20). Where processing is based on consent, you can withdraw consent at any time, with effect for the future (Art. 7(3)).</p>
+<p><strong>Right to object (Art. 21 GDPR).</strong> Where we process your personal data based on legitimate interests, you can object at any time for reasons arising from your particular situation. You can object to direct marketing at any time, without giving a reason, and we will then stop using your data for it.</p>
+<p>To exercise your rights, write to <a href="mailto:security@zenml.io">security@zenml.io</a>.</p>
+<p>You also have the right to complain to a data protection supervisory authority (Art. 77 GDPR), in particular in the EU Member State where you live or work or where the alleged violation took place. The authority responsible for us is the Bavarian State Office for Data Protection Supervision (Bayerisches Landesamt für Datenschutzaufsicht, BayLDA), Promenade 18, 91522 Ansbach, Germany.</p>
 
-<h2>6. Links to Other Websites</h2>
-<p>The Site may contain links to other websites not operated or controlled by ZenML, including social media services ("Third Party Sites"). The information that you share with Third Party Sites will be governed by the specific privacy policies and terms of service of the Third Party Sites and not by this Privacy Policy. By providing these links we do not imply that we endorse or have reviewed these sites. Please contact the Third Party Sites directly for information on their privacy practices and policies.</p>
+<h2>9. Children</h2>
+<p>The Site and Services are for businesses and are not directed to children under 16. We do not knowingly collect their personal data. If you believe a child has given us personal data, please contact us and we will delete it.</p>
 
-<h2>7. Security</h2>
-<p>We use reasonable technical, organizational, and physical safeguards designed to protect the personal information that we collect. However, no security measures are failsafe and we cannot guarantee the security of your personal information. You use the Site at your own risk.</p>
+<h2>10. Links to Other Websites</h2>
+<p>The Site links to websites that we do not control, including social media services. Their own privacy policies apply when you use them.</p>
 
-<h2>8. Your Choices</h2>
-<p>Update or Correct Personal Information:</p>
-<ul>
-  <li>You can contact us and request any updates or corrections needed to keep your personal information accurate, current, and complete.</li>
-  <li>Opt-Out of Commercial Communications: You may opt out of commercial communications by following the opt out or unsubscribe instructions contained in any commercial communication that we send you. Please note, however, that you may continue to receive certain communications as described in the Communicating with You section after opting out of commercial communications.</li>
-  <li>Limit Online Tracking: Here are some of the ways that you can limit online tracking:
-    <ul>
-      <li>Block Cookies: Most browsers let you remove or reject cookies, including cookies used for interest-based advertising. To do this, follow the instructions in your browser settings. Many browsers accept cookies by default until you change your settings.</li>
-      <li>Use Privacy Plug-Ins or Browsers: You can block our Site from setting cookies used for interest-based ads by using a browser with privacy features, like Brave, or installing browser plugins like Privacy Badger, DuckDuckGo, Ghostery or uBlock Origin, and configuring them to block third party cookies/trackers. You can also install a browser add-on to opt out of Google Analytics.</li>
-      <li>Advertising Industry Opt-Outs: You can also use these opt-out options to limit use of your information for interest-based advertising by participating companies: Digital Advertising Alliance, Network Advertising Initiative.</li>
-      <li>Platform Opt-Outs: The following advertising platforms offer opt-out features that let you opt out of the use of your information for interest-based advertising: Google opt-out, LinkedIn opt-out.</li>
-    </ul>
-  </li>
-</ul>
-<p>Note that the above opt-out mechanisms are specific to the device or browser on which they are exercised, meaning that you will need to opt out on every browser and device that you use.</p>
+<h2>11. Security</h2>
+<p>We use appropriate technical and organizational safeguards to protect personal data. Details are in our <a href="https://security.zenml.io">Trust Center</a>. No system is completely secure, so please tell us at <a href="mailto:security@zenml.io">security@zenml.io</a> if you suspect a problem.</p>
 
-<h2>9. Changes to the Privacy Policy</h2>
-<p>The Site and our business may change from time to time. As a result we may change this Privacy Policy at any time. When we do we will post an updated version on this page, unless another type of notice is required by law. By continuing to use our Site or providing us with personal information after we have posted an updated Privacy Policy, you consent to the revised Privacy Policy and the practices described therein.</p>
+<h2>12. Changes to This Policy</h2>
+<p>We may update this policy when our practices or the law change. We will post the new version here with a new date, and tell you directly if the law requires it or a change materially affects you.</p>
 
-<h2>10. GDPR</h2>
-<p>Supervisory authority: IHK for Munich and Upper Bavaria, Max-Joseph-Straße 2, 80333 Munich.</p>
-<p>Right of appeal to the competent supervisory authority: In the event of violations of the GDPR, those affected have the right to lodge a complaint with a supervisory authority, in particular in the Member State of their habitual residence, their place of work, or the place of the alleged violation. The right to lodge a complaint is without prejudice to any other administrative or judicial remedy. The authority responsible for us is: Bavarian State Office for Data Protection Supervision (BayLDA), Promenade 18, 91522 Ansbach.</p>
-
-<h2>11. Contact Us</h2>
-<p>If you have any questions about our Privacy Policy or information practices, please feel free to contact us at <a href="mailto:security@zenml.io">security@zenml.io</a>.</p>
+<h2>13. Contact Us</h2>
+<p>If you have questions about this policy or how we handle personal data, please contact us at <a href="mailto:security@zenml.io">security@zenml.io</a> or write to ZenML GmbH, Schellingstrasse 36, 80799 Munich, Germany.</p>
