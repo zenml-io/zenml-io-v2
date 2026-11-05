@@ -1,34 +1,32 @@
 ---
 /**
- * LabsOnboardingWidget — one labs.onboarding-steps widget, drawn from the
- * product's own components (the kaizen app in the frontend monorepo):
- *   - connect: SetupCard connection rows, a tile, the repo, and a check
+ * LabsOnboardingWidget — one labs.onboarding-steps thread: the question, the
+ * engineer's answer with when it landed, and a widget with the proof, drawn
+ * from the product's own components (the kaizen app in the frontend monorepo):
  *   - report: the gap rows, each with a bar sized to its session count
- *   - results: what the fix changed, today against with the fix
+ *   - results: a titled table of what changed, before and after
  *   - pipeline: the steps of a ZenML pipeline and its result
  * Rendered twice per step by LabsOnboardingSteps (under the step on small
  * screens and with no JS, and as a panel of the scroll window from lg), so
- * the markup lives here once. Both render the finished state (checks in,
- * bars full). Inside the active scroll-window panel the
+ * the markup lives here once. Both render the finished state (bars full).
+ * Inside the active scroll-window panel the
  * widget plays its arrival on the product's motion (and below lg, when the
- * inline copy scrolls into view): blocks settle 70ms apart, checks pop and draw. Every
+ * inline copy scrolls into view): blocks settle 70ms apart. Every
  * animation fills backwards only, so nothing is held hidden; reduced motion
  * skips them. Decorative: the step text carries the meaning, so callers
  * mark it aria-hidden.
  */
-import type { OnboardingWidget } from "../../lib/labs-home";
+import type { OnboardingStep } from "../../lib/labs-home";
 import { GAP_TAG, GAP_TAG_BASE } from "./gapTags";
 
 interface Props {
-  widget: OnboardingWidget;
+  step: OnboardingStep;
 }
-const { widget } = Astro.props;
+const { title, ask, reply, when, widget } = Astro.props.step;
 
-const ROW = "flex items-center gap-3 px-4 py-3";
 const BAR_TONE = {
   wrong: "bg-destructive",
   missing: "bg-(--color-cream-400)",
-  failed: "bg-(--color-cream-600)",
 } as const;
 const maxCount =
   widget.kind === "report"
@@ -39,27 +37,16 @@ const maxCount =
     : 1;
 ---
 
-{widget.kind === "connect" && (
-  <ul class="ow-arrive flex flex-col divide-y divide-(--color-border)">
-    {widget.repos.map((repo, index) => (
-      <li class={ROW} style={`--i: ${index}`}>
-        <span class="flex size-7 shrink-0 items-center justify-center rounded-[6px] border border-(--color-border) bg-card">
-          <img src="/images/service-logos/github.svg" alt="" aria-hidden="true" width="16" height="16" class="size-4" />
-        </span>
-        <span class="flex min-w-0 flex-1 flex-col gap-0.5">
-          <span class="truncate font-mono text-[13px] leading-[18px] text-(--color-cream-900)">{repo.name}</span>
-          <span class="font-sans text-[13px] leading-[18px] text-(--color-cream-700)">{repo.detail}</span>
-        </span>
-        <span class="shrink-0 rounded-full bg-(--muted) px-2.5 py-0.5 font-sans text-[12px] leading-4 font-medium text-(--muted-foreground)">{repo.role}</span>
-        <svg class="ow-check size-4 shrink-0" viewBox="0 0 16 16" aria-hidden="true">
-          <circle cx="8" cy="8" r="8" fill="var(--color-primary)" />
-          <path d="M4.8 8.3l2.1 2.1 4.3-4.6" pathLength="1" fill="none" stroke="var(--primary-foreground)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-      </li>
-    ))}
-  </ul>
-)}
-
+<div class="ow-arrive flex flex-col gap-4 p-4 md:p-5">
+<p class="ml-auto max-w-[85%] rounded-[12px] rounded-br-[4px] bg-(--secondary-fill) px-3.5 py-2 font-sans text-[14px] leading-5 text-(--color-cream-900)">{ask}</p>
+<div>
+  <p class="flex flex-wrap items-baseline gap-x-2 font-sans text-[12px] leading-4">
+    <span class="font-semibold text-(--color-cream-900)">{title}</span>
+    <span class="text-(--color-cream-600)">{when}</span>
+  </p>
+  <p class="mt-1 font-sans text-[14px] leading-5 text-(--color-cream-800)">{reply}</p>
+</div>
+<div class="overflow-hidden rounded-[8px] border border-(--color-border)">
 {widget.kind === "report" && (
   <ul class="ow-arrive flex flex-col divide-y divide-(--color-border)">
     {widget.items.map((item, index) => (
@@ -120,11 +107,12 @@ const maxCount =
     </div>
   </div>
 )}
+</div>
+</div>
 
 <style>
   /* The product's motion (kaizen kz-motion.css): settle 420ms on
-     cubic-bezier(0.22, 1, 0.36, 1), blocks 70ms apart; the mark pops on its
-     overshoot curve and its check draws 140ms after. Played only inside the
+     cubic-bezier(0.22, 1, 0.36, 1), blocks 70ms apart. Played only inside the
      scroll window's active panel, and replayed each time it becomes active. */
   @media (prefers-reduced-motion: no-preference) {
     :global(:is(.onboarding-panel.is-active, .onboarding-inline.in-view)) .ow-arrive > * {
@@ -134,13 +122,6 @@ const maxCount =
     :global(:is(.onboarding-panel.is-active, .onboarding-inline.in-view)) .ow-arrive > :nth-child(3) { animation-delay: 140ms; }
     :global(:is(.onboarding-panel.is-active, .onboarding-inline.in-view)) .ow-arrive > :nth-child(n + 4) { animation-delay: 210ms; }
 
-    :global(:is(.onboarding-panel.is-active, .onboarding-inline.in-view)) .ow-check {
-      animation: ow-pop 320ms cubic-bezier(0.34, 1.56, 0.64, 1) calc(260ms + var(--i, 0) * 160ms) backwards;
-    }
-    :global(:is(.onboarding-panel.is-active, .onboarding-inline.in-view)) .ow-check path {
-      stroke-dasharray: 1;
-      animation: ow-draw 280ms var(--ease-out-quint) calc(400ms + var(--i, 0) * 160ms) backwards;
-    }
 
     :global(:is(.onboarding-panel.is-active, .onboarding-inline.in-view)) .ow-bar {
       transform-origin: left;
@@ -159,12 +140,6 @@ const maxCount =
 
   @keyframes ow-settle {
     from { opacity: 0; filter: blur(4px); transform: translateY(6px); }
-  }
-  @keyframes ow-pop {
-    from { opacity: 0; transform: scale(0.4); }
-  }
-  @keyframes ow-draw {
-    from { stroke-dashoffset: 1; }
   }
   @keyframes ow-grow {
     from { transform: scaleX(0); }

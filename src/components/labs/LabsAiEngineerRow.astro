@@ -12,12 +12,14 @@ import LabsOrb from "./LabsOrb.astro";
 interface Props {
   /** Passed to LabsOrb, to desync blinks between rows on one page. */
   blink?: number;
+  /** The name beside the orb; the AI engineer's unless a caller sets it. */
+  name?: string;
 }
-const { blink } = Astro.props;
+const { blink, name = AI_ENGINEER } = Astro.props;
 ---
 
 <div class="flex items-center gap-3 border-b border-(--color-border) px-4 py-3">
   <LabsOrb blink={blink} />
-  <span class="min-w-0 flex-1 truncate font-sans text-[14px] leading-5 font-semibold text-(--color-cream-900)">{AI_ENGINEER}</span>
+  <span class="min-w-0 flex-1 truncate font-sans text-[14px] leading-5 font-semibold text-(--color-cream-900)">{name}</span>
   <slot />
 </div>

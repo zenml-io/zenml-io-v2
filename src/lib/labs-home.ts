@@ -387,7 +387,7 @@ export const LABS_HERO_DEMO: ProductDemoContent = {
 /** One gap on the example report: an eval that passes the wrong thing, or
  *  a behavior nothing checks. */
 export interface GapItem {
-  kind: "wrong" | "missing" | "failed";
+  kind: "wrong" | "missing";
   title: string;
   count: string;
 }
@@ -479,14 +479,10 @@ export interface ProblemBandContent {
 }
 
 /* ---------------------------------------------------------------------- */
-/* How it works: connect, investigate, fix and test, train a model        */
+/* How it works: the AI engineering team, one engineer per job            */
 /* ---------------------------------------------------------------------- */
 
 export type OnboardingWidget =
-  | {
-      kind: "connect";
-      repos: readonly OnboardingRepo[];
-    }
   | {
       kind: "report";
       items: readonly GapItem[];
@@ -506,17 +502,16 @@ export type OnboardingWidget =
       result: string;
     };
 
-export interface OnboardingRepo {
-  name: string;
-  role: string;
-  /** What it found there, one short line. */
-  detail: string;
-}
-
 export interface OnboardingStep {
   title: string;
   /** Marks the step as not shipped yet, e.g. "Coming next". */
   tag?: string;
+  /** The question in the window's thread. */
+  ask: string;
+  /** The engineer's answer, above the widget. */
+  reply: string;
+  /** When the answer landed, e.g. "Week 1 · overnight". */
+  when: string;
   body: string;
   widget: OnboardingWidget;
 }
@@ -525,6 +520,8 @@ export interface OnboardingStepsContent {
   eyebrow: string;
   headline: string;
   deck: string;
+  /** The name in the product window's header. */
+  windowLabel: string;
   steps: readonly OnboardingStep[];
 }
 
@@ -533,32 +530,17 @@ export const AI_ENGINEER = "AI engineer";
 
 export const LABS_ONBOARDING: OnboardingStepsContent = {
   eyebrow: "How it works",
-  headline: "How your AI engineers get to work",
-  deck: "Across your agents and your ML pipelines. You connect what you already run, and they do the work.",
+  headline: "Meet your AI engineering team",
+  deck: "One for each job, always on. Ask them anything, or find the answer waiting in the morning. Add your own for anything else.",
+  windowLabel: "Your AI engineering team",
   steps: [
     {
-      title: "Connect your stack",
-      body: "Connect GitHub, your traces and your ZenML pipelines. They find your agents, your evals and your policies.",
-      widget: {
-        kind: "connect",
-        repos: [
-          {
-            name: "claims-agent",
-            role: "Agent",
-            detail: "LangGraph · 6 tools",
-          },
-          { name: "claims-evals", role: "Evals", detail: "9 evals · pytest" },
-          {
-            name: "claims-training",
-            role: "Pipelines",
-            detail: "ZenML · 3 pipelines",
-          },
-        ],
-      },
-    },
-    {
-      title: "Investigate",
-      body: "They read every trace and pipeline run, work out what broke and why, and ask you only what they can’t work out alone.",
+      title: "Eval engineer",
+      ask: "Are our evals actually catching things?",
+      reply:
+        "Not all of them. I read last night’s sessions and found two gaps.",
+      when: "Week 1 · overnight",
+      body: "Reads every agent session next to your evals, finds what they miss, and writes the check.",
       widget: {
         kind: "report",
         // The first row is the gap in the hero's feed, so the number matches.
@@ -573,22 +555,16 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
             title: "Never checks the member’s plan",
             count: "58",
           },
-          {
-            kind: "failed",
-            title: "Nightly retraining breaks on a new schema",
-            count: "3",
-          },
         ],
-        kindLabels: {
-          wrong: "Eval wrong",
-          missing: "No eval",
-          failed: "Run failed",
-        },
+        kindLabels: { wrong: "Eval wrong", missing: "No eval" },
       },
     },
     {
-      title: "Fix and test",
-      body: "They fix it and test the fix against what runs today, on your past sessions and pipeline runs. You see the evidence first.",
+      title: "Reliability engineer",
+      ask: "Did that fix break anything?",
+      reply: "No. Last night’s failed run is fixed too.",
+      when: "Week 2 · 6:12am",
+      body: "Works out why a session or a pipeline run failed, fixes it, and tests the fix against what runs today.",
       widget: {
         kind: "results",
         title: "Tested against what runs today",
@@ -600,9 +576,30 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
       },
     },
     {
-      title: "Train a cheaper model",
+      title: "Cost engineer",
+      ask: "Why is the bill so high?",
+      reply:
+        "Repeated tool calls, mostly. I also tested a cheaper model, and it holds up.",
+      when: "Week 3 · Monday review",
+      body: "Reviews your agents and pipelines every week, finds the waste, and tests a cheaper model before you switch.",
+      widget: {
+        kind: "results",
+        title: "Weekly cost review",
+        rows: [
+          { label: "Repeated tool calls", before: "1 in 6", after: "1 in 40" },
+          { label: "Cost a decision", before: "$0.36", after: "$0.21" },
+          { label: "Agrees with reviewers", before: "91.2%", after: "91.0%" },
+        ],
+      },
+    },
+    {
+      title: "Fine-tuning engineer",
       tag: "Coming next",
-      body: "Next, they fine-tune an open model on your traces as a ZenML pipeline and hold it to the same evals. You get the weights.",
+      ask: "Could we run our own model?",
+      reply:
+        "That’s next. I’ll train one on your traces and hold it to the same evals.",
+      when: "Next",
+      body: "Trains a cheaper open model on your traces as a ZenML pipeline and holds it to the same evals. You get the weights.",
       widget: {
         kind: "pipeline",
         name: "fine_tune_claims",
