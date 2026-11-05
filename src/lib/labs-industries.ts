@@ -221,7 +221,7 @@ export const INSURANCE_PAGE: IndustryPageContent = {
   },
   hero: {
     headlineLines: ["Evals your underwriters", "would sign off on"],
-    deck: "ZenML Pro gives you a team of AI engineers. Connect your traces, your repo and your underwriting guidelines. They find what your evals miss, test the fix, and soon train a cheaper model. You approve what ships.",
+    deck: "ZenML Pro gives you a team of AI engineers that constantly read your traces against your underwriting guidelines, find what your evals miss and get the fix ready.",
     cta: demo("Insurance-Hero-Demo"),
     secondaryCta: {
       label: "See benchmarks",
@@ -358,7 +358,7 @@ export const FINANCIAL_SERVICES_PAGE: IndustryPageContent = {
   },
   hero: {
     headlineLines: ["Evals your risk team", "can stand behind"],
-    deck: "ZenML Pro gives you a team of AI engineers. Connect your traces, your repo and your procedures. They find what your evals miss, test the fix, and soon train a cheaper model. You approve what ships.",
+    deck: "ZenML Pro gives you a team of AI engineers that constantly read your traces against your procedures, find what your evals miss and get the fix ready.",
     cta: demo("Finance-Hero-Demo"),
   },
   demo: FINANCE_DEMO,

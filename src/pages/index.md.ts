@@ -14,6 +14,7 @@ import {
   LABS_HOME_CLOSE,
   LABS_HOME_SEO,
   LABS_LOGO_GRID,
+  LABS_ONBOARDING,
   LABS_STACK_LAYER,
 } from "../lib/labs-home";
 
@@ -47,6 +48,13 @@ export function GET(): Response {
           : [LABS_HERO.cta],
       ),
       LABS_HERO.install ? `Install Kitaru: \`${LABS_HERO.install.cmd}\`` : "",
+    ),
+    joinMarkdownSections(
+      `## ${LABS_ONBOARDING.headline}`,
+      LABS_ONBOARDING.deck,
+      markdownBulletList(
+        LABS_ONBOARDING.steps.map((step) => `${step.title}: ${step.body}`),
+      ),
     ),
     joinMarkdownSections(
       `## ${LABS_HOME_BENCHMARKS.headline}`,

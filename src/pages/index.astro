@@ -2,7 +2,7 @@
 /**
  * Homepage — the main landing page for the ZenML Labs site, telling the
  * paid product's story: the AI engineer at work on one agent (the hero's
- * feed), the published benchmarks behind it, and how it plugs into the
+ * feed), how it works in four steps, the published benchmarks behind it, and how it plugs into the
  * stack a team already runs. The open-source products sit underneath (the product doors)
  * and have their own pages.
  *
@@ -16,6 +16,7 @@
 import LabsBenchmarkBand from "../components/labs/LabsBenchmarkBand.astro";
 import LabsCloseCta from "../components/labs/LabsCloseCta.astro";
 import LabsHero from "../components/labs/LabsHero.astro";
+import LabsOnboardingSteps from "../components/labs/LabsOnboardingSteps.astro";
 import LabsProductDemo from "../components/labs/LabsProductDemo.astro";
 import LabsStackLayer from "../components/labs/LabsStackLayer.astro";
 import LogoMarquee from "../components/labs/LogoMarquee.astro";
@@ -31,6 +32,7 @@ import {
   LABS_HOME_CLOSE,
   LABS_HOME_SEO,
   LABS_LOGO_GRID,
+  LABS_ONBOARDING,
   LABS_STACK_LAYER,
 } from "../lib/labs-home";
 import { defaultOgImage, ORGANIZATION_NAME } from "../lib/seo";
@@ -55,6 +57,7 @@ const homepageJsonLd = buildHomepageJsonLd({
     <LabsHero content={LABS_HERO}>
       <LabsProductDemo slot="visual" content={LABS_HERO_DEMO} />
     </LabsHero>
+    <LabsOnboardingSteps content={LABS_ONBOARDING} />
     <LabsBenchmarkBand content={LABS_HOME_BENCHMARKS} />
     <LabsStackLayer content={LABS_STACK_LAYER} />
     <LogoMarquee content={LABS_LOGO_GRID} />

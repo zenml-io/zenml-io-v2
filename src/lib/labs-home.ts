@@ -261,7 +261,7 @@ export const LABS_HERO: LabsProductBandContent = {
     analytics: "Hero-Announcement-Labs-Launch",
   },
   headlineLines: ["AI systems should get", "better after they ship"],
-  deck: "AI in production shouldn’t need babysitting. ZenML Pro gives you a team of AI engineers. Connect your traces and your repo. They find what broke, test the fix, and soon train a cheaper model. You approve what ships.",
+  deck: "AI in production shouldn’t need babysitting. ZenML Pro gives you a team of AI engineers that constantly read your traces, find what broke and get the fix ready.",
   cta: LABS_HERO_SIGNUP,
   installLabel: "Or start open source",
   install: { cmd: KITARU_INSTALL_CMD, analytics: "Hero-Install-Kitaru" },
@@ -533,13 +533,13 @@ export interface OnboardingStepsContent {
 export const AI_ENGINEER = "AI engineer";
 
 export const LABS_ONBOARDING: OnboardingStepsContent = {
-  eyebrow: "Evals",
-  headline: "Your evals can’t keep up with production",
-  deck: "They get written once and drift as your agent changes. Your AI engineers read your traces next to them, find the gaps and draft the checks. You answer a few questions. It works out the rest.",
+  eyebrow: "How it works",
+  headline: "How your AI engineers get to work",
+  deck: "You connect what you already run. They do the reading, and ask you only what they can’t work out alone.",
   steps: [
     {
-      title: "Connect your repos",
-      body: "Connect GitHub. It reads your repos and finds your agent, your evals and your policies. Then add your tracing keys.",
+      title: "Connect your stack",
+      body: "Connect GitHub and your tracing keys. They find your agent, your evals and your policies.",
       widget: {
         kind: "connect",
         repos: [
@@ -559,7 +559,7 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
     },
     {
       title: "A short interview",
-      body: "It asks about what it found. Talk it through or type.",
+      body: "They ask about what they found. Talk it through or type.",
       widget: {
         kind: "call",
         context: "decision_format has passed every case for 30 days.",
@@ -569,17 +569,16 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
       },
     },
     {
-      title: "Hear what your evals miss",
-      body: "Right after, it shows what your evals missed, in the order you care about.",
+      title: "See what broke",
+      body: "Right after, they show you what your evals missed, in the order you care about.",
       widget: {
         kind: "report",
-        // The hero's prior-authorization gap (212) and the stack layer's
-        // missing plan lookup (58), so the numbers match down the page.
+        // The first row is the gap in the hero's feed, so the number matches.
         items: [
           {
             kind: "wrong",
-            title: "Approves without prior authorization",
-            count: "212",
+            title: "Appeals end without a decision",
+            count: "31",
           },
           {
             kind: "missing",
@@ -591,8 +590,8 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
       },
     },
     {
-      title: "It keeps watching",
-      body: "It reads every new trace and asks you only when a session needs your call.",
+      title: "They test and keep watching",
+      body: "They test every fix on past sessions and read every new trace. They ask you only when a case needs your call.",
       widget: {
         kind: "review",
         session: "Case #3318 · appeal",
