@@ -1,5 +1,5 @@
 ---
-title: "Introducing ZenML Labs: AI that gets better after it ships"
+title: "Introducing ZenML Labs: AI that keeps getting better"
 slug: "introducing-zenml-labs"
 draft: true
 author: "hamza-tahir-adam-probst"
@@ -15,7 +15,7 @@ mainImage:
   url: "https://assets.zenml.io/content/blog/introducing-zenml-labs/18e90558/introducing-zenml-labs-cover.avif"
   alt: "ZenML Labs logo centered on a soft green and peach background"
 seo:
-  title: "Introducing ZenML Labs: AI that gets better after it ships - ZenML Blog"
+  title: "Introducing ZenML Labs: AI that keeps getting better - ZenML Blog"
   description: "ZenML is now ZenML Labs. ZenML Pro gives you a team of AI engineers that find what broke and test the fix, and soon train a cheaper model on your traces. ZenML and Kitaru stay open source."
   canonical: "https://www.zenml.io/blog/introducing-zenml-labs"
   ogImage: "https://assets.zenml.io/content/blog/introducing-zenml-labs/ee637eba/introducing-zenml-labs-cover.jpg"

@@ -32,9 +32,9 @@ export type { CaseStudyCard };
 export type LabsProduct = "zenml" | "kitaru";
 
 export const LABS_HOME_SEO = {
-  title: "ZenML Labs: Find what your evals miss",
+  title: "ZenML Labs: AI that keeps getting better",
   description:
-    "Our AI engineers read your agent's production traces next to the evals you already run, show you what those evals miss, and turn a few of your answers into checks you can trust. Next, they’ll fine-tune a cheaper open model on the same traces. They work on top of open-source Kitaru and ZenML.",
+    "An always-on AI engineering team that watches your agents, finds what’s broken, and proves the fix works. Next, it will fine-tune a cheaper open model on your traces. It works on top of open-source Kitaru and ZenML.",
   surface: "unified" satisfies Surface,
 } as const;
 
