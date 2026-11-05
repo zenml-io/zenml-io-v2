@@ -9,7 +9,7 @@ tags:
   - "agents"
   - "evaluation"
   - "release"
-date: "2026-11-04T00:00:00.000Z"
+date: "2026-11-10T00:00:00.000Z"
 readingTime: "5 mins"
 mainImage:
   url: "https://assets.zenml.io/content/blog/introducing-zenml-labs/18e90558/introducing-zenml-labs-cover.avif"
@@ -57,7 +57,7 @@ So the job of a tool changes too. It has to give an agent context, limits, and a
 
 Keeping AI good in production means reading traces, deciding which failures matter, writing the check, testing the fix, training a better model and getting it deployed. That's exactly the work agents are now good at.
 
-That's why ZenML Pro now has its own harness: **Bots**. They come with ZenML and Kitaru skills built in, tuned for the whole job of running AI in production: writing evals that hold up and fixing what breaks today, and soon fine-tuning models on your traces and deploying them. Agents or classic ML models.
+That's why we shipped our own harness in ZenML Pro last week: **Bots**. They come with ZenML and Kitaru skills built in, tuned for the whole job of running AI in production: writing evals that hold up and fixing what breaks today, and soon fine-tuning models on your traces and deploying them. Agents or classic ML models.
 
 Think of each bot as an AI engineer on your team. Spin up one per agent, model or job. Each one does the work and shows you the evidence. You decide what ships. [More on Bots](https://www.zenml.io/blog/introducing-bots-zenml-pro).
 
@@ -131,7 +131,7 @@ uv add zenml
 curl -fsSL https://zenml.io/install-kitaru | bash
 ```
 
-For ZenML Pro users, we are rolling out the new UI starting today. The classic dashboard stays at [classic.cloud.zenml.io](https://classic.cloud.zenml.io).
+ZenML Pro users have had the new UI since last week, and Kitaru's new UI ships today. The classic dashboard stays at [classic.cloud.zenml.io](https://classic.cloud.zenml.io).
 
 ![The new cloud.zenml.io home: what needs you, automations and this week's activity](https://assets.zenml.io/content/blog/introducing-zenml-labs/0f6bd4f4/cloud-home.avif)
 
