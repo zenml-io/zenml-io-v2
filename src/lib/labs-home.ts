@@ -261,7 +261,7 @@ export const LABS_HERO: LabsProductBandContent = {
     analytics: "Hero-Announcement-Labs-Launch",
   },
   headlineLines: ["AI systems should get", "better after they ship"],
-  deck: "AI in production shouldn’t need babysitting. ZenML Pro gives you a team of AI engineers that constantly read your traces, find what broke and get the fix ready.",
+  deck: "AI in production shouldn’t need babysitting. ZenML Pro gives you a team of AI engineers that constantly watch your agents and ML pipelines, find what’s broken and prove the fix works.",
   cta: LABS_HERO_SIGNUP,
   installLabel: "Or start open source",
   install: { cmd: KITARU_INSTALL_CMD, analytics: "Hero-Install-Kitaru" },
@@ -387,7 +387,7 @@ export const LABS_HERO_DEMO: ProductDemoContent = {
 /** One gap on the example report: an eval that passes the wrong thing, or
  *  a behavior nothing checks. */
 export interface GapItem {
-  kind: "wrong" | "missing";
+  kind: "wrong" | "missing" | "failed";
   title: string;
   count: string;
 }
@@ -479,7 +479,7 @@ export interface ProblemBandContent {
 }
 
 /* ---------------------------------------------------------------------- */
-/* Onboarding: connect, a short call, what it found, a weekly review     */
+/* How it works: connect, investigate, fix and test, train a model        */
 /* ---------------------------------------------------------------------- */
 
 export type OnboardingWidget =
@@ -488,25 +488,22 @@ export type OnboardingWidget =
       repos: readonly OnboardingRepo[];
     }
   | {
-      kind: "call";
-      question: string;
-      options: readonly string[];
-      picked: string;
-      context: string;
-    }
-  | {
       kind: "report";
       items: readonly GapItem[];
       kindLabels: Record<GapItem["kind"], string>;
     }
   | {
-      kind: "review";
-      session: string;
-      excerpt: string;
-      question: string;
-      options: readonly string[];
-      /** The verdict the example lands on, one of `options`. */
-      picked: string;
+      kind: "results";
+      title: string;
+      rows: readonly { label: string; before: string; after: string }[];
+    }
+  | {
+      kind: "pipeline";
+      /** The ZenML pipeline's name. */
+      name: string;
+      steps: readonly string[];
+      resultLabel: string;
+      result: string;
     };
 
 export interface OnboardingRepo {
@@ -518,6 +515,8 @@ export interface OnboardingRepo {
 
 export interface OnboardingStep {
   title: string;
+  /** Marks the step as not shipped yet, e.g. "Coming next". */
+  tag?: string;
   body: string;
   widget: OnboardingWidget;
 }
@@ -535,11 +534,11 @@ export const AI_ENGINEER = "AI engineer";
 export const LABS_ONBOARDING: OnboardingStepsContent = {
   eyebrow: "How it works",
   headline: "How your AI engineers get to work",
-  deck: "You connect what you already run. They do the reading, and ask you only what they can’t work out alone.",
+  deck: "Across your agents and your ML pipelines. You connect what you already run, and they do the work.",
   steps: [
     {
       title: "Connect your stack",
-      body: "Connect GitHub and your tracing keys. They find your agent, your evals and your policies.",
+      body: "Connect GitHub, your traces and your ZenML pipelines. They find your agents, your evals and your policies.",
       widget: {
         kind: "connect",
         repos: [
@@ -548,29 +547,18 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
             role: "Agent",
             detail: "LangGraph · 6 tools",
           },
-          { name: "claims-evals", role: "Evals", detail: "9 judges · pytest" },
+          { name: "claims-evals", role: "Evals", detail: "9 evals · pytest" },
           {
-            name: "coverage-rules",
-            role: "Policies",
-            detail: "Plans, exclusions · 38 rules",
+            name: "claims-training",
+            role: "Pipelines",
+            detail: "ZenML · 3 pipelines",
           },
         ],
       },
     },
     {
-      title: "A short interview",
-      body: "They ask about what they found. Talk it through or type.",
-      widget: {
-        kind: "call",
-        context: "decision_format has passed every case for 30 days.",
-        question: "Do you trust it?",
-        options: ["Yes", "Not really", "Never checked"],
-        picked: "Not really",
-      },
-    },
-    {
-      title: "See what broke",
-      body: "Right after, they show you what your evals missed, in the order you care about.",
+      title: "Investigate",
+      body: "They read every trace and pipeline run, work out what broke and why, and ask you only what they can’t work out alone.",
       widget: {
         kind: "report",
         // The first row is the gap in the hero's feed, so the number matches.
@@ -585,21 +573,46 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
             title: "Never checks the member’s plan",
             count: "58",
           },
+          {
+            kind: "failed",
+            title: "Nightly retraining breaks on a new schema",
+            count: "3",
+          },
         ],
-        kindLabels: { wrong: "Eval wrong", missing: "No eval" },
+        kindLabels: {
+          wrong: "Eval wrong",
+          missing: "No eval",
+          failed: "Run failed",
+        },
       },
     },
     {
-      title: "They test and keep watching",
-      body: "They test every fix on past sessions and read every new trace. They ask you only when a case needs your call.",
+      title: "Fix and test",
+      body: "They fix it and test the fix against what runs today, on your past sessions and pipeline runs. You see the evidence first.",
       widget: {
-        kind: "review",
-        session: "Case #3318 · appeal",
-        excerpt:
-          "Member appeals a denied MRI. Agent: Approved, covered under the plan. Policy: needs prior authorization.",
-        question: "Should this decision have passed?",
-        options: ["Pass", "Fail"],
-        picked: "Fail",
+        kind: "results",
+        title: "Tested against what runs today",
+        rows: [
+          { label: "Appeals decided", before: "86%", after: "100%" },
+          { label: "Good appeals changed", before: "–", after: "0 of 40" },
+          { label: "Nightly retraining", before: "Failed", after: "Passed" },
+        ],
+      },
+    },
+    {
+      title: "Train a cheaper model",
+      tag: "Coming next",
+      body: "Next, they fine-tune an open model on your traces as a ZenML pipeline and hold it to the same evals. You get the weights.",
+      widget: {
+        kind: "pipeline",
+        name: "fine_tune_claims",
+        steps: [
+          "Load 41,200 traces",
+          "Fine-tune an open model",
+          "Run the same 9 evals",
+        ],
+        resultLabel: "Cost a decision",
+        result: "$0.36 → $0.10",
       },
     },
   ],

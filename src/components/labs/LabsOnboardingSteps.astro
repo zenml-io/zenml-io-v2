@@ -3,8 +3,8 @@
  * LabsOnboardingSteps (`labs.onboarding-steps`) — the homepage's "how it
  * works" on a sage-50 band: eyebrow, headline and deck, then four steps.
  * Each step is a numeral, a title and a body with a product widget
- * (LabsOnboardingWidget, picked by `widget.kind`: connect, call, report,
- * review) in a window headed by the AI engineer's author row.
+ * (LabsOnboardingWidget, picked by `widget.kind`: connect, report, results,
+ * pipeline) in a window headed by the AI engineer's author row.
  *
  * From lg with JS the section becomes one scroll moment: the step list sits
  * on the left and one product window on the right, both pinned while the
@@ -52,12 +52,15 @@ const numeral = (index: number) => String(index + 1).padStart(2, "0");
     <div class="onboarding-track reveal-child stagger-2 mt-space-xl">
       <div class="onboarding-pin">
         <ol class="onboarding-steps grid list-none grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {content.steps.map(({ title, body, widget }, index) => (
+          {content.steps.map(({ title, tag, body, widget }, index) => (
             <li class="onboarding-step flex min-w-0 flex-col rounded-[20px] border border-(--color-border) bg-card p-6 md:p-8" data-step={index}>
               <div class="flex gap-4">
                 <span class="onboarding-numeral font-mono text-[13px] leading-[30px] text-(--color-sage-700)">{numeral(index)}</span>
                 <div class="min-w-0 flex-1">
                   <h3 class="font-display text-[24px] leading-[30px] text-(--color-cream-900)">{title}</h3>
+                  {tag && (
+                    <p class="mt-1.5 w-fit rounded-full border border-(--color-border) bg-(--secondary-fill) px-2 py-0.5 font-sans text-[11px] leading-4 text-(--color-cream-700)">{tag}</p>
+                  )}
                   <div class="onboarding-body">
                     <div class="min-h-0">
                       <p class="pt-2 font-sans text-[16px] leading-[25px] text-(--color-cream-700)">{body}</p>

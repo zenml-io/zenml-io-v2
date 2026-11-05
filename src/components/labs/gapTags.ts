@@ -7,6 +7,7 @@
 export const GAP_TAG = {
   wrong: "bg-destructive/10 text-destructive",
   missing: "border border-(--color-cream-400) text-(--color-cream-800)",
+  failed: "bg-(--color-cream-100) text-(--color-cream-800)",
 } as const;
 
 /** The tag's shape and type, so the hero and the onboarding report draw it the same. */

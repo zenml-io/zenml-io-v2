@@ -3,15 +3,15 @@
  * LabsOnboardingWidget — one labs.onboarding-steps widget, drawn from the
  * product's own components (the kaizen app in the frontend monorepo):
  *   - connect: SetupCard connection rows, a tile, the repo, and a check
- *   - call: a DecisionCard ask row, answer buttons with keycaps
  *   - report: the gap rows, each with a bar sized to its session count
- *   - review: a VerdictCard, the session strip and keycapped radio cards
+ *   - results: what the fix changed, today against with the fix
+ *   - pipeline: the steps of a ZenML pipeline and its result
  * Rendered twice per step by LabsOnboardingSteps (under the step on small
  * screens and with no JS, and as a panel of the scroll window from lg), so
  * the markup lives here once. Both render the finished state (checks in,
- * answer picked, bars full). Inside the active scroll-window panel the
+ * bars full). Inside the active scroll-window panel the
  * widget plays its arrival on the product's motion (and below lg, when the
- * inline copy scrolls into view): blocks settle 70ms apart, checks pop and draw, the picked answer presses in. Every
+ * inline copy scrolls into view): blocks settle 70ms apart, checks pop and draw. Every
  * animation fills backwards only, so nothing is held hidden; reduced motion
  * skips them. Decorative: the step text carries the meaning, so callers
  * mark it aria-hidden.
@@ -25,10 +25,10 @@ interface Props {
 const { widget } = Astro.props;
 
 const ROW = "flex items-center gap-3 px-4 py-3";
-const KEYCAP = "font-mono text-[11px] leading-4 text-(--color-cream-600)";
 const BAR_TONE = {
   wrong: "bg-destructive",
   missing: "bg-(--color-cream-400)",
+  failed: "bg-(--color-cream-600)",
 } as const;
 const maxCount =
   widget.kind === "report"
@@ -60,30 +60,6 @@ const maxCount =
   </ul>
 )}
 
-{widget.kind === "call" && (
-  <div class="ow-arrive flex flex-col gap-4 p-5">
-    <p class="font-sans text-[15px] leading-[22px] text-(--color-cream-800)">{widget.context}</p>
-    <div class="flex flex-col gap-3 rounded-[8px] border border-(--color-border) bg-card px-4 py-3.5 shadow-[0_1px_2px_rgba(65,61,55,0.05)]">
-      <p class="font-sans text-[15px] leading-[22px] font-medium text-(--color-cream-900)">{widget.question}</p>
-      <ul class="flex flex-wrap gap-1.5">
-        {widget.options.map((option, index) => (
-          <li
-            class:list={[
-              "flex items-center gap-1.5 rounded-[6px] border px-2.5 py-1.5",
-              option === widget.picked
-                ? "ow-picked border-(--color-cream-600) bg-(--color-cream-100) ring-2 ring-(--color-cream-200)"
-                : "border-(--color-border) bg-card",
-            ]}
-          >
-            <span class:list={["font-sans text-[14px] leading-5", "text-(--color-cream-900)", option === widget.picked && "font-medium"]}>{option}</span>
-            <span class={KEYCAP}>{index + 1}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  </div>
-)}
-
 {widget.kind === "report" && (
   <ul class="ow-arrive flex flex-col divide-y divide-(--color-border)">
     {widget.items.map((item, index) => (
@@ -106,37 +82,42 @@ const maxCount =
   </ul>
 )}
 
-{widget.kind === "review" && (
+{widget.kind === "results" && (
   <div class="ow-arrive flex flex-col">
-    <div class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 border-b border-(--color-border) px-5 pt-4 pb-3">
-      <p class="font-sans text-[15px] leading-[22px] font-semibold text-(--color-cream-900)">{widget.question}</p>
-      <p class="font-mono text-[12px] leading-4 text-(--color-cream-700)">{widget.session}</p>
+    <p class="border-b border-(--color-border) px-5 py-3.5 font-sans text-[15px] leading-[22px] font-semibold text-(--color-cream-900)">{widget.title}</p>
+    <dl class="flex flex-col divide-y divide-(--color-border)">
+      {widget.rows.map((row) => (
+        <div class="flex items-center justify-between gap-4 px-5 py-3">
+          <dt class="min-w-0 font-sans text-[14px] leading-5 text-(--color-cream-800)">{row.label}</dt>
+          <dd class="flex shrink-0 items-center gap-2 font-sans text-[14px] leading-5 tabular-nums">
+            <span class="text-(--color-cream-600)">{row.before}</span>
+            <span aria-hidden="true" class="text-(--color-cream-500)">→</span>
+            <span class="font-semibold text-(--color-sage-700)">{row.after}</span>
+          </dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+)}
+
+{widget.kind === "pipeline" && (
+  <div class="ow-arrive flex flex-col">
+    <div class="flex items-center justify-between gap-3 border-b border-(--color-border) px-5 py-3.5">
+      <p class="min-w-0 truncate font-mono text-[13px] leading-[18px] text-(--color-cream-900)">{widget.name}</p>
+      <span class="shrink-0 rounded-full bg-(--muted) px-2.5 py-0.5 font-sans text-[12px] leading-4 font-medium text-(--muted-foreground)">ZenML pipeline</span>
     </div>
-    <p class="mx-5 mt-4 rounded-[8px] border border-(--color-border) bg-(--secondary) px-3 py-2.5 font-mono text-[13px] leading-5 text-(--color-cream-900)">{widget.excerpt}</p>
-    <ul class="grid grid-cols-2 gap-2 p-5">
-      {widget.options.map((option, index) => (
-        <li
-          class:list={[
-            "flex items-center gap-2.5 rounded-[8px] border px-3 py-2.5",
-            option === widget.picked
-              ? "ow-picked border-destructive bg-destructive/5 ring-2 ring-destructive/15"
-              : "border-(--color-border) bg-card",
-          ]}
-        >
-          <span
-            class:list={[
-              "flex size-6 shrink-0 items-center justify-center rounded-[4px] border font-mono text-[12px] leading-4 font-medium",
-              option === widget.picked
-                ? "ow-key border-destructive bg-destructive text-destructive-foreground"
-                : "border-(--color-border) text-(--color-cream-700)",
-            ]}
-          >
-            {index + 1}
-          </span>
-          <span class:list={["font-sans text-[14px] leading-5", option === widget.picked ? "font-medium text-destructive" : "text-(--color-cream-900)"]}>{option}</span>
+    <ol class="flex flex-col gap-2.5 px-5 py-4">
+      {widget.steps.map((step) => (
+        <li class="flex items-center gap-2.5 font-sans text-[14px] leading-5 text-(--color-cream-800)">
+          <span aria-hidden="true" class="size-4 shrink-0 rounded-full border border-dashed border-(--color-cream-400)"></span>
+          {step}
         </li>
       ))}
-    </ul>
+    </ol>
+    <div class="flex items-baseline justify-between gap-3 border-t border-(--color-border) px-5 py-3.5">
+      <span class="font-sans text-[13px] leading-[18px] text-(--color-cream-700)">{widget.resultLabel}</span>
+      <span class="font-sans text-[18px] leading-6 font-semibold text-(--color-sage-700) tabular-nums">{widget.result}</span>
+    </div>
   </div>
 )}
 
@@ -166,12 +147,6 @@ const maxCount =
       animation: ow-grow var(--duration-slow) var(--ease-out-quint) calc(240ms + var(--i, 0) * 110ms) backwards;
     }
 
-    :global(:is(.onboarding-panel.is-active, .onboarding-inline.in-view)) .ow-picked {
-      animation: ow-press 360ms var(--ease-out-quint) 720ms backwards;
-    }
-    :global(:is(.onboarding-panel.is-active, .onboarding-inline.in-view)) .ow-key {
-      animation: ow-key 240ms var(--ease-out-quint) 720ms backwards;
-    }
   }
 
   /* Below lg the inline widget waits for the house reveal (labs-scroll-reveal)
@@ -193,23 +168,5 @@ const maxCount =
   }
   @keyframes ow-grow {
     from { transform: scaleX(0); }
-  }
-  /* Unpicked look, then a press: the chosen answer settles in. */
-  @keyframes ow-press {
-    0% {
-      border-color: var(--color-border);
-      background-color: var(--card);
-      box-shadow: 0 0 0 0 transparent;
-      transform: scale(1);
-    }
-    45% { transform: scale(0.97); }
-    100% { transform: scale(1); }
-  }
-  @keyframes ow-key {
-    from {
-      border-color: var(--color-border);
-      background-color: transparent;
-      color: var(--color-cream-700);
-    }
   }
 </style>
