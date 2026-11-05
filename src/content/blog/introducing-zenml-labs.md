@@ -67,9 +67,9 @@ Our goal is simple. AI in production shouldn't need babysitting. It should keep 
 
 ## It starts with what broke
 
-Agents are the new production workload. They also run on everything ML always needed: data, evals, models you can roll back. ML engineering didn't go away. It moved inside the agent.
+We start with agents because that's where things break fastest. In [our claims benchmark](https://www.zenml.io/benchmarks/claims-over-time), switching to a cheaper open model left about 1 in 10 appeals ending with no decision. A general coding agent, asked to improve things, never fixed the cause. Our AI engineer did, and finished 3.3 points ahead over 800 real appeals. The test favored us on purpose, and the write-up says how.
 
-That's the work your AI engineers take on, and the first job is the evals. Most teams find out what broke from a customer, not from their evals.
+You only catch that by reading every session. So the first job is the evals. Most teams find out what broke from a customer, not from their evals.
 
 Your evals are probably right most of the time. Say 80%. The rest of your problems hides in thousands of traces, and that last 20% is where your customers get hurt. Nobody can read every trace. Reading a random sample misses the pattern.
 
