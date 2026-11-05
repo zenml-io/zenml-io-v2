@@ -65,7 +65,7 @@ Every bot it runs is an AI engineer on your team. Spin up one per agent, model o
 
 Our goal is simple. AI in production shouldn't need babysitting. It should keep getting better after it ships.
 
-## It starts with what broke
+## First: what your evals miss
 
 We start with agents because that's where things break fastest. In [our claims benchmark](https://www.zenml.io/benchmarks/claims-over-time), switching to a cheaper open model left about 1 in 10 appeals ending with no decision. A general coding agent, asked to improve things, never fixed the cause. Our AI engineer did, and finished 3.3 points ahead over 800 real appeals. The test favored us on purpose, and the write-up says how.
 
