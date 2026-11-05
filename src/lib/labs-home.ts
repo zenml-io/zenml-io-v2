@@ -325,7 +325,7 @@ export const LABS_HERO_DEMO: ProductDemoContent = {
   items: [
     {
       kind: "sources",
-      text: "Imports your traces from where they already live.",
+      text: "Imports your agent traces from where they already live.",
       sources: [
         { name: "Langfuse", logo: "/compare/langfuse.svg" },
         { name: "LangSmith", logo: "/compare/langsmith.svg" },
