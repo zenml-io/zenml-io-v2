@@ -22,7 +22,7 @@ Your team knows there are failed runs to investigate, expensive workflows to rev
 
 Bots in ZenML Pro give your team an AI workforce for those tasks. Assign a bot an investigation or schedule a recurring review, and give it a concrete deliverable: a pull request, a validated fix, a cost investigation, or an experiment comparing an agent change against a baseline.
 
-Bots work across your repositories and the execution context in ZenML and Kitaru. That connects the work of maintaining ML pipelines and AI workflows with the work of improving the agents running in them.
+Bots work across your repositories and the execution context in ZenML and Kitaru. That connects the work of maintaining ML pipelines and AI workflows with the work of improving the agents running in them. Below, we look at the results bots can produce, a claims-agent benchmark, and how to put recurring investigations on a schedule.
 
 ## Delegate work with a result you can review
 
@@ -51,6 +51,14 @@ For example:
 The deliverable is an experiment your team can inspect, with the sessions and evaluator results behind the recommendation. A candidate model or prompt change can be assessed against recorded behavior before you decide to roll it out.
 
 This is particularly useful for model choice. You can ask a bot to help test whether a cheaper model handles a particular workload well enough, with a bounded cohort and explicit quality criteria. The comparison makes the trade-off visible; savings depend on what the experiment establishes.
+
+## What this looks like: improving a claims agent over time
+
+We put this approach to the test in [Improving a claims agent over time](https://www.zenml.io/benchmarks/claims-over-time). Our AI engineer and Codex each worked to improve a claims-review agent across eight batches of 100 real California health appeals. The test case files were generated from public appeal decisions. Partway through, the agent switched to a cheaper open model.
+
+Over the 800 appeals, the AI-engineer-improved agent scored 3.3 percentage points higher in balanced accuracy than the Codex-improved agent. After the model switch, our AI engineer used recorded session endings to find that some appeals were left undecided because the agent ran out of tokens or model requests. It raised the limits and tested the change.
+
+[See the batch-by-batch graph and full benchmark](https://www.zenml.io/benchmarks/claims-over-time). The comparison reflects different setups: our AI engineer used Kitaru and a specific instruction to count session endings, while Codex received a general improvement request. An earlier run without that instruction found no clear difference. The result illustrates the value of an investigation workflow and its context; it is one benchmark, not a general ranking of coding agents.
 
 ## Put recurring work on a schedule
 
