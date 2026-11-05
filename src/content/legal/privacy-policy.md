@@ -31,7 +31,7 @@ seo:
 <p>We use strictly necessary cookies and local storage to run the Site and remember your choices. These do not need consent (Section 25(2) of the German TDDDG). All other tools that store or read information on your device only run if you consent through our cookie banner (Section 25(1) TDDDG, Art. 6(1)(a) GDPR). You can change or withdraw your consent at any time through the cookie settings on the Site, with effect for the future.</p>
 <ul>
   <li><strong>Analytics:</strong> Google Analytics, Segment and Hotjar help us understand how visitors use the Site.</li>
-  <li><strong>Marketing:</strong> HubSpot, Reo, Ortto, Apollo and RB2B help us understand which companies are interested in our products, identify business visitors, and run our marketing.</li>
+  <li><strong>Marketing:</strong> HubSpot, Reo, Ortto and Apollo help us understand which companies are interested in our products, identify business visitors, and run our marketing.</li>
   <li><strong>Personalization:</strong> GitHub buttons show our star count. HubSpot provides our chat.</li>
 </ul>
 <p>We also use Plausible, a cookieless analytics tool that does not store information on your device, based on our legitimate interest in understanding overall use of the Site (Art. 6(1)(f) GDPR).</p>
