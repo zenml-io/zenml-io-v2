@@ -4,8 +4,9 @@
  * `/pro`: eyebrow, headline and deck, then two cards. Connect holds a group of
  * named tool pills (traces, evals, agent) above a dark panel saying what the
  * team does with that group. Deploy holds a segmented choice of where the team
- * runs above a panel of what that means, then the compliance badges and the
- * trust link. Clicking a pill or an option swaps its panel. Without JS every
+ * runs above a diagram: the team's box, your stack's box, and a boundary that
+ * grows to wrap both as the choice moves into your own cloud. Then a caption,
+ * the compliance badges and the trust link. Clicking a pill or an option swaps its panel. Without JS every
  * panel shows, so nothing depends on the script; reduced motion drops the
  * fade. Copy arrives through `content` (LABS_STACK_LAYER).
  */
@@ -22,10 +23,20 @@ const { content } = Astro.props;
 
 const CARD =
   "flex min-w-0 flex-col rounded-[24px] border border-(--color-border) bg-card p-6 md:p-8";
-const CARD_STEP =
-  "flex items-baseline justify-between gap-3 font-sans text-[13px] leading-5 text-(--color-cream-600)";
 const CARD_TITLE =
-  "mt-3 font-display text-[28px] leading-[34px] text-(--color-cream-900)";
+  "font-display text-[28px] leading-[34px] text-(--color-cream-900)";
+const CARD_NOTE =
+  "mt-1 font-sans text-[16px] leading-6 text-(--color-cream-700)";
+const ZONE_LABEL =
+  "font-sans text-[13px] leading-5 font-semibold text-(--color-cream-900)";
+const BOX =
+  "flex flex-1 flex-col justify-center rounded-[12px] border border-(--color-border) p-4";
+const ITEM =
+  "inline-flex items-center gap-1.5 rounded-full border border-(--color-border) bg-card px-3 py-1 font-sans text-[14px] leading-5 text-(--color-cream-800)";
+const BOUNDARY = "gap-2 rounded-[14px] border-2 p-3";
+const BOUNDARY_SOLID = "border-(--color-sage-700) bg-(--color-sage-100)";
+const BOUNDARY_SEALED =
+  "border-dashed border-(--color-cream-900) bg-(--color-sage-100)";
 const CHOICE =
   "inline-flex cursor-pointer items-center gap-2 border font-sans text-[14px] leading-5 transition-colors duration-200 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-sage-700) aria-pressed:border-(--color-sage-700) aria-pressed:bg-(--color-sage-100) aria-pressed:text-(--color-cream-900)";
 const firstMark = (index: number) => content.columns[index].marks[0].name;
@@ -43,8 +54,8 @@ const firstMark = (index: number) => content.columns[index].marks[0].name;
 
     <div class="reveal-child stagger-2 mt-space-xl grid grid-cols-1 gap-4 lg:grid-cols-2">
       <div class={CARD}>
-        <p class={CARD_STEP}><span>{content.connect.step}</span><span>{content.connect.note}</span></p>
         <h3 class={CARD_TITLE}>{content.connect.title}</h3>
+        <p class={CARD_NOTE}>{content.connect.note}</p>
 
         <div class="mt-6 flex flex-col gap-5">
           {content.columns.map((column, columnIndex) => (
@@ -91,15 +102,15 @@ const firstMark = (index: number) => content.columns[index].marks[0].name;
       </div>
 
       <div class={CARD}>
-        <p class={CARD_STEP}><span>{content.deploy.step}</span><span>{content.deploy.note}</span></p>
         <h3 class={CARD_TITLE}>{content.deploy.title}</h3>
+        <p class={CARD_NOTE}>{content.deploy.note}</p>
 
-        <ul class="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-3">
+        <ul class="mt-6 grid grid-cols-3 gap-2">
           {content.deploy.options.map((option, index) => (
             <li>
               <button
                 type="button"
-                class:list={[CHOICE, "w-full justify-center rounded-[12px] border-(--color-border) bg-card px-3 py-2.5 text-(--color-cream-800) hover:border-(--color-cream-400)"]}
+                class:list={[CHOICE, "w-full justify-center rounded-[12px] border-(--color-border) bg-card px-2 py-2.5 text-(--color-cream-800) hover:border-(--color-cream-400)"]}
                 data-option={index}
                 aria-pressed={index === 0 ? "true" : "false"}
               >
@@ -111,14 +122,44 @@ const firstMark = (index: number) => content.columns[index].marks[0].name;
 
         <div class="mt-4 flex flex-1 flex-col">
           {content.deploy.options.map((option, index) => (
-            <dl class:list={["stack-panel flex flex-1 flex-col justify-around divide-y divide-(--color-border) rounded-[16px] bg-(--secondary-fill) px-5 py-2", index === 0 && "is-active"]} data-option-panel={index}>
-              {option.rows.map((row) => (
-                <div class="py-3.5">
-                  <dt class="font-sans text-[13px] leading-5 text-(--color-cream-600)">{row.label}</dt>
-                  <dd class="mt-0.5 font-sans text-[16px] leading-6 text-(--color-cream-900)">{row.value}</dd>
+            <div class:list={["stack-panel flex flex-1 flex-col", index === 0 && "is-active"]} data-option-panel={index}>
+              <div class="flex flex-1 flex-col rounded-[16px] bg-(--secondary-fill) p-3 md:p-4">
+                <div
+                  class:list={[
+                    "flex flex-1 flex-col",
+                    option.boundary === "all" && BOUNDARY,
+                    option.boundary === "all" && (option.sealed ? BOUNDARY_SEALED : BOUNDARY_SOLID),
+                  ]}
+                >
+                  {option.boundary === "all" && <p class={ZONE_LABEL}>{option.boundaryLabel}</p>}
+                  <div class:list={[BOX, "bg-card"]}>
+                    <p class={ZONE_LABEL}>{content.deploy.team.label}</p>
+                    <ul class="mt-2 flex flex-wrap gap-2">
+                      {content.deploy.team.items.map((item, itemIndex) => (
+                        <li class={ITEM}>
+                          {itemIndex === 0 && <LabsOrb size={18} blink={index + 1} />}
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div class="flex flex-col items-center" aria-hidden="true">
+                    <span class="h-3 w-px bg-(--color-cream-400)"></span>
+                    <span class="rounded-full bg-(--color-cream-900) px-3 py-1 font-sans text-[12px] leading-4 text-(--color-primary-foreground)">{option.link}</span>
+                    <span class="h-3 w-px bg-(--color-cream-400)"></span>
+                  </div>
+                  <div class:list={[BOX, option.boundary === "data" ? `${BOUNDARY_SOLID} border-2` : "bg-card"]}>
+                    {option.boundary === "data" && <p class={ZONE_LABEL}>{option.boundaryLabel}</p>}
+                    <ul class:list={["flex flex-wrap gap-2", option.boundary === "data" && "mt-2"]}>
+                      {content.deploy.yours.map((item) => (
+                        <li class={ITEM}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
-              ))}
-            </dl>
+              </div>
+              <p class="mt-3 font-sans text-[15px] leading-[22px] text-(--color-cream-800)">{option.caption}</p>
+            </div>
           ))}
         </div>
 

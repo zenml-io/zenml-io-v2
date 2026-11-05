@@ -77,8 +77,7 @@ export function GET(): Response {
       LABS_STACK_LAYER.deploy.title,
       markdownBulletList(
         LABS_STACK_LAYER.deploy.options.map(
-          (option) =>
-            `${option.name}: ${option.rows.map((row) => `${row.label}: ${row.value}`).join("; ")}`,
+          (option) => `${option.name}: ${option.caption}`,
         ),
       ),
       LABS_STACK_LAYER.deploy.badges.join(", "),

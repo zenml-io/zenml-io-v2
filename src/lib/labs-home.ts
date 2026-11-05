@@ -657,9 +657,17 @@ export interface StackColumn {
   panel: readonly StackPanelRow[];
 }
 
+/** One deployment: how far the "yours" boundary reaches in the diagram. */
 export interface StackDeployOption {
   name: string;
-  rows: readonly StackPanelRow[];
+  /** "data" wraps only your stack; "all" also wraps the AI engineers. */
+  boundary: "data" | "all";
+  boundaryLabel: string;
+  /** Draws the boundary dashed: no outside connection. */
+  sealed?: true;
+  /** The label on the link between the two boxes. */
+  link: string;
+  caption: string;
 }
 
 export interface StackLayerContent {
@@ -667,17 +675,19 @@ export interface StackLayerContent {
   headline: string;
   deck: string;
   connect: {
-    step: string;
-    note: string;
     title: string;
+    note: string;
     /** Leads the panel, before the picked tool's name. */
     panelLead: string;
   };
   columns: readonly [StackColumn, StackColumn, StackColumn];
   deploy: {
-    step: string;
-    note: string;
     title: string;
+    note: string;
+    /** The box the AI engineers sit in, and what's in it. */
+    team: { label: string; items: readonly string[] };
+    /** What's always yours, in the other box. */
+    yours: readonly string[];
     options: readonly StackDeployOption[];
     badges: readonly string[];
   };
@@ -689,9 +699,8 @@ export const LABS_STACK_LAYER: StackLayerContent = {
   headline: "Plugs into the stack you already run",
   deck: "Nothing to rewrite, no new framework. Your AI engineering team works from the tools you already use, wherever you need it to run.",
   connect: {
-    step: "01 · Connect",
-    note: "No code changes",
     title: "Keep your tools",
+    note: "No code changes.",
     panelLead: "Connected to",
   },
   columns: [
@@ -747,37 +756,34 @@ export const LABS_STACK_LAYER: StackLayerContent = {
     },
   ],
   deploy: {
-    step: "02 · Deploy",
-    note: "Your call",
     title: "Keep your data",
+    note: "Run it wherever your security team wants it.",
+    team: { label: "ZenML Pro", items: ["AI engineers", "Metadata"] },
+    yours: ["Traces", "Data and artifacts", "Compute"],
     options: [
       {
         name: "Our cloud",
-        rows: [
-          { label: "Your AI engineers run", value: "In our cloud" },
-          {
-            label: "Your traces",
-            value:
-              "Stay in your tracing tool, read through keys you can revoke",
-          },
-          { label: "We store", value: "Only metadata" },
-        ],
+        boundary: "data",
+        boundaryLabel: "Your stack",
+        link: "Keys you can revoke",
+        caption:
+          "Your traces stay in your tracing tool. We store only metadata.",
       },
       {
         name: "Your cloud",
-        rows: [
-          { label: "Your AI engineers run", value: "Inside your own cloud" },
-          { label: "Your traces", value: "Nothing leaves your infrastructure" },
-          { label: "Models", value: "Your own LLM endpoint" },
-        ],
+        boundary: "all",
+        boundaryLabel: "Your cloud",
+        link: "Your own LLM endpoint",
+        caption:
+          "Everything runs inside your cloud. Nothing leaves your infrastructure.",
       },
       {
         name: "Air-gapped",
-        rows: [
-          { label: "Your AI engineers run", value: "On-prem, air-gapped" },
-          { label: "Your traces", value: "Nothing leaves your infrastructure" },
-          { label: "Models", value: "Your own LLM endpoint" },
-        ],
+        boundary: "all",
+        boundaryLabel: "Your network",
+        sealed: true,
+        link: "No outside connection",
+        caption: "On-prem and sealed off, with your own LLM endpoint.",
       },
     ],
     badges: ["SOC 2 Type II", "ISO 27001"],
