@@ -45,11 +45,17 @@ So we built Kitaru. It reads your agent's sessions next to its evals and shows y
 
 ## Dev tools are becoming agent harnesses
 
-Building Kitaru taught us something.
+Dev tools were built for people. A dashboard to click through. A CLI to type into.
 
-Keeping an agent good means reading traces, deciding which failures matter, writing the check and testing the fix. The kind of work agents have become good at.
+That's changing. The first user of a dev tool is now often an agent. Claude Code reads the repo. Codex opens the PR. Engineers review more and type less.
 
-So the next tool we're building is an agent itself: an AI engineer, built on ZenML and Kitaru. It does the work and shows you the evidence. You decide what ships.
+So the job of a tool changes too. It has to give an agent context, limits, and a way to prove its work. And it has to put a person where it matters.
+
+Building Kitaru showed us this up close. Keeping an agent good means reading traces, deciding which failures matter, writing the check and testing the fix. That's exactly the work agents are now good at.
+
+So we built our own harness into ZenML Pro: **AI bots**. They come with ZenML and Kitaru skills built in, tuned for the work we know best: writing evals that hold up, fine-tuning models and deploying them. Agents or classic ML models.
+
+The main one is your AI engineer. You can create more for your own jobs. Each one does the work and shows you the evidence. You decide what ships. [More on AI bots](https://www.zenml.io/blog/introducing-ai-bots-to-pro).
 
 ![Your AI engineer at work on a claims agent: imports traces, reads the code, finds a gap in the evals, tests a fix against what runs today, and trains a cheaper model](https://assets.zenml.io/content/blog/introducing-zenml-labs/81520729/claims-feed.avif)
 
@@ -107,7 +113,7 @@ When we started, we had one product. Today we have three.
 
 - [**ZenML**](https://github.com/zenml-io/zenml): AI orchestration, on the infra you choose.
 - [**Kitaru**](https://github.com/zenml-io/kitaru): find what your agent's evals miss, from production sessions.
-- [**ZenML Pro**](https://www.zenml.io/pro): the managed platform across both, with the AI engineer on top.
+- [**ZenML Pro**](https://www.zenml.io/pro): the managed platform across both, with AI bots on top.
 
 ZenML and Kitaru stay open source under Apache 2.0, free to run on your own machines.
 
