@@ -34,7 +34,7 @@ export type LabsProduct = "zenml" | "kitaru";
 export const LABS_HOME_SEO = {
   title: "ZenML Labs: Find what your evals miss",
   description:
-    "Our AI engineers read your agent's production traces next to the evals you already run, show you what those evals miss, and turn a few of your answers into checks you can trust. It can fine-tune a cheaper open model on the same traces. It works on top of open-source Kitaru and ZenML.",
+    "Our AI engineers read your agent's production traces next to the evals you already run, show you what those evals miss, and turn a few of your answers into checks you can trust. Next, they’ll fine-tune a cheaper open model on the same traces. They work on top of open-source Kitaru and ZenML.",
   surface: "unified" satisfies Surface,
 } as const;
 
@@ -261,7 +261,7 @@ export const LABS_HERO: LabsProductBandContent = {
     analytics: "Hero-Announcement-Labs-Launch",
   },
   headlineLines: ["AI systems should get", "better after they ship"],
-  deck: "AI in production shouldn’t need babysitting. ZenML Pro gives you a team of AI engineers. Connect your traces and your repo. They find what broke, test the fix, and train a cheaper model. You approve what ships.",
+  deck: "AI in production shouldn’t need babysitting. ZenML Pro gives you a team of AI engineers. Connect your traces and your repo. They find what broke, test the fix, and soon train a cheaper model. You approve what ships.",
   cta: LABS_HERO_SIGNUP,
   installLabel: "Or start open source",
   install: { cmd: KITARU_INSTALL_CMD, analytics: "Hero-Install-Kitaru" },
@@ -299,6 +299,8 @@ export type DemoFeedItem =
   | {
       kind: "finetune";
       text: string;
+      /** Marks the step as not shipped yet, e.g. "Coming next". */
+      tag: string;
       model: string;
       rows: readonly { label: string; value: string; hot?: true }[];
     };
@@ -318,7 +320,7 @@ export interface ProductDemoContent {
  *  customer result; the benchmark is the measured version. */
 export const LABS_HERO_DEMO: ProductDemoContent = {
   label:
-    "An AI engineer at work on an insurance claims agent. It imports 18,402 traces from Langfuse, LangSmith and Braintrust where they already live. It reads the agent's code on GitHub and finds the prompt and 9 evals. It finds a gap in the evals: decision_format passed 31 appeals that never reached a decision, so it drafts a decision_made check. It tests a prompt fix as an experiment on 214 past appeals against what runs today: appeals decided go from 86% to 100%, agreement with reviewers from 91.2% to 93.8%, and none of 40 good appeals change. Then it fine-tunes an open model on 41,200 of your traces that passes 9 of 9 evals at $0.10 a decision instead of $0.36.",
+    "An AI engineer at work on an insurance claims agent. It imports 18,402 traces from Langfuse, LangSmith and Braintrust where they already live. It reads the agent's code on GitHub and finds the prompt and 9 evals. It finds a gap in the evals: decision_format passed 31 appeals that never reached a decision, so it drafts a decision_made check. It tests a prompt fix as an experiment on 214 past appeals against what runs today: appeals decided go from 86% to 100%, agreement with reviewers from 91.2% to 93.8%, and none of 40 good appeals change. Coming next: it fine-tunes an open model on 41,200 of your traces that passes 9 of 9 evals at $0.10 a decision instead of $0.36.",
   agent: "claims-agent",
   items: [
     {
@@ -363,6 +365,7 @@ export const LABS_HERO_DEMO: ProductDemoContent = {
     {
       kind: "finetune",
       text: "Trains a cheaper model on your traces.",
+      tag: "Coming next",
       model: "claims-8b, fine-tuned on 41,200 traces",
       rows: [
         { label: "Evals passed", value: "9 of 9" },

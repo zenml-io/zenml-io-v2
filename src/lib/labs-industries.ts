@@ -150,7 +150,7 @@ function faq(extra: FaqData["items"]): FaqData {
 
 const INSURANCE_DEMO: ProductDemoContent = {
   label:
-    "An AI engineer at work on an insurance underwriting agent. It imports 1,482 quotes' traces from Langfuse, LangSmith and Braintrust where they already live. It reads the agent's code on GitHub and finds the prompt, 12 evals and the underwriting manual. It finds a gap in the evals: quote_completeness passed 41 quotes that left out the flood exclusion for properties in a flood zone, so it drafts a flood_exclusion check. It tests a fix as an experiment on 1,482 past quotes against what runs today: required exclusions go from 97% to 100%, agreement with underwriters from 88.4% to 93.1%, and none of 60 good quotes change. Then it fine-tunes an open model on 36,900 of your quotes that passes 12 of 12 evals at $0.11 a quote instead of $0.41.",
+    "An AI engineer at work on an insurance underwriting agent. It imports 1,482 quotes' traces from Langfuse, LangSmith and Braintrust where they already live. It reads the agent's code on GitHub and finds the prompt, 12 evals and the underwriting manual. It finds a gap in the evals: quote_completeness passed 41 quotes that left out the flood exclusion for properties in a flood zone, so it drafts a flood_exclusion check. It tests a fix as an experiment on 1,482 past quotes against what runs today: required exclusions go from 97% to 100%, agreement with underwriters from 88.4% to 93.1%, and none of 60 good quotes change. Coming next: it fine-tunes an open model on 36,900 of your quotes that passes 12 of 12 evals at $0.11 a quote instead of $0.41.",
   agent: "underwriting-agent",
   items: [
     {
@@ -195,6 +195,7 @@ const INSURANCE_DEMO: ProductDemoContent = {
     {
       kind: "finetune",
       text: "Trains a cheaper model on your quotes.",
+      tag: "Coming next",
       model: "uw-8b, fine-tuned on 36,900 quotes",
       rows: [
         { label: "Evals passed", value: "12 of 12" },
@@ -220,7 +221,7 @@ export const INSURANCE_PAGE: IndustryPageContent = {
   },
   hero: {
     headlineLines: ["Evals your underwriters", "would sign off on"],
-    deck: "Our AI engineers read your agent's traces next to your evals and your underwriting guidelines, find what the evals miss, and test every fix against what runs today before anything ships.",
+    deck: "ZenML Pro gives you a team of AI engineers. Connect your traces, your repo and your underwriting guidelines. They find what your evals miss, test the fix, and soon train a cheaper model. You approve what ships.",
     cta: demo("Insurance-Hero-Demo"),
     secondaryCta: {
       label: "See benchmarks",
@@ -290,7 +291,7 @@ export const INSURANCE_PAGE: IndustryPageContent = {
 
 const FINANCE_DEMO: ProductDemoContent = {
   label:
-    "An AI engineer at work on a KYC review agent. It imports 940 cases' traces from Langfuse, LangSmith and Braintrust where they already live. It reads the agent's code on GitHub and finds the prompt, 10 evals and the KYC procedures. It finds a gap in the evals: case_summary_quality passed 29 high-risk cases that closed without a source-of-funds check, so it drafts a source_of_funds check. It tests a fix as an experiment on 940 past cases against what runs today: source of funds checked goes from 81% to 100%, agreement with analysts from 90.2% to 94.0%, and none of 50 good cases change. Then it fine-tunes an open model on 28,400 of your cases that passes 10 of 10 evals at $0.13 a case instead of $0.52.",
+    "An AI engineer at work on a KYC review agent. It imports 940 cases' traces from Langfuse, LangSmith and Braintrust where they already live. It reads the agent's code on GitHub and finds the prompt, 10 evals and the KYC procedures. It finds a gap in the evals: case_summary_quality passed 29 high-risk cases that closed without a source-of-funds check, so it drafts a source_of_funds check. It tests a fix as an experiment on 940 past cases against what runs today: source of funds checked goes from 81% to 100%, agreement with analysts from 90.2% to 94.0%, and none of 50 good cases change. Coming next: it fine-tunes an open model on 28,400 of your cases that passes 10 of 10 evals at $0.13 a case instead of $0.52.",
   agent: "kyc-agent",
   items: [
     {
@@ -331,6 +332,7 @@ const FINANCE_DEMO: ProductDemoContent = {
     {
       kind: "finetune",
       text: "Trains a cheaper model on your cases.",
+      tag: "Coming next",
       model: "kyc-8b, fine-tuned on 28,400 cases",
       rows: [
         { label: "Evals passed", value: "10 of 10" },
@@ -356,7 +358,7 @@ export const FINANCIAL_SERVICES_PAGE: IndustryPageContent = {
   },
   hero: {
     headlineLines: ["Evals your risk team", "can stand behind"],
-    deck: "Our AI engineers read your agent's traces next to your evals and your procedures, find what the evals miss, and test every fix against what runs today before anything ships.",
+    deck: "ZenML Pro gives you a team of AI engineers. Connect your traces, your repo and your procedures. They find what your evals miss, test the fix, and soon train a cheaper model. You approve what ships.",
     cta: demo("Finance-Hero-Demo"),
   },
   demo: FINANCE_DEMO,

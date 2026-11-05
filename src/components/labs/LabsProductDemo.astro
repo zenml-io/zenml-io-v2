@@ -85,8 +85,15 @@ const CHIP =
               {content.items.map((item, i) => (
                 <li data-pd-item={i} class="pd-item">
                   <p class="flex items-center gap-2 font-sans text-[13.5px] leading-5 text-(--color-cream-900)">
-                    <span class="grid size-5 shrink-0 place-items-center rounded-full bg-(--color-sage-100) text-[10px] text-(--color-sage-800)">✓</span>
-                    {item.text}
+                    {item.kind === "finetune" ? (
+                      <span aria-hidden="true" class="size-5 shrink-0 rounded-full border border-dashed border-(--color-cream-400)" />
+                    ) : (
+                      <span class="grid size-5 shrink-0 place-items-center rounded-full bg-(--color-sage-100) text-[10px] text-(--color-sage-800)">✓</span>
+                    )}
+                    <span class="min-w-0">{item.text}</span>
+                    {item.kind === "finetune" && (
+                      <span class="ml-auto shrink-0 rounded-full border border-(--color-border) bg-(--secondary-fill) px-2 py-0.5 font-sans text-[11px] leading-4 text-(--color-cream-700)">{item.tag}</span>
+                    )}
                   </p>
 
                   {item.kind === "sources" && (

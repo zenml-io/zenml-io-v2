@@ -16,7 +16,7 @@ mainImage:
   alt: "ZenML Labs logo centered on a soft green and peach background"
 seo:
   title: "Introducing ZenML Labs: AI that gets better after it ships - ZenML Blog"
-  description: "ZenML is now ZenML Labs. ZenML Pro gives you a team of AI engineers that find what broke, fix it, fine-tune a model on your traces and deploy it. ZenML and Kitaru stay open source."
+  description: "ZenML is now ZenML Labs. ZenML Pro gives you a team of AI engineers that find what broke and test the fix, and soon train a cheaper model on your traces. ZenML and Kitaru stay open source."
   canonical: "https://www.zenml.io/blog/introducing-zenml-labs"
   ogImage: "https://assets.zenml.io/content/blog/introducing-zenml-labs/ee637eba/introducing-zenml-labs-cover.jpg"
 ---
@@ -57,7 +57,7 @@ So the job of a tool changes too. It has to give an agent context, limits, and a
 
 Keeping AI good in production means reading traces, deciding which failures matter, writing the check, testing the fix, training a better model and getting it deployed. That's exactly the work agents are now good at.
 
-That's why ZenML Pro now has its own harness: **Bots**. They come with ZenML and Kitaru skills built in, tuned for the whole job of running AI in production: writing evals that hold up, fixing what breaks, fine-tuning models on your traces and deploying them. Agents or classic ML models.
+That's why ZenML Pro now has its own harness: **Bots**. They come with ZenML and Kitaru skills built in, tuned for the whole job of running AI in production: writing evals that hold up and fixing what breaks today, and soon fine-tuning models on your traces and deploying them. Agents or classic ML models.
 
 Think of each bot as an AI engineer on your team. Spin up one per agent, model or job. Each one does the work and shows you the evidence. You decide what ships. [More on Bots](https://www.zenml.io/blog/introducing-bots-zenml-pro).
 
@@ -85,17 +85,17 @@ When they have a fix, they run it as an experiment on past appeals, side by side
 
 ![An experiment on 214 past appeals: with the fix, appeals decided go from 86% to 100%, agreement with reviewers from 91.2% to 93.8%, and 0 of 40 good appeals change](https://assets.zenml.io/content/blog/introducing-zenml-labs/9d4c2bb8/claims-experiment.avif)
 
-## Then it trains and deploys your model
+## Next: a model trained on your traces
 
 Your traces are also training data.
 
-Your AI engineers fine-tune a cheaper open model on them, hold it to the same evals, and deploy it in your own cloud. You approve the switch. You get the weights.
+We're teaching your AI engineers to fine-tune a cheaper open model on them, hold it to the same evals, and deploy it in your own cloud. You approve the switch. You get the weights.
 
 They read your repos and traces through keys you can revoke. Your data stays where it is.
 
 ## If you already run ZenML
 
-ZenML isn't the old product. It's half of the plan. Agents end up needing everything ML needed: training data, fine-tuning runs, evaluation pipelines, models you can version and roll back. When your AI engineers fine-tune and deploy a model on your traces, that runs as a ZenML pipeline on your infrastructure. So we keep investing in the open-source core, and nothing you depend on goes away.
+ZenML isn't the old product. It's half of the plan. Agents end up needing everything ML needed: training data, fine-tuning runs, evaluation pipelines, models you can version and roll back. When your AI engineers fine-tune a model on your traces, that will run as a ZenML pipeline on your infrastructure. So we keep investing in the open-source core, and nothing you depend on goes away.
 
 - **Your pipelines keep running.** Same SDK, same stacks, same integrations. No code changes.
 - **The dashboard looks new.** Same runs, models and artifacts, in the new design.
@@ -111,7 +111,7 @@ We're betting the next user of AI infrastructure is an agent. People decide what
 
 We're also betting every serious team ends up running a model it trained. Teams start on a frontier model, move to an open one, then train their own. Their traces are the training data.
 
-Today, your AI engineers find what broke, fix it, train a better model and deploy it, with you approving each step. Next, you'll give them a goal, like fewer escalations or a lower cost per session, and they'll work toward it. After that, they keep your AI improving between releases, without anyone having to ask.
+Today, your AI engineers find what broke, test the fix and show you the evidence. Next, they train a cheaper model on your traces and deploy it. Then you'll give them a goal, like fewer escalations or a lower cost per session, and they'll work toward it.
 
 ## A growing portfolio
 
