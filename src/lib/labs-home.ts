@@ -217,12 +217,23 @@ export interface LabsBandContent {
  * ghost pill and a copyable install command. Every extra is optional, so the
  * homepage content still fits. */
 export interface LabsProductBandContent extends LabsBandContent {
+  /** A small news pill above the headline (the homepage's launch note). */
+  announcement?: LabsAnnouncement;
   secondaryCta?: LabsCta;
   install?: LabsInstallChip;
   /** A small label above the install command. */
   installLabel?: string;
   /** One short line under the install command: what it installs. */
   installNote?: string;
+}
+
+export interface LabsAnnouncement {
+  /** Short tag in the pill, e.g. "New". */
+  tag: string;
+  text: string;
+  href: string;
+  /** Plausible event name. */
+  analytics: string;
 }
 
 export interface LabsInstallChip {
@@ -243,6 +254,12 @@ export type ModelMark =
   | "chip";
 
 export const LABS_HERO: LabsProductBandContent = {
+  announcement: {
+    tag: "New",
+    text: "ZenML is now ZenML Labs. Read the story",
+    href: "/blog/introducing-zenml-labs",
+    analytics: "Hero-Announcement-Labs-Launch",
+  },
   headlineLines: ["AI systems should get", "better after they ship"],
   deck: "AI in production shouldn’t need babysitting. ZenML Pro’s AI engineer reads your traces, finds what broke, and gets the fix ready before your customers notice.",
   cta: LABS_HERO_SIGNUP,
