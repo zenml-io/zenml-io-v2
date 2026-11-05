@@ -47,7 +47,7 @@ So we built Kitaru. It reads your agent's sessions next to its evals and shows y
 
 Dev tools were built for people. A dashboard to click through. A CLI to type into.
 
-That's changing. The first user of a dev tool is now often an agent. Claude Code reads the repo. Codex opens the PR. Engineers review more and type less.
+That's changing. The first user of a dev tool is now often an agent. Coding agents read the repo and open the PR. Engineers review more and type less.
 
 So the job of a tool changes too. It has to give an agent context, limits, and a way to prove its work. And it has to put a person where it matters.
 
