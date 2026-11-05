@@ -26,59 +26,6 @@ const prodHostnames = [...PROD_HOSTNAMES];
   }
 </script>
 
-{/* Snitcher/Radar — visitor identification. Loaded directly
-    (not gated behind cookie consent). Hostname-gated to prevent preview noise. */}
-<script is:inline define:vars={{ prodHostnames }}>
-  if (prodHostnames.includes(window.location.hostname)) {
-    !function(e){"use strict";var t=e&&e.namespace;if(t&&e.profileId&&e.cdn){var i=window[t];if(i&&Array.isArray(i)||(i=window[t]=[]),!i.initialized&&!i._loaded)if(i._loaded)console&&console.warn("[Radar] Duplicate initialization attempted");else{i._loaded=!0;["track","page","identify","group","alias","ready","debug","on","off","once","trackClick","trackSubmit","trackLink","trackForm","pageview","screen","reset","register","setAnonymousId","addSourceMiddleware","addIntegrationMiddleware","addDestinationMiddleware","giveCookieConsent"].forEach((function(e){var a;i[e]=(a=e,function(){var e=window[t];if(e.initialized)return e[a].apply(e,arguments);var i=[].slice.call(arguments);return i.unshift(a),e.push(i),e})})),-1===e.apiEndpoint.indexOf("http")&&(e.apiEndpoint="https://"+e.apiEndpoint),i.bootstrap=function(){var t,i=document.createElement("script");i.async=!0,i.type="text/javascript",i.id="__radar__",i.setAttribute("data-settings",JSON.stringify(e)),i.src=[-1!==(t=e.cdn).indexOf("http")?"":"https://",t,"/releases/latest/radar.min.js"].join("");var a=document.scripts[0];a.parentNode.insertBefore(i,a)},i.bootstrap()}}else"undefined"!=typeof console&&console.error("[Radar] Configuration incomplete")}({
-      "apiEndpoint": "radar.snitcher.com",
-      "cdn": "cdn.snitcher.com",
-      "namespace": "Snitcher",
-      "profileId": "sBRY1jonNg"
-    });
-  }
-</script>
-
-{/* Bullseye Pixel — hostname-gated to prevent preview deploy noise. */}
-<script is:inline define:vars={{ prodHostnames }}>
-  if (prodHostnames.includes(window.location.hostname)) {
-    var bullseye = document.createElement("script");
-    bullseye.async = true;
-    bullseye.defer = true;
-    bullseye.src = "https://script.bullseye.so/script/dbbc38f8-20c2-42a6-9587-b4365cd23b62";
-    bullseye.referrerPolicy = "strict-origin-when-cross-origin";
-    bullseye.setAttribute("data-bullseye-pixel", "dbbc38f8-20c2-42a6-9587-b4365cd23b62");
-    document.head.appendChild(bullseye);
-  }
-</script>
-
-{/* Scarf — cookieless company-level analytics pixel. Tracks page views
-    via a transparent 1x1 image with IP-based company attribution.
-    No cookies or JS execution. Hostname-gated to prevent preview noise. */}
-<script is:inline define:vars={{ prodHostnames }}>
-  if (prodHostnames.includes(window.location.hostname)) {
-    var img = document.createElement("img");
-    img.src = "https://static.scarf.sh/a.png?x-pxid=af73c4bc-4298-4759-a03c-378b9a1ef1ba";
-    img.referrerPolicy = "no-referrer-when-downgrade";
-    img.width = 1;
-    img.height = 1;
-    img.alt = "";
-    img.setAttribute("aria-hidden", "true");
-    img.style.position = "absolute";
-    img.style.left = "-9999px";
-
-    var appendScarfPixel = function () {
-      document.body.appendChild(img);
-    };
-
-    if (document.body) {
-      appendScarfPixel();
-    } else {
-      document.addEventListener("DOMContentLoaded", appendScarfPixel, { once: true });
-    }
-  }
-</script>
-
 {/* Other analytics (GA4, Segment, etc.) and third-party scripts are
     injected dynamically by the CookieConsent island after user consent.
     See src/lib/consentConfig.ts for the full script registry. */}
