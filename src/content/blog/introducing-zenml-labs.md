@@ -57,19 +57,19 @@ So the job of a tool changes too. It has to give an agent context, limits, and a
 
 Keeping AI good in production means reading traces, deciding which failures matter, writing the check, testing the fix, training a better model and getting it deployed. That's exactly the work agents are now good at.
 
-That's why we built **Bots**, our own harness inside ZenML Pro. It powers our new agent-first experience. Bots come with ZenML and Kitaru skills built in, tuned for the whole job of running AI in production: writing evals that hold up and fixing what breaks today, and soon fine-tuning models on your traces and deploying them. Agents or classic ML models.
+That's why we built our own agent harness into ZenML Pro. It powers our new agent-first experience, and it comes with ZenML and Kitaru skills built in, tuned for the whole job of running AI in production: writing evals that hold up and fixing what breaks today, and soon fine-tuning models on your traces and deploying them. Agents or classic ML models.
 
-Think of each bot as an AI engineer on your team. Spin up one per agent, model or job. Each one does the work and shows you the evidence. You decide what ships. [More on Bots](https://www.zenml.io/blog/introducing-bots-zenml-pro).
+Every bot it runs is an AI engineer on your team. Spin up one per agent, model or job. Each one does the work and shows you the evidence. You decide what ships. [More on Bots](https://www.zenml.io/blog/introducing-bots-zenml-pro).
 
 ![Your AI engineer at work on a claims agent: imports traces, reads the code, finds a gap in the evals, tests a fix against what runs today, and trains a cheaper model](https://assets.zenml.io/content/blog/introducing-zenml-labs/81520729/claims-feed.avif)
 
 Our goal is simple. AI in production shouldn't need babysitting. It should keep getting better after it ships.
 
-## We start with agents
+## It starts with what broke
 
-Agents are where teams hurt most right now, so that's where we start. But an agent isn't separate from ML. Keeping one good takes training data, fine-tuning runs, evaluation pipelines and models you can roll back. That's ML engineering, and it's what ZenML has done for five years. So the same team covers both: when a pipeline run fails, your AI engineers work out why and test the fix.
+Agents are the new production workload. They also run on everything ML always needed: data, evals, models you can roll back. ML engineering didn't go away. It moved inside the agent.
 
-On an agent, the first job is the evals. Most teams find out what broke from a customer, not from their evals.
+That's the work your AI engineers take on, and the first job is the evals. Most teams find out what broke from a customer, not from their evals.
 
 Your evals are probably right most of the time. Say 80%. The rest of your problems hides in thousands of traces, and that last 20% is where your customers get hurt. Nobody can read every trace. Reading a random sample misses the pattern.
 
@@ -87,11 +87,11 @@ When they have a fix, they run it as an experiment on past appeals, side by side
 
 ![An experiment on 214 past appeals: with the fix, appeals decided go from 86% to 100%, agreement with reviewers from 91.2% to 93.8%, and 0 of 40 good appeals change](https://assets.zenml.io/content/blog/introducing-zenml-labs/9d4c2bb8/claims-experiment.avif)
 
-## Next: a model trained on your traces
+## Next: your own model, on your infrastructure
 
-Your traces are also training data.
+Your traces are also training data. And training models is what we've done for five years.
 
-We're teaching your AI engineers to fine-tune a cheaper open model on them, hold it to the same evals, and deploy it in your own cloud. You approve the switch. You get the weights.
+It's on our roadmap: your AI engineers fine-tune a cheaper open model on your traces, as a ZenML pipeline on your own infrastructure, and hold it to the same evals. You approve the switch. You get the weights. Want it sooner? [Tell us](https://www.zenml.io/book-your-demo).
 
 They read your repos and traces through keys you can revoke. Your data stays where it is.
 
@@ -121,7 +121,7 @@ When we started, we had one product. Today we have three.
 
 - [**ZenML**](https://github.com/zenml-io/zenml): AI orchestration, on the infra you choose.
 - [**Kitaru**](https://github.com/zenml-io/kitaru): find what your agent's evals miss, from production sessions.
-- [**ZenML Pro**](https://www.zenml.io/pro): the managed platform across both, with Bots on top.
+- [**ZenML Pro**](https://www.zenml.io/pro): the managed platform across both, with a team of AI engineers on top.
 
 ZenML and Kitaru stay open source under Apache 2.0, free to run on your own machines.
 
