@@ -115,11 +115,10 @@ seo:
 <h2>15. Liability</h2>
 <p>15.1 We are liable without limitation for intent and gross negligence, for injury to life, body or health, under the German Product Liability Act (Produkthaftungsgesetz), for defects we fraudulently concealed, and to the extent of any guarantee we expressly gave.</p>
 <p>15.2 For slight negligence, and apart from the cases in Section 15.1, we are liable only for breach of a material contractual obligation, meaning an obligation whose fulfillment makes proper performance of the agreement possible in the first place and on which you may regularly rely. In that case, our liability is limited to the damage that is foreseeable and typical for this type of agreement.</p>
-<p>15.3 The parties agree that, for slight negligence under Section 15.2, the foreseeable and typical damage does not exceed, per contract year and for all claims together, the higher of (a) EUR 50,000 and (b) the fees you paid or owed for the Services in the 12 months before the event giving rise to the claim.</p>
-<p>15.4 For Free Services, we are liable only under Section 15.1, except where mandatory law says otherwise.</p>
-<p>15.5 Our strict liability under Section 536a(1) first alternative BGB for defects that exist when the agreement is made is excluded. Liability for fault under this Section 15 is unaffected.</p>
-<p>15.6 For slight negligence, our liability for loss of data is limited to the typical cost of restoring it that would have arisen had you kept appropriate backups in line with Section 8.7.</p>
-<p>15.7 Any other liability is excluded. These limits also apply to the personal liability of our employees, representatives and agents.</p>
+<p>15.3 For Free Services, we are liable only under Section 15.1, except where mandatory law says otherwise.</p>
+<p>15.4 Our strict liability under Section 536a(1) first alternative BGB for defects that exist when the agreement is made is excluded. Liability for fault under this Section 15 is unaffected.</p>
+<p>15.5 For slight negligence, our liability for loss of data is limited to the typical cost of restoring it that would have arisen had you kept appropriate backups in line with Section 8.7.</p>
+<p>15.6 Any other liability is excluded. These limits also apply to the personal liability of our employees, representatives and agents.</p>
 
 <h2>16. Third-Party Claims</h2>
 <p>16.1 If a third party claims that your permitted use of the Services (not including Customer Data or Output) infringes its intellectual property rights, we will defend you against the claim, or settle it, and pay amounts finally awarded or agreed in a settlement. We may also obtain the necessary rights, change the Services so they no longer infringe, or, if neither is reasonably possible, terminate the affected Services and refund prepaid fees for the remaining period.</p>
