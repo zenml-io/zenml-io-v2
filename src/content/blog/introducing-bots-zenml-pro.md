@@ -1,7 +1,7 @@
 ---
 title: "Introducing Bots in ZenML Pro: an AI workforce for ML and AI"
 slug: "introducing-bots-zenml-pro"
-draft: true
+draft: false
 author: "alexej-penner"
 category: "kitaru"
 tags:
