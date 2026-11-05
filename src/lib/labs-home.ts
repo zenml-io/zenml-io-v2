@@ -643,32 +643,56 @@ export interface StackMark {
   logo?: string;
 }
 
+/** A label and value in one of the section's panels. */
+export interface StackPanelRow {
+  label: string;
+  value: string;
+}
+
 export interface StackColumn {
   id: "traces" | "evals" | "agent";
   title: string;
   marks: readonly StackMark[];
+  /** What the team does with this group of tools. */
+  panel: readonly StackPanelRow[];
+}
+
+export interface StackDeployOption {
+  name: string;
+  rows: readonly StackPanelRow[];
 }
 
 export interface StackLayerContent {
   eyebrow: string;
   headline: string;
   deck: string;
-  layer: {
-    label: string;
+  connect: {
+    step: string;
+    note: string;
     title: string;
+    /** Leads the panel, before the picked tool's name. */
+    panelLead: string;
   };
   columns: readonly [StackColumn, StackColumn, StackColumn];
-  /** Four stops, in order: traces, layer, layer, agent. */
+  deploy: {
+    step: string;
+    note: string;
+    title: string;
+    options: readonly StackDeployOption[];
+    badges: readonly string[];
+  };
   link: LabsCta;
 }
 
 export const LABS_STACK_LAYER: StackLayerContent = {
   eyebrow: "How it fits",
   headline: "Plugs into the stack you already run",
-  deck: "Nothing to rewrite, no new framework. They read your repos and traces through keys you can revoke, and the models they train run in your own cloud.",
-  layer: {
-    label: "read all of it, on top of what you already run",
-    title: "Your AI engineers",
+  deck: "Nothing to rewrite, no new framework. Your AI engineering team works from the tools you already use, wherever you need it to run.",
+  connect: {
+    step: "01 · Connect",
+    note: "No code changes",
+    title: "Keep your tools",
+    panelLead: "Connected to",
   },
   columns: [
     {
@@ -682,6 +706,11 @@ export const LABS_STACK_LAYER: StackLayerContent = {
         { name: "MLflow", logo: "/images/service-logos/mlflow.svg" },
         { name: "Logfire", logo: "/compare/logfire.svg" },
       ],
+      panel: [
+        { label: "Reads", value: "Every trace, where it already lives" },
+        { label: "Access", value: "Keys you can revoke" },
+        { label: "Your traces", value: "Stay in your tracing tool" },
+      ],
     },
     {
       id: "evals",
@@ -692,6 +721,11 @@ export const LABS_STACK_LAYER: StackLayerContent = {
         { name: "promptfoo", logo: "/images/service-logos/promptfoo.svg" },
         { name: "DeepEval", logo: "/images/service-logos/deepeval.svg" },
         { name: "Scores in your tracer" },
+      ],
+      panel: [
+        { label: "Reads", value: "Your evals and their results" },
+        { label: "Finds", value: "What they miss" },
+        { label: "Adds", value: "The checks you’re missing" },
       ],
     },
     {
@@ -705,8 +739,49 @@ export const LABS_STACK_LAYER: StackLayerContent = {
         { name: "Vercel AI SDK", logo: "/images/service-logos/vercel.svg" },
         { name: "Mastra", logo: "/images/service-logos/mastra.svg" },
       ],
+      panel: [
+        { label: "Reads", value: "Your agent’s code on GitHub" },
+        { label: "Tests", value: "Every fix against what runs today" },
+        { label: "Framework", value: "Keep the one you have" },
+      ],
     },
   ],
+  deploy: {
+    step: "02 · Deploy",
+    note: "Your call",
+    title: "Keep your data",
+    options: [
+      {
+        name: "Our cloud",
+        rows: [
+          { label: "Your AI engineers run", value: "In our cloud" },
+          {
+            label: "Your traces",
+            value:
+              "Stay in your tracing tool, read through keys you can revoke",
+          },
+          { label: "We store", value: "Only metadata" },
+        ],
+      },
+      {
+        name: "Your cloud",
+        rows: [
+          { label: "Your AI engineers run", value: "Inside your own cloud" },
+          { label: "Your traces", value: "Nothing leaves your infrastructure" },
+          { label: "Models", value: "Your own LLM endpoint" },
+        ],
+      },
+      {
+        name: "Air-gapped",
+        rows: [
+          { label: "Your AI engineers run", value: "On-prem, air-gapped" },
+          { label: "Your traces", value: "Nothing leaves your infrastructure" },
+          { label: "Models", value: "Your own LLM endpoint" },
+        ],
+      },
+    ],
+    badges: ["SOC 2 Type II", "ISO 27001"],
+  },
   link: {
     label: "Security and trust",
     href: "https://security.zenml.io",

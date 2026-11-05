@@ -1,12 +1,13 @@
 ---
 /**
- * LabsStackLayer (`labs.stack-layer`) — the homepage's "how it fits"
- * section: eyebrow, headline and deck, then a stone panel: the AI engineer
- * as a white layer across the top, and under it the stack a team already
- * runs, one column each (the traces and evals it reads, the agent
- * frameworks it works with). Marks with a logo come first, then the names
- * that have none. Columns sit three across from md. A text link to the trust center
- * closes it. Copy arrives through `content` (LABS_STACK_LAYER on `/`).
+ * LabsStackLayer (`labs.stack-layer`) — the "how it fits" section on `/` and
+ * `/pro`: eyebrow, headline and deck, then two cards. Connect holds a group of
+ * named tool pills (traces, evals, agent) above a dark panel saying what the
+ * team does with that group. Deploy holds a segmented choice of where the team
+ * runs above a panel of what that means, then the compliance badges and the
+ * trust link. Clicking a pill or an option swaps its panel. Without JS every
+ * panel shows, so nothing depends on the script; reduced motion drops the
+ * fade. Copy arrives through `content` (LABS_STACK_LAYER).
  */
 import type { StackLayerContent } from "../../lib/labs-home";
 import "../../styles/labs-scroll-reveal.css";
@@ -19,13 +20,18 @@ interface Props {
 }
 const { content } = Astro.props;
 
-const COLUMN_TITLE =
-  "font-sans text-[14px] leading-[18px] font-semibold text-(--color-cream-900)";
-const MARK =
-  "flex h-7 items-center rounded-[6px] border border-(--color-border) bg-card";
+const CARD =
+  "flex min-w-0 flex-col rounded-[24px] border border-(--color-border) bg-card p-6 md:p-8";
+const CARD_STEP =
+  "flex items-baseline justify-between gap-3 font-sans text-[13px] leading-5 text-(--color-cream-600)";
+const CARD_TITLE =
+  "mt-3 font-display text-[28px] leading-[34px] text-(--color-cream-900)";
+const CHOICE =
+  "inline-flex cursor-pointer items-center gap-2 border font-sans text-[14px] leading-5 transition-colors duration-200 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-sage-700) aria-pressed:border-(--color-sage-700) aria-pressed:bg-(--color-sage-100) aria-pressed:text-(--color-cream-900)";
+const firstMark = (index: number) => content.columns[index].marks[0].name;
 ---
 
-<section class="py-24 md:py-32" aria-labelledby="stack-layer-title">
+<section class="py-24 md:py-32" aria-labelledby="stack-layer-title" data-stack>
   <div class="scroll-reveal-section mx-auto max-w-content px-gutter">
     <p class:list={["reveal-child", LABS_EYEBROW_CLASS]}>{content.eyebrow}</p>
     <h2 id="stack-layer-title" class="reveal-child mt-3 max-w-[860px] font-display text-[32px] leading-[38px] text-balance text-(--color-cream-900) md:text-[48px] md:leading-[54px]">
@@ -35,34 +41,157 @@ const MARK =
       {content.deck}
     </p>
 
-    <div class="reveal-child stagger-2 mt-space-xl rounded-[24px] bg-(--secondary-fill) p-2 md:p-3">
-      <div class="flex items-center gap-3 rounded-[16px] border border-(--color-border) bg-card px-5 py-4 md:px-6">
-        <LabsOrb size={24} blink={2} />
-        <p class="font-sans text-[15px] leading-[22px] text-(--color-cream-900)">
-          <span class="font-semibold">{content.layer.title}</span>
-          <span class="text-(--muted-foreground)"> · {content.layer.label}</span>
-        </p>
-      </div>
-      <div class="grid grid-cols-1 gap-8 px-3 pt-7 pb-5 md:grid-cols-3 md:px-5 md:pb-6">
-        {content.columns.map((column) => (
-          <div class="flex min-w-0 flex-col gap-2.5">
-            <h3 class={COLUMN_TITLE}>{column.title}</h3>
-            <ul class="flex flex-wrap items-center gap-1.5">
-              {[...column.marks.filter((mark) => mark.logo), ...column.marks.filter((mark) => !mark.logo)].map((mark) =>
-                mark.logo ? (
-                  <li class:list={[MARK, "w-7 justify-center"]}>
-                    <img src={mark.logo} alt={mark.name} title={mark.name} width="18" height="18" class="size-[18px] object-contain" loading="lazy" />
+    <div class="reveal-child stagger-2 mt-space-xl grid grid-cols-1 gap-4 lg:grid-cols-2">
+      <div class={CARD}>
+        <p class={CARD_STEP}><span>{content.connect.step}</span><span>{content.connect.note}</span></p>
+        <h3 class={CARD_TITLE}>{content.connect.title}</h3>
+
+        <div class="mt-6 flex flex-col gap-5">
+          {content.columns.map((column, columnIndex) => (
+            <div>
+              <h4 class="font-sans text-[13px] leading-5 font-semibold text-(--color-cream-900)">{column.title}</h4>
+              <ul class="mt-2 flex flex-wrap gap-2">
+                {column.marks.map((mark, markIndex) => (
+                  <li>
+                    <button
+                      type="button"
+                      class:list={[CHOICE, "rounded-full border-(--color-border) bg-card py-1.5 pr-3.5 pl-2.5 text-(--color-cream-800) hover:border-(--color-cream-400)", !mark.logo && "pl-3.5"]}
+                      data-tool={columnIndex}
+                      data-name={mark.name}
+                      aria-pressed={columnIndex === 0 && markIndex === 0 ? "true" : "false"}
+                    >
+                      {mark.logo && <img src={mark.logo} alt="" aria-hidden="true" width="20" height="20" class="size-5 object-contain" loading="lazy" />}
+                      {mark.name}
+                    </button>
                   </li>
-                ) : (
-                  <li class:list={[MARK, "px-2 font-sans text-[12px] leading-4 text-(--muted-foreground)"]}>{mark.name}</li>
-                ),
-              )}
-            </ul>
-          </div>
-        ))}
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <div class="mt-6 flex flex-1 flex-col justify-end">
+          {content.columns.map((column, columnIndex) => (
+            <div class:list={["stack-panel rounded-[16px] bg-(--color-cream-900) p-5 text-(--color-primary-foreground)", columnIndex === 0 && "is-active"]} data-tool-panel={columnIndex}>
+              <p class="flex items-center gap-2.5 font-sans text-[14px] leading-5">
+                <LabsOrb size={20} blink={columnIndex + 1} />
+                <span>{content.connect.panelLead} <span class="font-semibold" data-tool-name>{firstMark(columnIndex)}</span></span>
+              </p>
+              <dl class="mt-4 flex flex-col gap-2.5">
+                {column.panel.map((row) => (
+                  <div class="flex flex-wrap justify-between gap-x-4 font-sans text-[14px] leading-5">
+                    <dt class="opacity-60">{row.label}</dt>
+                    <dd>{row.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class={CARD}>
+        <p class={CARD_STEP}><span>{content.deploy.step}</span><span>{content.deploy.note}</span></p>
+        <h3 class={CARD_TITLE}>{content.deploy.title}</h3>
+
+        <ul class="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-3">
+          {content.deploy.options.map((option, index) => (
+            <li>
+              <button
+                type="button"
+                class:list={[CHOICE, "w-full justify-center rounded-[12px] border-(--color-border) bg-card px-3 py-2.5 text-(--color-cream-800) hover:border-(--color-cream-400)"]}
+                data-option={index}
+                aria-pressed={index === 0 ? "true" : "false"}
+              >
+                {option.name}
+              </button>
+            </li>
+          ))}
+        </ul>
+
+        <div class="mt-4 flex flex-1 flex-col">
+          {content.deploy.options.map((option, index) => (
+            <dl class:list={["stack-panel flex flex-1 flex-col justify-around divide-y divide-(--color-border) rounded-[16px] bg-(--secondary-fill) px-5 py-2", index === 0 && "is-active"]} data-option-panel={index}>
+              {option.rows.map((row) => (
+                <div class="py-3.5">
+                  <dt class="font-sans text-[13px] leading-5 text-(--color-cream-600)">{row.label}</dt>
+                  <dd class="mt-0.5 font-sans text-[16px] leading-6 text-(--color-cream-900)">{row.value}</dd>
+                </div>
+              ))}
+            </dl>
+          ))}
+        </div>
+
+        <div class="mt-6 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+          <ul class="flex flex-wrap gap-2">
+            {content.deploy.badges.map((badge) => (
+              <li class="rounded-full border border-(--color-border) px-3 py-1 font-sans text-[13px] leading-5 text-(--color-cream-800)">{badge}</li>
+            ))}
+          </ul>
+          <LabsTextLink cta={content.link} external />
+        </div>
       </div>
     </div>
-
-    <div class="reveal-child mt-8"><LabsTextLink cta={content.link} external /></div>
   </div>
 </section>
+
+<style>
+  [data-armed] .stack-panel:not(.is-active) {
+    display: none;
+  }
+  /* Without JS every panel shows, so give stacked panels some room. */
+  .stack-panel + .stack-panel {
+    margin-top: 0.75rem;
+  }
+  [data-armed] .stack-panel + .stack-panel {
+    margin-top: 0;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    [data-armed] .stack-panel.is-active {
+      animation: stack-fade var(--duration-base) var(--ease-out-quint);
+    }
+  }
+  @keyframes stack-fade {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-stack]").forEach((section) => {
+    section.toggleAttribute("data-armed", true);
+
+    const select = (
+      buttons: HTMLElement[],
+      panels: HTMLElement[],
+      button: HTMLElement,
+      index: number,
+    ) => {
+      for (const other of buttons) {
+        other.setAttribute("aria-pressed", String(other === button));
+      }
+      panels.forEach((panel, i) => panel.classList.toggle("is-active", i === index));
+    };
+
+    const tools = [...section.querySelectorAll<HTMLElement>("[data-tool]")];
+    const toolPanels = [...section.querySelectorAll<HTMLElement>("[data-tool-panel]")];
+    for (const tool of tools) {
+      tool.addEventListener("click", () => {
+        const index = Number(tool.dataset.tool);
+        select(tools, toolPanels, tool, index);
+        const name = toolPanels[index].querySelector("[data-tool-name]");
+        if (name) name.textContent = tool.dataset.name ?? "";
+      });
+    }
+
+    const options = [...section.querySelectorAll<HTMLElement>("[data-option]")];
+    const optionPanels = [...section.querySelectorAll<HTMLElement>("[data-option-panel]")];
+    for (const option of options) {
+      option.addEventListener("click", () => {
+        select(options, optionPanels, option, Number(option.dataset.option));
+      });
+    }
+  });
+</script>

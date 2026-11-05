@@ -67,13 +67,21 @@ export function GET(): Response {
     joinMarkdownSections(
       `## ${LABS_STACK_LAYER.headline}`,
       LABS_STACK_LAYER.deck,
-      LABS_STACK_LAYER.layer.title,
+      LABS_STACK_LAYER.connect.title,
       markdownBulletList(
         LABS_STACK_LAYER.columns.map(
           (column) =>
             `${column.title}: ${column.marks.map((mark) => mark.name).join(", ")}`,
         ),
       ),
+      LABS_STACK_LAYER.deploy.title,
+      markdownBulletList(
+        LABS_STACK_LAYER.deploy.options.map(
+          (option) =>
+            `${option.name}: ${option.rows.map((row) => `${row.label}: ${row.value}`).join("; ")}`,
+        ),
+      ),
+      LABS_STACK_LAYER.deploy.badges.join(", "),
       markdownLink(LABS_STACK_LAYER.link.label, LABS_STACK_LAYER.link.href),
     ),
     joinMarkdownSections(
