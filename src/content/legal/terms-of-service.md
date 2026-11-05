@@ -25,7 +25,7 @@ seo:
 
 <h2>4. Subscriptions, Fees and Cancellation</h2>
 <p>4.1 The features, limits and prices of each plan are shown on our pricing page or in your Order Form at the time you order. Unless stated otherwise, fees are in the currency shown when you order, exclude VAT and other applicable taxes, and are due in advance for each billing period. You authorize us to charge your chosen payment method on a recurring basis until the subscription ends.</p>
-<p>4.2 A subscription purchased online runs for the billing period you select and renews automatically for periods of the same length. You can cancel at any time in your account or by writing to <a href="mailto:cloud@zenml.io">cloud@zenml.io</a>. Cancellation takes effect at the end of the current billing period. Subscriptions under an Order Form run and renew as the Order Form says.</p>
+<p>4.2 A subscription purchased online runs for the billing period you select and renews automatically for periods of the same length. You can cancel at any time in your account or by writing to <a href="mailto:support@zenml.io">support@zenml.io</a>. Cancellation takes effect at the end of the current billing period. Subscriptions under an Order Form run and renew as the Order Form says.</p>
 <p>4.3 We may change prices for future billing periods by giving you at least 30 days' notice in text form. The new price applies from the first renewal after the notice period. If you do not accept it, you can cancel before that renewal takes effect.</p>
 <p>4.4 Fees already paid are not refunded, except where these Terms or mandatory law provide otherwise.</p>
 <p>4.5 If a payment is more than 14 days overdue, we may suspend the Services after a further reminder in text form setting a reasonable deadline. We will not suspend for an amount you dispute in good faith, if you tell us why before the deadline and pay the undisputed part. Statutory rights for late payment are unaffected.</p>
@@ -107,7 +107,7 @@ seo:
 <p>13.7 Sections 8.2, 10, 11, 15, 16 and 18 continue after the end of the agreement, as does anything that by its nature is meant to.</p>
 
 <h2>14. Defects</h2>
-<p>14.1 Tell us about defects promptly at <a href="mailto:cloud@zenml.io">cloud@zenml.io</a>, with enough detail for us to reproduce them. We will fix defects within a reasonable time, which may include a workaround or an update.</p>
+<p>14.1 Tell us about defects promptly at <a href="mailto:support@zenml.io">support@zenml.io</a>, with enough detail for us to reproduce them. We will fix defects within a reasonable time, which may include a workaround or an update.</p>
 <p>14.2 Fees may be reduced, or the agreement terminated for failure to provide use under Section 543(2) no. 1 BGB, only after we have had a reasonable opportunity to fix the defect and have failed. Otherwise, the statutory rules on defects apply, subject to Section 15.</p>
 <p>14.3 Statements in these Terms, in documentation and on the Site describe the Services. They are not guarantees (Garantien) in the legal sense unless we expressly call them that in writing.</p>
 <p>14.4 The Services and the open-source software they integrate depend on third-party models and services. A defect does not exist merely because Output is wrong, in view of Section 7.1, or because an experiment does not achieve the result you hoped for.</p>
