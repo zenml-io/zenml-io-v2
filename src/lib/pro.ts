@@ -25,12 +25,12 @@ import { defaultOgUrl } from "./seo";
 // SEO
 // ---------------------------------------------------------------------------
 export const PRO_SEO = {
-  title: "ZenML Pro: an AI engineer for your agents and ML pipelines",
+  title: "ZenML Pro: AI engineers for your agents and ML pipelines",
   description:
-    "ZenML Pro hosts Kitaru and ZenML for your team and adds an AI engineer that watches every agent trace and pipeline run, finds what your evals miss and drafts the fix.",
-  ogTitle: "ZenML Pro: an AI engineer for your agents and ML pipelines",
+    "ZenML Pro hosts Kitaru and ZenML for your team and adds a team of AI engineers that watch every agent trace and pipeline run, find what your evals miss and draft the fix.",
+  ogTitle: "ZenML Pro: AI engineers for your agents and ML pipelines",
   ogDescription:
-    "Hosted Kitaru and ZenML, plus an AI engineer that works on its own, around the clock.",
+    "Hosted Kitaru and ZenML, plus a team of AI engineers that work around the clock.",
   ogImage: defaultOgUrl("pages", "pro"),
 } as const;
 
@@ -44,8 +44,8 @@ export const PRO_SEO = {
  * widening them to `| undefined`.
  */
 export const PRO_HERO = {
-  headline: "One AI engineer for your agents and your ML",
-  deck: `ZenML Pro is our paid platform. It hosts Kitaru and ZenML for your team and adds an AI engineer that watches every agent trace and pipeline run, finds what your evals miss and drafts the fix. From ${KITARU_CLOUD_PRICE} a month, ${KITARU_TRIAL_DAYS} days free.`,
+  headline: "AI engineers for your agents and your ML",
+  deck: `ZenML Pro is our paid platform. It hosts Kitaru and ZenML for your team and adds a team of AI engineers that watch every agent trace and pipeline run, find what your evals miss and draft the fix. From ${KITARU_CLOUD_PRICE} a month, ${KITARU_TRIAL_DAYS} days free.`,
   primaryCta: {
     label: "Start free",
     href: cloudSignupUrl("pro"),
@@ -118,7 +118,7 @@ export const PRO_OSS_GRID = {
   items: [
     {
       title: "Runs on its own",
-      body: "Open source runs when you or your coding agent drive it. Pro runs the AI engineer, schedules and triggers around the clock.",
+      body: "Open source runs when you or your coding agent drive it. Pro runs your AI engineers, schedules and triggers around the clock.",
     },
     {
       title: "Roles and Permissions",
@@ -215,7 +215,7 @@ export const PRO_FAQ: FaqData = {
   items: [
     {
       question: "What is ZenML Pro?",
-      answer: `ZenML Pro is the paid product from ZenML Labs. It hosts our two open-source products, Kitaru for AI agents and ZenML for ML pipelines, and adds an AI engineer that watches both around the clock. One account, one bill, unlimited seats. It starts at ${KITARU_CLOUD_PRICE} a month with a ${KITARU_TRIAL_DAYS}-day free trial; see <a href="/pricing">pricing</a>.`,
+      answer: `ZenML Pro is the paid product from ZenML Labs. It hosts our two open-source products, Kitaru for AI agents and ZenML for ML pipelines, and adds a team of AI engineers that watch both around the clock. One account, one bill, unlimited seats. It starts at ${KITARU_CLOUD_PRICE} a month with a ${KITARU_TRIAL_DAYS}-day free trial; see <a href="/pricing">pricing</a>.`,
     },
     {
       question: "What about data security and compliance?",
@@ -280,7 +280,7 @@ export const PRO_FINAL_CTA = {
 /** `PRO_HERO` reshaped onto `LabsHero`'s "landing" band. The hero image
  * leaves the page (CONVENTIONS liberty; the band has no image slot). */
 export const PRO_HERO_BAND: LabsProductBandContent = {
-  headlineLines: ["ZenML Pro: one AI engineer", "for your agents and your ML"],
+  headlineLines: ["ZenML Pro: AI engineers", "for your agents and your ML"],
   deck: PRO_HERO.deck,
   cta: { ...PRO_HERO.primaryCta, analytics: "Pro-Hero-Signup" },
   secondaryCta: {

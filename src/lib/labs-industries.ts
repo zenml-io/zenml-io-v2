@@ -71,7 +71,7 @@ function demo(analytics: string): LabsCta {
 const TRUST_POINTS: readonly TrustPoint[] = [
   {
     title: "Runs where you need it",
-    body: "Your AI engineer runs in our cloud by default, or on-prem in your own cloud, air-gapped if you need it. Kitaru is open source and runs on your machine.",
+    body: "Your AI engineers run in our cloud by default, or on-prem in your own cloud, air-gapped if you need it. Kitaru is open source and runs on your machine.",
   },
   {
     title: "Your models, your keys",
@@ -117,7 +117,7 @@ function faq(extra: FaqData["items"]): FaqData {
       {
         question: "Where do our traces go?",
         answer:
-          "Your traces stay in the tracing tool you already use. By default, your AI engineer runs in our cloud and reads them through keys you can revoke. Deploy it on-prem and it runs inside your own cloud, so nothing leaves your infrastructure.",
+          "Your traces stay in the tracing tool you already use. By default, your AI engineers run in our cloud and read them through keys you can revoke. Deploy them on-prem and they run inside your own cloud, so nothing leaves your infrastructure.",
       },
       {
         question: "Can we use our own models?",
@@ -150,7 +150,7 @@ function faq(extra: FaqData["items"]): FaqData {
 
 const INSURANCE_DEMO: ProductDemoContent = {
   label:
-    "Your AI engineer at work on an insurance underwriting agent. It imports 1,482 quotes' traces from Langfuse, LangSmith and Braintrust where they already live. It reads the agent's code on GitHub and finds the prompt, 12 evals and the underwriting manual. It finds a gap in the evals: quote_completeness passed 41 quotes that left out the flood exclusion for properties in a flood zone, so it drafts a flood_exclusion check. It tests a fix as an experiment on 1,482 past quotes against what runs today: required exclusions go from 97% to 100%, agreement with underwriters from 88.4% to 93.1%, and none of 60 good quotes change. Then it fine-tunes an open model on 36,900 of your quotes that passes 12 of 12 evals at $0.11 a quote instead of $0.41.",
+    "An AI engineer at work on an insurance underwriting agent. It imports 1,482 quotes' traces from Langfuse, LangSmith and Braintrust where they already live. It reads the agent's code on GitHub and finds the prompt, 12 evals and the underwriting manual. It finds a gap in the evals: quote_completeness passed 41 quotes that left out the flood exclusion for properties in a flood zone, so it drafts a flood_exclusion check. It tests a fix as an experiment on 1,482 past quotes against what runs today: required exclusions go from 97% to 100%, agreement with underwriters from 88.4% to 93.1%, and none of 60 good quotes change. Then it fine-tunes an open model on 36,900 of your quotes that passes 12 of 12 evals at $0.11 a quote instead of $0.41.",
   agent: "underwriting-agent",
   items: [
     {
@@ -215,12 +215,12 @@ export const INSURANCE_PAGE: IndustryPageContent = {
   seo: {
     title: "ZenML Labs for insurance: evals your underwriters trust",
     description:
-      "Our AI engineer reads your underwriting, claims or appeals agent's traces next to your evals and your guidelines, and shows you what the evals miss. SOC 2 Type II and ISO 27001, and it runs in your cloud.",
+      "Our AI engineers read your underwriting, claims or appeals agent's traces next to your evals and your guidelines, and show you what the evals miss. SOC 2 Type II and ISO 27001, and it runs in your cloud.",
     surface: "unified",
   },
   hero: {
     headlineLines: ["Evals your underwriters", "would sign off on"],
-    deck: "Our AI engineer reads your agent's traces next to your evals and your underwriting guidelines, finds what the evals miss, and tests every fix against what runs today before anything ships.",
+    deck: "Our AI engineers read your agent's traces next to your evals and your underwriting guidelines, find what the evals miss, and test every fix against what runs today before anything ships.",
     cta: demo("Insurance-Hero-Demo"),
     secondaryCta: {
       label: "See benchmarks",
@@ -290,7 +290,7 @@ export const INSURANCE_PAGE: IndustryPageContent = {
 
 const FINANCE_DEMO: ProductDemoContent = {
   label:
-    "Your AI engineer at work on a KYC review agent. It imports 940 cases' traces from Langfuse, LangSmith and Braintrust where they already live. It reads the agent's code on GitHub and finds the prompt, 10 evals and the KYC procedures. It finds a gap in the evals: case_summary_quality passed 29 high-risk cases that closed without a source-of-funds check, so it drafts a source_of_funds check. It tests a fix as an experiment on 940 past cases against what runs today: source of funds checked goes from 81% to 100%, agreement with analysts from 90.2% to 94.0%, and none of 50 good cases change. Then it fine-tunes an open model on 28,400 of your cases that passes 10 of 10 evals at $0.13 a case instead of $0.52.",
+    "An AI engineer at work on a KYC review agent. It imports 940 cases' traces from Langfuse, LangSmith and Braintrust where they already live. It reads the agent's code on GitHub and finds the prompt, 10 evals and the KYC procedures. It finds a gap in the evals: case_summary_quality passed 29 high-risk cases that closed without a source-of-funds check, so it drafts a source_of_funds check. It tests a fix as an experiment on 940 past cases against what runs today: source of funds checked goes from 81% to 100%, agreement with analysts from 90.2% to 94.0%, and none of 50 good cases change. Then it fine-tunes an open model on 28,400 of your cases that passes 10 of 10 evals at $0.13 a case instead of $0.52.",
   agent: "kyc-agent",
   items: [
     {
@@ -351,12 +351,12 @@ export const FINANCIAL_SERVICES_PAGE: IndustryPageContent = {
   seo: {
     title: "ZenML Labs for financial services: evals your risk team trusts",
     description:
-      "Our AI engineer reads your KYC, credit or client-service agent's traces next to your evals and your procedures, and shows you what the evals miss. SOC 2 Type II and ISO 27001, and it runs in your cloud.",
+      "Our AI engineers read your KYC, credit or client-service agent's traces next to your evals and your procedures, and show you what the evals miss. SOC 2 Type II and ISO 27001, and it runs in your cloud.",
     surface: "unified",
   },
   hero: {
     headlineLines: ["Evals your risk team", "can stand behind"],
-    deck: "Our AI engineer reads your agent's traces next to your evals and your procedures, finds what the evals miss, and tests every fix against what runs today before anything ships.",
+    deck: "Our AI engineers read your agent's traces next to your evals and your procedures, find what the evals miss, and test every fix against what runs today before anything ships.",
     cta: demo("Finance-Hero-Demo"),
   },
   demo: FINANCE_DEMO,
@@ -399,7 +399,7 @@ export const FINANCIAL_SERVICES_PAGE: IndustryPageContent = {
     {
       question: "What about DORA?",
       answer:
-        "Your AI engineer keeps the testing records and audit trail that DORA and model risk reviews ask for, and on-prem it runs inside your own ICT estate. It doesn't make you compliant on its own; it gives your second line the evidence.",
+        "Your AI engineers keep the testing records and audit trail that DORA and model risk reviews ask for, and on-prem they run inside your own ICT estate. They don't make you compliant on their own; they give your second line the evidence.",
     },
   ]),
   close: {

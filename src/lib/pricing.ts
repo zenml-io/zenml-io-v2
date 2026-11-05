@@ -35,10 +35,10 @@ import { defaultOgUrl } from "./seo";
 export const PRICING_SEO = {
   title: "Pricing - ZenML",
   description:
-    "One plan, $39 a month: your AI engineer on one AI agent, one ML project and your whole team. Open source is free; more agents, projects and on-prem are a conversation.",
+    "One plan, $39 a month: your AI engineers on one AI agent, one ML project and your whole team. Open source is free; more agents, projects and on-prem are a conversation.",
   ogTitle: "Pricing - ZenML",
   ogDescription:
-    "One plan, $39 a month: your AI engineer on one AI agent, one ML project and your whole team.",
+    "One plan, $39 a month: your AI engineers on one AI agent, one ML project and your whole team.",
   ogImage: defaultOgUrl("pages", "pricing"),
 } as const;
 
@@ -48,7 +48,7 @@ export const PRICING_SEO = {
 export const PRICING_HERO = {
   eyebrow: "ZenML Pro pricing",
   headline: `ZenML Pro, ${KITARU_CLOUD_PRICE} a month`,
-  deck: "ZenML Pro is our paid platform. It hosts Kitaru and ZenML for your team and adds an AI engineer that watches your AI agents and ML pipelines around the clock. Starter covers one AI agent, one ML project and your whole team. Need more, or on-prem? Talk to us.",
+  deck: "ZenML Pro is our paid platform. It hosts Kitaru and ZenML for your team and adds a team of AI engineers that watch your AI agents and ML pipelines around the clock. Starter covers one AI agent, one ML project and your whole team. Need more, or on-prem? Talk to us.",
 } as const;
 
 /**
@@ -59,14 +59,14 @@ export const PRICING_HERO = {
  */
 export const PRICING_PRO_INCLUSIONS = {
   eyebrow: "What's in ZenML Pro",
-  headline: "Your agents and your ML, one AI engineer",
-  deck: "Pro is one platform: your AI engineer works across your AI agents on Kitaru and your ML pipelines on ZenML, on one account and one bill.",
+  headline: "Your agents and your ML, one team of AI engineers",
+  deck: "Pro is one platform: your AI engineers work across your AI agents on Kitaru and your ML pipelines on ZenML, on one account and one bill.",
   cards: [
     {
       side: "zenml" as const,
       eyebrow: "AI orchestration",
       title: "ML pipelines and models",
-      body: "Training, fine-tuning and batch inference on any orchestrator. Your AI engineer watches every run and flags failures and drift.",
+      body: "Training, fine-tuning and batch inference on any orchestrator. Your AI engineers watch every run and flag failures and drift.",
       bullets: [
         {
           icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="6" y1="3" x2="6" y2="15" /><circle cx="18" cy="6" r="3" /><circle cx="6" cy="18" r="3" /><path d="M18 9a9 9 0 0 1-9 9" /></svg>',
@@ -96,7 +96,7 @@ export const PRICING_PRO_INCLUSIONS = {
       side: "kitaru" as const,
       eyebrow: "Agent evals",
       title: "AI agents and evals",
-      body: "Your AI engineer finds the evals you got wrong or never wrote, then replays your agent to test the fix.",
+      body: "Your AI engineers find the evals you got wrong or never wrote, then replay your agent to test the fix.",
       bullets: [
         {
           icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18.178 8c5.096 0 5.096 8 0 8-5.095 0-7.133-8-12.739-8-4.585 0-4.585 8 0 8 5.606 0 7.644-8 12.74-8z" /></svg>',
@@ -191,7 +191,7 @@ export const PRICING_PLANS: PricingPlan[] = [
     limitsLine: `${STARTER.agents} AI agent · ${STARTER.zenmlProjects} ML project · Unlimited seats`,
     includesLabel: "Everything in Open Source, plus",
     features: [
-      "An AI engineer for your agents and ML pipelines",
+      "AI engineers for your agents and ML pipelines",
       "Finds what your evals miss, on its own",
       "Schedules, triggers and alerts",
       "Fully hosted, set up in minutes",
@@ -268,7 +268,7 @@ export const PRICING_COMPARE: PricingCompareTableData = {
       ],
     },
     {
-      heading: "Your AI engineer, on agents and ML pipelines",
+      heading: "Your AI engineers, on agents and ML pipelines",
       rows: [
         {
           feature: "How it runs",
@@ -396,7 +396,7 @@ export const PRICING_STARTUP_BANNER = {
 export const PRICING_COMPLIANCE = {
   eyebrow: "No compliance headaches",
   headline: "Your VPC, your data",
-  body: "ZenML stores only metadata, so your data and compute stay in your cloud. Your AI engineer reads traces through keys you can revoke, or runs inside your cloud on Enterprise.",
+  body: "ZenML stores only metadata, so your data and compute stay in your cloud. Your AI engineers read traces through keys you can revoke, or run inside your cloud on Enterprise.",
   image: {
     desktop: {
       url: `${ASSET_BASE_URL}/content/uploads/c0365c4a/zenml-pro-vpc-architecture.avif`,
@@ -438,7 +438,7 @@ export const PRICING_FAQ: FaqData = {
   items: [
     {
       question: `What do I get for ${KITARU_CLOUD_PRICE}?`,
-      answer: `One AI agent with your AI engineer on it, one ML project with up to ${STARTER.pipelineRuns} pipeline runs a month, and as many seats as you want. It starts with a ${KITARU_TRIAL_DAYS}-day trial, no credit card.`,
+      answer: `One AI agent with your AI engineers on it, one ML project with up to ${STARTER.pipelineRuns} pipeline runs a month, and as many seats as you want. It starts with a ${KITARU_TRIAL_DAYS}-day trial, no credit card.`,
     },
     {
       question: "What counts as an agent?",
@@ -447,7 +447,7 @@ export const PRICING_FAQ: FaqData = {
     {
       question: "Is there a limit on sessions?",
       answer:
-        "No. Your AI engineer reads every session your agent sends. Replays run with your own model keys, so those model costs stay on your bill.",
+        "No. Your AI engineers read every session your agent sends. Replays run with your own model keys, so those model costs stay on your bill.",
     },
     {
       question: "What if we need more agents, projects or runs?",
@@ -467,12 +467,12 @@ export const PRICING_FAQ: FaqData = {
     {
       question: "Do you see my traces?",
       answer:
-        "On Starter, your AI engineer runs in our cloud and reads traces from your tracing tool through keys you can revoke. ZenML stores only metadata; your data, artifacts and compute stay in your cloud. Self-hosted or on Enterprise on-prem, nothing leaves your infrastructure.",
+        "On Starter, your AI engineers run in our cloud and read traces from your tracing tool through keys you can revoke. ZenML stores only metadata; your data, artifacts and compute stay in your cloud. Self-hosted or on Enterprise on-prem, nothing leaves your infrastructure.",
     },
     {
       question: "Can we run it on-prem?",
       answer:
-        "Yes, on Enterprise. Your AI engineer and ZenML run inside your own cloud or on-prem, air-gapped if you need it, with your own LLM endpoint.",
+        "Yes, on Enterprise. Your AI engineers and ZenML run inside your own cloud or on-prem, air-gapped if you need it, with your own LLM endpoint.",
     },
     {
       question: "How is this different from Langfuse, Braintrust or LangSmith?",
@@ -492,7 +492,7 @@ export const PRICING_FAQ: FaqData = {
 /** The Labs closing band for `/pricing`. */
 export const PRICING_CLOSE: LabsBandContent = {
   headlineLines: ["Start with one agent", "and your whole team"],
-  deck: `Your AI engineer reads your traces next to your evals and shows you what they miss. ${KITARU_TRIAL_DAYS}-day trial, no credit card.`,
+  deck: `Your AI engineers read your traces next to your evals and show you what they miss. ${KITARU_TRIAL_DAYS}-day trial, no credit card.`,
   cta: {
     label: KITARU_LINKS.signup.label,
     href: KITARU_LINKS.signup.href,

@@ -11,10 +11,10 @@ import type { SEOProps } from "./seo";
 export const SCHEDULE_A_DEMO_SEO: SEOProps = {
   title: "Schedule a Demo | ZenML Labs",
   description:
-    "Bring one agent and a week of traces. Our AI engineer shows you which evals you are missing. Running pipelines too? See how ZenML orchestrates them.",
+    "Bring one agent and a week of traces. Our AI engineers show you which evals you are missing. Running pipelines too? See how ZenML orchestrates them.",
   ogTitle: "Schedule a Demo",
   ogDescription:
-    "Bring one agent and a week of traces. Our AI engineer shows you which evals you are missing. Running pipelines too? See how ZenML orchestrates them.",
+    "Bring one agent and a week of traces. Our AI engineers show you which evals you are missing. Running pipelines too? See how ZenML orchestrates them.",
 };
 
 export const SCHEDULE_A_DEMO_HERO = {

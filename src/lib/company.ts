@@ -12,10 +12,10 @@ import { defaultOgUrl } from "./seo";
 export const COMPANY_SEO = {
   title: "Company - ZenML",
   description:
-    "ZenML has spent five years putting AI into production with some of the world's best companies. Meet the team behind ZenML, Kitaru and our AI engineer.",
+    "ZenML has spent five years putting AI into production with some of the world's best companies. Meet the team behind ZenML, Kitaru and our AI engineers.",
   ogTitle: "Company - ZenML",
   ogDescription:
-    "Five years of putting AI into production. Meet the team behind ZenML, Kitaru and our AI engineer.",
+    "Five years of putting AI into production. Meet the team behind ZenML, Kitaru and our AI engineers.",
   ogImage: defaultOgUrl("pages", "company"),
 } as const;
 
@@ -25,7 +25,7 @@ export const COMPANY_SEO = {
 export const COMPANY_HERO = {
   eyebrow: "Company",
   headline: "Five years of AI in production",
-  deck: "Founders who have built together for ten years. Five years of ZenML, running AI in production for some of the world's best companies. Now the same team builds Kitaru and our AI engineer.",
+  deck: "Founders who have built together for ten years. Five years of ZenML, running AI in production for some of the world's best companies. Now the same team builds Kitaru and our AI engineers.",
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -33,7 +33,7 @@ export const COMPANY_HERO = {
 // ---------------------------------------------------------------------------
 export const COMPANY_ABOUT = {
   headline: "Our company",
-  body: "Our founders have built together for ten years, and ZenML has been their company for five. In that time we have worked with some of the world's best companies to run AI in production: orchestrating pipelines and agents, training and fine-tuning models, and now testing agents with Kitaru and our AI engineer. Everything we build starts open source. We're a remote team with an office in Munich.",
+  body: "Our founders have built together for ten years, and ZenML has been their company for five. In that time we have worked with some of the world's best companies to run AI in production: orchestrating pipelines and agents, training and fine-tuning models, and now testing agents with Kitaru and our AI engineers. Everything we build starts open source. We're a remote team with an office in Munich.",
   image: {
     url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7cea56ef/652ea57525920a782529bb0e_zenml_team_jul23.webp`,
     alt: "Group of people posing in front of a historic statue and building under a blue sky.",

@@ -34,7 +34,7 @@ export type LabsProduct = "zenml" | "kitaru";
 export const LABS_HOME_SEO = {
   title: "ZenML Labs: Find what your evals miss",
   description:
-    "Our AI engineer reads your agent's production traces next to the evals you already run, shows you what those evals miss, and turns a few of your answers into checks you can trust. It can fine-tune a cheaper open model on the same traces. It works on top of open-source Kitaru and ZenML.",
+    "Our AI engineers read your agent's production traces next to the evals you already run, show you what those evals miss, and turn a few of your answers into checks you can trust. It can fine-tune a cheaper open model on the same traces. It works on top of open-source Kitaru and ZenML.",
   surface: "unified" satisfies Surface,
 } as const;
 
@@ -261,7 +261,7 @@ export const LABS_HERO: LabsProductBandContent = {
     analytics: "Hero-Announcement-Labs-Launch",
   },
   headlineLines: ["AI systems should get", "better after they ship"],
-  deck: "AI in production shouldn’t need babysitting. ZenML Pro’s AI engineer reads your traces, finds what broke, and gets the fix ready before your customers notice.",
+  deck: "AI in production shouldn’t need babysitting. ZenML Pro gives you a team of AI engineers that read your traces, find what broke, and get the fix ready before your customers notice.",
   cta: LABS_HERO_SIGNUP,
   installLabel: "Or start open source",
   install: { cmd: KITARU_INSTALL_CMD, analytics: "Hero-Install-Kitaru" },
@@ -318,7 +318,7 @@ export interface ProductDemoContent {
  *  customer result; the benchmark is the measured version. */
 export const LABS_HERO_DEMO: ProductDemoContent = {
   label:
-    "Your AI engineer at work on an insurance claims agent. It imports 18,402 traces from Langfuse, LangSmith and Braintrust where they already live. It reads the agent's code on GitHub and finds the prompt and 9 evals. It finds a gap in the evals: decision_format passed 31 appeals that never reached a decision, so it drafts a decision_made check. It tests a prompt fix as an experiment on 214 past appeals against what runs today: appeals decided go from 86% to 100%, agreement with reviewers from 91.2% to 93.8%, and none of 40 good appeals change. Then it fine-tunes an open model on 41,200 of your traces that passes 9 of 9 evals at $0.10 a decision instead of $0.36.",
+    "An AI engineer at work on an insurance claims agent. It imports 18,402 traces from Langfuse, LangSmith and Braintrust where they already live. It reads the agent's code on GitHub and finds the prompt and 9 evals. It finds a gap in the evals: decision_format passed 31 appeals that never reached a decision, so it drafts a decision_made check. It tests a prompt fix as an experiment on 214 past appeals against what runs today: appeals decided go from 86% to 100%, agreement with reviewers from 91.2% to 93.8%, and none of 40 good appeals change. Then it fine-tunes an open model on 41,200 of your traces that passes 9 of 9 evals at $0.10 a decision instead of $0.36.",
   agent: "claims-agent",
   items: [
     {
@@ -438,7 +438,7 @@ export interface MissedSessionVisualContent {
  */
 export const LABS_HERO_SESSION: MissedSessionVisualContent = {
   label:
-    "An example session from a customer support agent. The customer asks to return shoes bought seven weeks ago, and the agent promises a full refund within 90 days. The team's reply_quality eval passed the reply. Your AI engineer flags it: the refund policy allows 30 days. 41 replies like this passed last week, and it drafts a refund_within_policy check.",
+    "An example session from a customer support agent. The customer asks to return shoes bought seven weeks ago, and the agent promises a full refund within 90 days. The team's reply_quality eval passed the reply. Your AI engineers flag it: the refund policy allows 30 days. 41 replies like this passed last week, and it drafts a refund_within_policy check.",
   session: "session 3318",
   speakers: { customer: "Customer", agent: "support-agent" },
   messages: [
@@ -527,12 +527,12 @@ export interface OnboardingStepsContent {
 }
 
 /** The name the homepage gives the product's agent, shared by the onboarding window and the stack layer. */
-export const AI_ENGINEER = "Your AI engineer";
+export const AI_ENGINEER = "AI engineer";
 
 export const LABS_ONBOARDING: OnboardingStepsContent = {
   eyebrow: "Evals",
   headline: "Your evals can’t keep up with production",
-  deck: "They get written once and drift as your agent changes. Your AI engineer reads your traces next to them, finds the gaps and drafts the checks. You answer a few questions. It works out the rest.",
+  deck: "They get written once and drift as your agent changes. Your AI engineers read your traces next to them, find the gaps and draft the checks. You answer a few questions. It works out the rest.",
   steps: [
     {
       title: "Connect your repos",
@@ -653,10 +653,10 @@ export interface StackLayerContent {
 export const LABS_STACK_LAYER: StackLayerContent = {
   eyebrow: "How it fits",
   headline: "Plugs into the stack you already run",
-  deck: "Nothing to rewrite, no new framework. It reads your repos and traces through keys you can revoke, and the models it trains run in your own cloud.",
+  deck: "Nothing to rewrite, no new framework. They read your repos and traces through keys you can revoke, and the models they train run in your own cloud.",
   layer: {
-    label: "reads all of it, on top of what you already run",
-    title: AI_ENGINEER,
+    label: "read all of it, on top of what you already run",
+    title: "Your AI engineers",
   },
   columns: [
     {
@@ -764,10 +764,10 @@ export const LABS_DOORS: ProductDoorsContent = {
   pro: {
     name: "ZenML Pro",
     tag: `From ${KITARU_CLOUD_PRICE} a month · ${KITARU_TRIAL_DAYS} days free`,
-    headline: "Your AI engineer, across your agents and your ML",
-    body: "ZenML Pro is our paid platform. It hosts Kitaru and ZenML for your team and adds an AI engineer that watches every agent trace and every pipeline run, around the clock. One account, one bill.",
+    headline: "Your AI engineers, across your agents and your ML",
+    body: "ZenML Pro is our paid platform. It hosts Kitaru and ZenML for your team and adds a team of AI engineers that watch every agent trace and every pipeline run, around the clock. One account, one bill.",
     adds: [
-      "AI engineer",
+      "AI engineers",
       "Hosted dashboard",
       "Schedules and alerts",
       "Unlimited seats",
