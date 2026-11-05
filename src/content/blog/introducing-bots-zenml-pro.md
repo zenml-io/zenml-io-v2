@@ -1,5 +1,5 @@
 ---
-title: "Introducing Bots in ZenML Pro for ML pipelines and AI agents"
+title: "Introducing Bots in ZenML Pro: an AI workforce for ML and AI"
 slug: "introducing-bots-zenml-pro"
 draft: true
 author: "alexej-penner"
@@ -13,89 +13,89 @@ tags:
 date: "2026-11-05T00:00:00.000Z"
 readingTime: "5 mins"
 seo:
-  title: "Introducing Bots in ZenML Pro for ML pipelines and AI agents"
-  description: "Meet Bots in ZenML Pro: coding agents that investigate ML pipelines and AI workflows in ZenML, review agent behavior in Kitaru, and propose changes you can review."
+  title: "Introducing Bots in ZenML Pro: an AI workforce for ML and AI"
+  description: "Delegate ML and AI operations to Bots in ZenML Pro: investigate failures, propose fixes, and schedule recurring reviews of pipeline and agent performance."
   canonical: "https://www.zenml.io/blog/introducing-bots-zenml-pro"
 ---
 
-A failed training run, an unexpected AI workflow result, and an agent making the wrong tool call have something in common: understanding what happened takes context. You need the execution record, the relevant code, and a way to test your explanation.
+Your team knows there are failed runs to investigate, expensive workflows to revisit, and agent behaviors that could be improved. The hard part is giving that work consistent attention alongside everything else you need to ship.
 
-Bots bring coding agents into ZenML Pro to help with that work. They can investigate ML pipelines and AI workflows in ZenML, work with recorded agent sessions in Kitaru, and propose changes you can review.
+Bots in ZenML Pro give your team an AI workforce for those tasks. Assign a bot an investigation or schedule a recurring review, and give it a concrete deliverable: a pull request, a validated fix, a cost investigation, or an experiment comparing an agent change against a baseline.
 
-Give a bot a task, follow its progress, and guide it from investigation to a proposed fix.
+Bots work across your repositories and the execution context in ZenML and Kitaru. That connects the work of maintaining ML pipelines and AI workflows with the work of improving the agents running in them.
 
-## Investigate ML pipelines and AI workflows with ZenML
+## Delegate work with a result you can review
 
-When a pipeline fails or a result changes unexpectedly, the evidence often spans several places: run metadata, artifacts, configuration, and repository code.
+A failed pipeline run is a starting point. The useful outcome is understanding the failure, changing the relevant code, and checking whether that change resolves it.
 
-A bot can work across those sources. Start a chat with a reference to a ZenML resource and a concrete request:
+For ML pipelines and AI workflows in ZenML, a task might be:
 
-> Compare this training run with the last successful run. Investigate what changed and propose a fix.
+> Investigate this failed training run, compare it with the last successful run, and open a draft pull request with a fix. Include the evidence behind the change and a validation plan.
 
-The same approach applies to AI workflows:
+The bot can follow the run context into pipeline metadata, artifacts, configuration, and repository code. With an authorized rerun, the investigation can continue through to a new run that tests the proposed fix. Your review has both the code change and the execution evidence behind it.
 
-> Inspect these two runs of our document-processing pipeline. Explain where their outputs diverged and identify the relevant code.
+For an AI document-processing workflow, the deliverable might be a comparison explaining why two runs produced different outputs, alongside a targeted change to the processing code.
 
-Each chat gets its own sandbox: a remote computer prepared with the configured repositories, tools, and setup commands. The bot can inspect the ZenML resources its service account may access, examine code, and produce an explanation or proposed change.
+Results are recorded as artifacts: code diffs, pull requests, reports, charts, comparisons, and links to the relevant runs and model versions. You can find the proposed action and its evidence without reconstructing the investigation from a conversation.
 
-## Investigate agent behavior with Kitaru
+## Improve AI agents with Kitaru
 
-For agents, a completed execution can still contain behavior you want to improve. An agent might choose an unsuitable tool, repeat an unnecessary step, or produce an answer that misses the user's intent.
+For agents, a successful execution does not necessarily mean good behavior. Repeated tool calls, unnecessary model requests, and poor tool selection can all leave room for improvement.
 
-Bots can work with Kitaru resources—including recorded sessions, investigations, cohorts, evaluators, experiments, and comparisons—to help investigate those behaviors and test a change.
+Bots can work with Kitaru's recorded sessions, investigations, cohorts, evaluators, experiments, and comparisons. This gives a bot a path from a specific behavior to a proposed change and a measured comparison.
 
 For example:
 
-> Investigate why the agent repeated this tool call. Show me the relevant session evidence and propose a change.
+> Investigate repeated tool calls in this cohort. Propose a change, then use the agreed evaluator to compare it with the baseline. Report quality, cost, and latency trade-offs.
 
-Once you have reviewed the finding, a follow-up could be:
+The deliverable is an experiment your team can inspect, with the sessions and evaluator results behind the recommendation. A candidate model or prompt change can be assessed against recorded behavior before you decide to roll it out.
 
-> Use this cohort and evaluator to compare the proposed change with the baseline. Summarize where it helped and where it regressed.
+This is particularly useful for model choice. You can ask a bot to help test whether a cheaper model handles a particular workload well enough, with a bounded cohort and explicit quality criteria. The comparison makes the trade-off visible; savings depend on what the experiment establishes.
 
-That supports a workflow from reviewing recorded behavior to evaluating a bounded change. The result can include session references, comparison artifacts, and a code diff or draft pull request for your review.
+## Put recurring work on a schedule
 
-## Stay involved while the bot works
+You do not need to start every investigation in a chat. Automations run a configured bot with a fixed prompt on a schedule, so the work can begin before someone remembers to ask.
 
-The bot's messages, commands, and tool calls appear in the chat as they happen. You can steer the investigation immediately:
+For example, you could give a bot a daily task:
 
-> Focus on the retrieval step. Keep the model unchanged for this comparison.
+> Review yesterday's failed pipeline runs. Investigate recurring failures, link the affected runs, and open draft pull requests where a code fix is clear. Report anything that needs an engineer's decision.
 
-You can also queue instructions for later or interrupt the current turn. When the bot needs a decision, it can ask a question and wait for your answer. Its instructions require it to seek approval before an unrequested rerun, replay, or promotion.
+Or give another bot a weekly cost review:
 
-Results appear as artifacts: reports, code changes, charts, pull request links, and references to ZenML or Kitaru resources. This keeps the evidence and proposed action together for review.
+> Review the selected AI workflows and agent sessions for avoidable work. Investigate repeated calls and expensive execution patterns. Rank proposed improvements by the available evidence, and identify one bounded experiment worth running.
 
-After inactivity, the sandbox stops. Continuing the chat resumes it with its files intact, without repeating the repository checkout and setup.
+These are tasks you configure around the data your bot can access. Where usage or cost data is available, the review can use it; where a saving needs validation, the output can be an experiment proposal. You define the scope and the actions the recurring task is authorized to take.
 
-## Configure bots around your workflows
+That creates a practical FinOps workflow: regularly look for waste, propose a change, and compare its cost and quality before adopting it. Engineers can spend their attention reviewing findings and deciding what to ship.
 
-A bot is a reusable configuration combining instructions, skills, an environment, and access to external services.
+Each scheduled execution has its own chat and recorded outputs. Reports from work started in Slack or GitHub return to their associated threads, and bots can send Slack notifications when something needs your attention.
 
-You might configure one bot for pipeline troubleshooting and another for agent investigations. Their instructions and skills can describe your team's procedures, repository conventions, and evaluation practices.
+## Shared context and repeatable working environments
 
-An environment defines the repositories, setup commands, and variables available in the sandbox. Connectors add tools from services such as GitHub, Notion, Context7, Firecrawl, and Tavily. Custom MCP servers are supported too.
+A bot combines your team's instructions and skills with a prepared environment and a ZenML Pro service account. You might have a pipeline maintenance bot and an agent evaluation bot, each with its own procedures and access.
 
-Built-in skills help bots work with ZenML and Kitaru when they can reach a workspace of that type.
+The environment defines the repositories and setup commands. Skills capture how your team investigates failures, evaluates changes, and prepares pull requests. Connectors add services such as GitHub, Notion, Context7, Firecrawl, and Tavily; custom MCP servers are supported too.
 
-## Bring the work into Slack and GitHub
+Every task gets an isolated sandbox prepared from that configuration. Built-in skills help the bot work with the ZenML and Kitaru workspaces it can reach. Resource references connect an investigation to the relevant run, session, cohort, or experiment, and the results remain attached to that work.
 
-Bots are available through the ZenML Pro dashboard, Slack, GitHub, the SDK, and the API.
+The configuration is reusable across engineers, scheduled tasks, and requests from the dashboard, Slack, GitHub, SDK, or API. Your team can delegate the same class of work consistently without preparing a local workspace for each investigation or keeping a laptop session running.
 
-Once the apps are installed and your identity is linked, you can mention the ZenML Pro app in Slack or `@zenml-pro` on a GitHub issue or pull request. The bot posts questions and reports back to the associated thread, with a link to the full chat.
+## Set the scope of your AI workforce
 
-Automations can start chats on a schedule—for example, to investigate failed pipeline runs or prepare a recurring review of recorded agent sessions.
+Each bot acts through its own ZenML Pro service account. Its roles determine which ZenML and Kitaru workspaces and resources it can access. Separate permissions control who may use and manage the bot.
 
-## Give bots the access they need
-
-Each bot acts through a ZenML Pro service account. Its roles determine which ZenML and Kitaru workspaces and resources the bot can access. Separate permissions control who may use and manage the bot.
+Give each bot the access its responsibilities require, and make the expected deliverable explicit. A recurring investigation can prepare a report or draft pull request; an explicitly authorized task can also run a bounded validation. The agent's instructions require it to ask before an unrequested rerun, replay, or promotion.
 
 For supported integrations, a proxy adds credentials outside the sandbox, allowing the bot to use the service without receiving its underlying stored key. Environment secrets and custom MCP server keys are available inside the sandbox and should be configured accordingly.
 
 Bots currently run as a shared ZenML-managed service. Workspace servers must be reachable from their sandboxes.
 
-## Start with one investigation
+## Start with one recurring responsibility
 
-Choose a task with clear evidence and a reviewable outcome: explain a failed ML pipeline, compare AI workflow runs, or investigate an agent session in Kitaru.
+Choose work your team wants done consistently: investigating failed ML pipelines, reviewing AI workflow regressions, or finding an agent improvement worth testing in Kitaru.
 
-Bots give that investigation a prepared workspace, access to the relevant execution context, and a conversation where your team can guide the work and review the result.
+Configure a bot with the relevant repositories, skills, and permissions. Give it a clear output to produce, review the first results, and put the task on a schedule when the scope is right.
+
+Your team gets investigations, proposed fixes, and evaluation results ready for review—even when nobody is sitting in a chat asking for them.
 
 [Explore the Bots documentation](https://docs.zenml.io/pro/bots/bots).
