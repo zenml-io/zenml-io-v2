@@ -3,7 +3,7 @@ title: "Introducing Bots: a team of AI engineers in ZenML Pro"
 slug: "introducing-bots-zenml-pro"
 draft: false
 author: "alexej-penner"
-category: "kitaru"
+category: "zenml-updates"
 tags:
   - "kitaru"
   - "zenml"
