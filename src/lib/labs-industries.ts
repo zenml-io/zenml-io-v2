@@ -155,7 +155,7 @@ const INSURANCE_DEMO: ProductDemoContent = {
   items: [
     {
       kind: "sources",
-      text: "Imported your traces from where they already live.",
+      text: "Imports your traces from where they already live.",
       sources: [
         { name: "Langfuse", logo: "/compare/langfuse.svg" },
         { name: "LangSmith", logo: "/compare/langsmith.svg" },
@@ -165,20 +165,20 @@ const INSURANCE_DEMO: ProductDemoContent = {
     },
     {
       kind: "repo",
-      text: "Read your agent’s code and your manual on GitHub.",
+      text: "Reads your agent’s code and your manual on GitHub.",
       repo: "acme/underwriting-agent",
       files: ["prompt.py", "evals/ · 12 evals", "uw_manual.md"],
     },
     {
       kind: "gap",
-      text: "Found a gap in your evals.",
+      text: "Finds a gap in your evals.",
       title: "41 quotes left out the flood exclusion",
       body: "All for properties in FEMA flood zones. quote_completeness passed every one.",
       check: "+ flood_exclusion check",
     },
     {
       kind: "experiment",
-      text: "Tested a fix against what runs today.",
+      text: "Tests a fix against what runs today.",
       title: "Experiment · 1,482 past quotes, 3 runs each",
       columns: ["", "Today", "With the fix"],
       rows: [
@@ -194,7 +194,7 @@ const INSURANCE_DEMO: ProductDemoContent = {
     },
     {
       kind: "finetune",
-      text: "Trained a cheaper model on your quotes.",
+      text: "Trains a cheaper model on your quotes.",
       model: "uw-8b, fine-tuned on 36,900 quotes",
       rows: [
         { label: "Evals passed", value: "12 of 12" },
@@ -295,7 +295,7 @@ const FINANCE_DEMO: ProductDemoContent = {
   items: [
     {
       kind: "sources",
-      text: "Imported your traces from where they already live.",
+      text: "Imports your traces from where they already live.",
       sources: [
         { name: "Langfuse", logo: "/compare/langfuse.svg" },
         { name: "LangSmith", logo: "/compare/langsmith.svg" },
@@ -305,20 +305,20 @@ const FINANCE_DEMO: ProductDemoContent = {
     },
     {
       kind: "repo",
-      text: "Read your agent’s code and your procedures on GitHub.",
+      text: "Reads your agent’s code and your procedures on GitHub.",
       repo: "acme/kyc-agent",
       files: ["prompt.py", "evals/ · 10 evals", "kyc_procedures.md"],
     },
     {
       kind: "gap",
-      text: "Found a gap in your evals.",
+      text: "Finds a gap in your evals.",
       title: "29 high-risk cases closed without a source-of-funds check",
       body: "Every one an enhanced due diligence case. case_summary_quality passed them all.",
       check: "+ source_of_funds check",
     },
     {
       kind: "experiment",
-      text: "Tested a fix against what runs today.",
+      text: "Tests a fix against what runs today.",
       title: "Experiment · 940 past cases, 3 runs each",
       columns: ["", "Today", "With the fix"],
       rows: [
@@ -330,7 +330,7 @@ const FINANCE_DEMO: ProductDemoContent = {
     },
     {
       kind: "finetune",
-      text: "Trained a cheaper model on your cases.",
+      text: "Trains a cheaper model on your cases.",
       model: "kyc-8b, fine-tuned on 28,400 cases",
       rows: [
         { label: "Evals passed", value: "10 of 10" },

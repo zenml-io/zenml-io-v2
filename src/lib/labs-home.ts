@@ -261,7 +261,7 @@ export const LABS_HERO: LabsProductBandContent = {
     analytics: "Hero-Announcement-Labs-Launch",
   },
   headlineLines: ["AI systems should get", "better after they ship"],
-  deck: "AI in production shouldn’t need babysitting. ZenML Pro gives you a team of AI engineers that read your traces, find what broke, and get the fix ready before your customers notice.",
+  deck: "AI in production shouldn’t need babysitting. ZenML Pro gives you a team of AI engineers. Connect your traces and your repo. They find what broke, test the fix, and train a cheaper model. You approve what ships.",
   cta: LABS_HERO_SIGNUP,
   installLabel: "Or start open source",
   install: { cmd: KITARU_INSTALL_CMD, analytics: "Hero-Install-Kitaru" },
@@ -323,7 +323,7 @@ export const LABS_HERO_DEMO: ProductDemoContent = {
   items: [
     {
       kind: "sources",
-      text: "Imported your traces from where they already live.",
+      text: "Imports your traces from where they already live.",
       sources: [
         { name: "Langfuse", logo: "/compare/langfuse.svg" },
         { name: "LangSmith", logo: "/compare/langsmith.svg" },
@@ -333,20 +333,20 @@ export const LABS_HERO_DEMO: ProductDemoContent = {
     },
     {
       kind: "repo",
-      text: "Read your agent’s code on GitHub.",
+      text: "Reads your agent’s code on GitHub.",
       repo: "acme/claims-agent",
       files: ["agent.py", "prompt.py", "evals/ · 9 evals"],
     },
     {
       kind: "gap",
-      text: "Found a gap in your evals.",
+      text: "Finds a gap in your evals.",
       title: "31 appeals never reached a decision",
       body: "All since Tuesday’s switch to a cheaper model. decision_format passed every one.",
       check: "+ decision_made check",
     },
     {
       kind: "experiment",
-      text: "Tested a fix against what runs today.",
+      text: "Tests a fix against what runs today.",
       title: "Experiment · 214 past appeals, 3 runs each",
       columns: ["", "Today", "With the fix"],
       rows: [
@@ -362,7 +362,7 @@ export const LABS_HERO_DEMO: ProductDemoContent = {
     },
     {
       kind: "finetune",
-      text: "Trained a cheaper model on your traces.",
+      text: "Trains a cheaper model on your traces.",
       model: "claims-8b, fine-tuned on 41,200 traces",
       rows: [
         { label: "Evals passed", value: "9 of 9" },
