@@ -10,7 +10,7 @@ tags:
   - "agents"
   - "mlops"
   - "llmops"
-date: "2026-11-05T00:00:00.000Z"
+date: "2026-11-06T00:00:00.000Z"
 readingTime: "5 mins"
 seo:
   title: "Introducing Bots: a team of AI engineers in ZenML Pro"
@@ -18,13 +18,11 @@ seo:
   canonical: "https://www.zenml.io/blog/introducing-bots-zenml-pro"
 ---
 
-In [Introducing ZenML Labs](/blog/introducing-zenml-labs), we shared our vision for building AI systems with a team of AI engineers. Here is how those engineers can help with the work your team needs to do.
-
 There are failed runs to investigate, expensive workflows to revisit, and agent behaviors that could be improved. The hard part is giving that work consistent attention alongside everything else you need to ship.
 
-Bots in ZenML Pro give you a team of AI engineers for those tasks. Assign a bot an investigation or schedule a recurring review, and give it a concrete deliverable: a pull request, a validated fix, a cost investigation, or an experiment comparing an agent change against a baseline.
+Today we are introducing Bots in ZenML Pro: an always-on team of AI engineers for those tasks. Ask a bot to investigate, or schedule it to run a recurring review. Give it a concrete deliverable: a pull request, a validated fix, a cost investigation, or an experiment comparing an agent change against a baseline.
 
-Bots work across your repositories and your runs and recorded agent sessions in ZenML and Kitaru. That connects the work of maintaining ML pipelines and AI workflows with the work of improving the agents running in them. Below, we look at the results bots can produce, a claims-agent benchmark, and how to put recurring investigations on a schedule.
+Bots work across your repositories, ZenML runs, and Kitaru agent sessions. That connects the work of maintaining ML pipelines and AI workflows with the work of improving the agents running in them. Below, we look at the results bots can produce, a claims-agent benchmark, and how to put recurring investigations on a schedule.
 
 ## Delegate work with a result you can review
 
