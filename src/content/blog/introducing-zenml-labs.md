@@ -27,7 +27,7 @@ If you've been around since August, you may have already noticed: a new logo, ne
 
 **ZenML Labs** is now the company behind [**ZenML**](https://github.com/zenml-io/zenml), [**Kitaru**](https://github.com/zenml-io/kitaru) and [**ZenML Pro**](https://www.zenml.io/pro).
 
-Why "Labs"? Because we keep building what teams running AI in production need next. The new name reflects where we are and where we're going.
+Why "Labs"? Because we keep building what's next for teams running AI in production.
 
 *[Placeholder: ZenML Labs film]*
 
@@ -45,7 +45,7 @@ So we built Kitaru. It finds where your agent goes wrong, and it tests every cha
 
 This led us to talk with teams running agents in security, insurance, healthcare, banking and fintech.
 
-Nobody asked for another dashboard. They wanted someone to do the work. This made us realize something more fundamental.
+Nobody asked for another dashboard. They wanted someone to do the work. That's a different kind of tool.
 
 ## Dev tools are becoming agent harnesses
 
@@ -55,7 +55,7 @@ That's changing. The first user of a dev tool is now often an agent. Coding agen
 
 So the job of a tool changes too. It has to give an agent context, limits, and a way to prove its work. And it has to put a person where it matters.
 
-Keeping AI good in production means reading traces, deciding which failures matter, writing the check, testing the fix, training a better model and getting it deployed. That's exactly the work agents are now good at.
+Keeping AI good in production means reading traces, deciding which failures matter, writing the check, testing the fix, training a better model and getting it deployed. Agents can do that work, given the right context and limits.
 
 That's why we built our own agent harness into ZenML Pro. It powers our new agent-first experience, and it comes with ZenML and Kitaru skills built in, tuned for the whole job of running AI in production: writing evals that hold up and fixing what breaks today, and soon fine-tuning models on your traces and deploying them. Agents or classic ML models.
 
@@ -67,11 +67,11 @@ Our goal is simple. AI in production shouldn't need babysitting. It should keep 
 
 ## First: what your evals miss
 
-We start with agents because that's where things break fastest. In [our claims benchmark](https://www.zenml.io/benchmarks/claims-over-time), switching to a cheaper open model left about 1 in 10 appeals ending with no decision. A general coding agent, asked to improve things, never fixed the cause. Our AI engineer did, and finished 3.3 points ahead over 800 real appeals. The test favored us on purpose, and the write-up says how.
+We start with agents because that's where things break fastest. In [our claims benchmark](https://www.zenml.io/benchmarks/claims-over-time), switching to a cheaper open model left about 1 in 10 appeals ending with no decision. A general coding agent, asked to improve things, reduced the damage but never fixed the cause. Our AI engineer agent did, and finished 3.3 points ahead over 800 real appeals. The test favored us on purpose, and the write-up says how.
 
-You only catch that by reading every session. So the first job is the evals. Most teams find out what broke from a customer, not from their evals.
+Finding that took counting how every session ended, an eval nobody had written. That's why we start by improving your evals. Most teams find out what broke from a customer, not from their evals.
 
-Your evals are probably right most of the time. Say 80%. The rest of your problems hides in thousands of traces, and that last 20% is where your customers get hurt. Nobody can read every trace. Reading a random sample misses the pattern.
+Your evals are probably right most of the time. Say 80%. The rest of your problems hides in thousands of traces, and that last 20% is where your customers get hurt. Nobody can read every trace. A sample can tell you something's wrong, but rarely why, or what else is hiding.
 
 Your AI engineers read all of them, next to the evals you already run. They group the sessions that went wrong the same way and put the few worth your time at the top. You review what matters, not everything.
 
@@ -79,25 +79,23 @@ Picture an insurance claims agent. After a switch to a cheaper model, 31 of 214 
 
 Your AI engineers flag patterns like this and draft a `decision_made` check to catch the next one.
 
-![Insights for a claims agent: appeals end without a decision on the new model, and why appeals failed](https://assets.zenml.io/content/blog/introducing-zenml-labs/8f315e65/claims-insights.avif)
+![Example: insights for a claims agent. Appeals end without a decision on the new model, and why appeals failed](https://assets.zenml.io/content/blog/introducing-zenml-labs/8f315e65/claims-insights.avif)
 
-You don't write evals from scratch. Connect GitHub and they find your agent, your evals and your policies. They ask only what they can't work out alone.
+You don't write evals from scratch. Connect GitHub and they find your agent, your evals and your policies. They ask only what they can't work out alone. They read your repos and traces through keys you can revoke, and we store only metadata. Need nothing to leave your infrastructure? Run them in your own cloud, with your own LLM endpoint.
 
-When they have a fix, they run it as an experiment on past appeals, side by side with what runs today. Appeals decided go from 86% to 100%. Agreement with your reviewers goes up. None of the 40 good appeals change. That is the evidence you see before anything ships.
+When they have a fix, they run it as an experiment on past appeals, side by side with what runs today. Say appeals decided go from 86% to 100%, agreement with your reviewers goes up, and none of the 40 good appeals change. You see all of that before anything ships.
 
-![An experiment on 214 past appeals: with the fix, appeals decided go from 86% to 100%, agreement with reviewers from 91.2% to 93.8%, and 0 of 40 good appeals change](https://assets.zenml.io/content/blog/introducing-zenml-labs/9d4c2bb8/claims-experiment.avif)
+![Example: an experiment on 214 past appeals. With the fix, appeals decided go from 86% to 100%, agreement with reviewers from 91.2% to 93.8%, and 0 of 40 good appeals change](https://assets.zenml.io/content/blog/introducing-zenml-labs/9d4c2bb8/claims-experiment.avif)
 
 ## Next: your own model, on your infrastructure
 
-Your traces are also training data. And training models is what we've done for five years.
+Your traces are also training data. And running training pipelines is what we've done for five years.
 
 It's on our roadmap: your AI engineers fine-tune a cheaper open model on your traces, as a ZenML pipeline on your own infrastructure, and hold it to the same evals. You approve the switch. You get the weights. Want it sooner? [Tell us](https://www.zenml.io/book-your-demo).
 
-They read your repos and traces through keys you can revoke. Your data stays where it is.
-
 ## If you already run ZenML
 
-ZenML isn't the old product. It's half of the plan. Agents end up needing everything ML needed: training data, fine-tuning runs, evaluation pipelines, models you can version and roll back. We've spent five years building exactly that. When your AI engineers fine-tune a model on your traces, that will run as a ZenML pipeline on your infrastructure. So we keep investing in the open-source core, and nothing you depend on goes away.
+ZenML is half of the plan. Agents end up needing everything ML needed: training data, fine-tuning runs, evaluation pipelines, models you can version and roll back. We've spent five years building exactly that. When your AI engineers fine-tune a model on your traces, that will run as a ZenML pipeline on your infrastructure. We keep shipping in the open-source core too, like [resource pools](https://github.com/zenml-io/zenml/releases/tag/0.97.0). See the [release notes](https://github.com/zenml-io/zenml/releases). Nothing you depend on goes away.
 
 - **Your pipelines keep running.** Same SDK, same stacks, same integrations. No code changes.
 - **The dashboard looks new.** Same runs, models and artifacts, in the new design.
@@ -121,7 +119,7 @@ When we started, we had one product. Today we have three.
 
 - [**ZenML**](https://github.com/zenml-io/zenml): AI orchestration, on the infra you choose.
 - [**Kitaru**](https://github.com/zenml-io/kitaru): find what your agent's evals miss, from production sessions.
-- [**ZenML Pro**](https://www.zenml.io/pro): the managed platform across both, with a team of AI engineers on top.
+- [**ZenML Pro**](https://www.zenml.io/pro): the managed platform across both, with a team of autonomous AI engineers on top.
 
 ZenML and Kitaru stay open source under Apache 2.0, free to run on your own machines.
 
