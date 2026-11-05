@@ -39,7 +39,7 @@
  *   `titleSource` = the post title, `subtitleSource` = seo.description. Both are
  *   INPUT ONLY; neither is written to the cover as-is.
  *   `headline` = --title, else the title with trailing clauses/questions dropped
- *   at a punctuation boundary until it fits `titleBudget` (55 chars on Text /
+ *   at a punctuation boundary until it fits `titleBudget` (90 chars on Text /
  *   Full Bleed, 60 on Panel Bottom / Image Left / Image Right ≈ three lines).
  *   A derived headline that still exceeds the budget is a question (pass --title);
  *   a supplied one that exceeds it gets a warning (stderr + `suggestions`).
@@ -149,8 +149,8 @@ const MAX_SWAPS_PER_CALL = 7;
 
 // Copy budgets (A8). Headline ≈ three lines of Borna Medium 80px on the layout's measure.
 const TITLE_BUDGET: Record<Layout, number> = {
-  Text: 55,
-  "Full Bleed": 55,
+  Text: 90,
+  "Full Bleed": 90,
   "Panel Bottom": 60,
   "Image Left": 60,
   "Image Right": 60,
@@ -170,6 +170,15 @@ const TITLE_MEASURE: Record<Layout, number> = {
 // (18 chars) held one line, "Braintrust Pricing Guide" (24) wrapped. Wider measures are scaled
 // from this anchor — an estimate, never a substitute for the S6 screenshot.
 const CHARS_PER_LINE_ANCHOR = { measure: 800, chars: 18 };
+// Copy fit (owner rule 2026-11-05): Panel Bottom is for short copy. Longer copy goes to a layout with
+// no division (Text, Full Bleed) or to two columns (Image Left, Image Right), never into the panel.
+const COPY_FIT: Record<Layout, { titleLines: number; subtitleChars: number }> = {
+  "Panel Bottom": { titleLines: 2, subtitleChars: SUBTITLE_MAX },
+  Text: { titleLines: 3, subtitleChars: 100 },
+  "Full Bleed": { titleLines: 3, subtitleChars: 100 },
+  "Image Left": { titleLines: 3, subtitleChars: 100 },
+  "Image Right": { titleLines: 3, subtitleChars: 100 },
+};
 const VS_TITLE_MAX = 34;
 const VS_FOR_LINE_MAX = 34; // "for " + qualifier, whole line
 
@@ -213,6 +222,15 @@ function estimateLines(text: string, perLine: number): string[] {
   }
   if (cur) lines.push(cur);
   return lines;
+}
+
+function copyFits(layout: Layout, title: string, subtitle: string): boolean {
+  const fit = COPY_FIT[layout];
+  return (
+    title.length <= TITLE_BUDGET[layout] &&
+    estimateLines(title, charsPerLine(layout)).length <= fit.titleLines &&
+    subtitle.length <= fit.subtitleChars
+  );
 }
 
 function normalizeCopy(s: string): string {
@@ -673,7 +691,9 @@ function main(): void {
       questions.push(`--layout "${args.layout}" is outside the legal set [${legalLayouts.join(", ")}] (adjacent layouts: ${[...adjacentLayouts].join(", ") || "none"}; launch title: ${isLaunch}). Confirm the override?`);
     }
   } else if (legalLayouts.length > 0) {
-    chosenLayout = legalLayouts[0];
+    const plannedTitle = args.title?.trim() ?? post.title;
+    const plannedSubtitle = args.noSubtitle ? "" : (args.subtitle?.trim() ?? "");
+    chosenLayout = isVs ? legalLayouts[0] : (legalLayouts.find((l) => copyFits(l, plannedTitle, plannedSubtitle)) ?? legalLayouts[0]);
   } else {
     chosenLayout = FALLBACK_LAYOUT;
     questions.push(`No layout satisfies the design rules for slot ${slotIndex} (adjacent layouts: ${[...adjacentLayouts].join(", ")}). Which layout should be used?`);
@@ -741,7 +761,8 @@ function main(): void {
     subtitle = args.subtitle.trim();
     showSubtitle = subtitle.length > 0;
     if (/[\r\n]/.test(subtitle)) questions.push("--subtitle must be a single line (no line breaks).");
-    if (subtitle.length > SUBTITLE_MAX) warn(`Subtitle is ${subtitle.length} chars; the limit is ${SUBTITLE_MAX} (one line). Shorten it, or drop --subtitle to use the derived default.`);
+    const subtitleLimit = COPY_FIT[chosenLayout as Layout]?.subtitleChars ?? SUBTITLE_MAX;
+    if (subtitle.length > subtitleLimit) warn(`Subtitle is ${subtitle.length} chars; the limit on "${chosenLayout}" is ${subtitleLimit}. Shorten it, or drop --subtitle to use the derived default.`);
     if (post.description && normalizeCopy(subtitle) === normalizeCopy(post.description)) {
       questions.push("--subtitle equals seo.description. The subtitle is written by the agent (one line at most 55 chars that adds something the title does not say); seo.description is input only, never copied onto the cover. Pass a shorter line, or --no-subtitle.");
     } else if (subtitle && restatesHeadline(subtitle)) {
@@ -760,6 +781,11 @@ function main(): void {
     if (subtitle && restatesHeadline(subtitle)) {
       suggestions.push(`Derived subtitle "${subtitle}" restates the headline. Pass --subtitle "<better line>" or --no-subtitle.`);
     }
+  }
+  if (!isVs && !fallback && !copyFits(chosenLayout as Layout, headline, subtitle)) {
+    const fits = legalLayouts.find((l) => copyFits(l, headline, subtitle));
+    const remedy = fits ? `Move it to a layout that holds it: --layout "${fits}".` : "No legal layout at this slot holds it: shorten the copy.";
+    suggestions.push(`This copy is too long for "${chosenLayout}". ${remedy}`);
   }
   if (isLaunch && chosenLayout !== "Full Bleed") suggestions.push("Launch-style title: consider --layout 'Full Bleed'.");
 
