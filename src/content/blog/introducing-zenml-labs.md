@@ -53,9 +53,9 @@ So the job of a tool changes too. It has to give an agent context, limits, and a
 
 Building Kitaru showed us this up close. Keeping an agent good means reading traces, deciding which failures matter, writing the check and testing the fix. That's exactly the work agents are now good at.
 
-So we built our own harness into ZenML Pro: **AI bots**. They come with ZenML and Kitaru skills built in, tuned for the work we know best: writing evals that hold up, fine-tuning models and deploying them. Agents or classic ML models.
+So we built our own harness into ZenML Pro: **Bots**. They come with ZenML and Kitaru skills built in, tuned for the work we know best: writing evals that hold up, fine-tuning models and deploying them. Agents or classic ML models.
 
-Think of each bot as an AI engineer on your team. Spin up one per agent, model or job. Each one does the work and shows you the evidence. You decide what ships. [More on AI bots](https://www.zenml.io/blog/introducing-ai-bots-to-pro).
+Think of each bot as an AI engineer on your team. Spin up one per agent, model or job. Each one does the work and shows you the evidence. You decide what ships. [More on Bots](https://www.zenml.io/blog/introducing-bots-zenml-pro).
 
 ![Your AI engineer at work on a claims agent: imports traces, reads the code, finds a gap in the evals, tests a fix against what runs today, and trains a cheaper model](https://assets.zenml.io/content/blog/introducing-zenml-labs/81520729/claims-feed.avif)
 
@@ -113,7 +113,7 @@ When we started, we had one product. Today we have three.
 
 - [**ZenML**](https://github.com/zenml-io/zenml): AI orchestration, on the infra you choose.
 - [**Kitaru**](https://github.com/zenml-io/kitaru): find what your agent's evals miss, from production sessions.
-- [**ZenML Pro**](https://www.zenml.io/pro): the managed platform across both, with AI bots on top.
+- [**ZenML Pro**](https://www.zenml.io/pro): the managed platform across both, with Bots on top.
 
 ZenML and Kitaru stay open source under Apache 2.0, free to run on your own machines.
 
