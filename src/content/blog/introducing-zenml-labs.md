@@ -97,7 +97,7 @@ They read your repos and traces through keys you can revoke. Your data stays whe
 
 ## If you already run ZenML
 
-ZenML isn't the old product. It's half of the plan. When your AI engineers fine-tune a model on your traces, that will run as a ZenML pipeline on your infrastructure. So we keep investing in the open-source core, and nothing you depend on goes away.
+ZenML isn't the old product. It's half of the plan. Agents end up needing everything ML needed: training data, fine-tuning runs, evaluation pipelines, models you can version and roll back. We've spent five years building exactly that. When your AI engineers fine-tune a model on your traces, that will run as a ZenML pipeline on your infrastructure. So we keep investing in the open-source core, and nothing you depend on goes away.
 
 - **Your pipelines keep running.** Same SDK, same stacks, same integrations. No code changes.
 - **The dashboard looks new.** Same runs, models and artifacts, in the new design.

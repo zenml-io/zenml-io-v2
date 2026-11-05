@@ -858,7 +858,7 @@ export interface LogoGridContent {
 }
 
 export const LABS_LOGO_GRID: LogoGridContent = {
-  headline: "Trusted to run production AI, from pipelines to agents, at",
+  headline: "Five years running AI in production, from pipelines to agents, at",
   logos: LOGO_CLOUD.logos,
 };
 
