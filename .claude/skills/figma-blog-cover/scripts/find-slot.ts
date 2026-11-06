@@ -744,7 +744,7 @@ function main(): void {
     chosenLayout = isVs ? legalLayouts[0] : (variedLayouts.find((l) => copyFits(l, plannedTitle, plannedSubtitle)) ?? variedLayouts[0]);
   } else {
     chosenLayout = FALLBACK_LAYOUT;
-    questions.push(`No layout satisfies the design rules for slot ${slotIndex} (adjacent layouts: ${[...adjacentLayouts].join(", ")}). Which layout should be used?`);
+    if (!isVs) questions.push(`No layout satisfies the design rules for slot ${slotIndex} (adjacent layouts: ${[...adjacentLayouts].join(", ")}). Which layout should be used?`);
   }
 
   // Chosen background (override or first legal for the chosen layout)
@@ -811,10 +811,10 @@ function main(): void {
     showSubtitle = subtitle.length > 0;
     if (/[\r\n]/.test(subtitle)) questions.push("--subtitle must be a single line (no line breaks).");
     const subtitleLimit = COPY_FIT[chosenLayout as Layout]?.subtitleChars ?? SUBTITLE_MAX;
-    if (subtitle.length > subtitleLimit) warn(`Subtitle is ${subtitle.length} chars; the limit on "${chosenLayout}" is ${subtitleLimit}. Shorten it, or drop --subtitle to use the derived default.`);
-    if (post.description && normalizeCopy(subtitle) === normalizeCopy(post.description)) {
+    if (!isVs && subtitle.length > subtitleLimit) warn(`Subtitle is ${subtitle.length} chars; the limit on "${chosenLayout}" is ${subtitleLimit}. Shorten it, or drop --subtitle to use the derived default.`);
+    if (!isVs && post.description && normalizeCopy(subtitle) === normalizeCopy(post.description)) {
       questions.push("--subtitle equals seo.description. The subtitle is written by the agent (one line at most 55 chars that adds something the title does not say); seo.description is input only, never copied onto the cover. Pass a shorter line, or --no-subtitle.");
-    } else if (subtitle && restatesHeadline(subtitle)) {
+    } else if (!isVs && subtitle && restatesHeadline(subtitle)) {
       (codeRoute ? questions : suggestions).push("--subtitle restates the headline. Keep a subtitle only when it adds something the title does not say; otherwise pass --no-subtitle.");
     }
   } else if (args.noSubtitle) {
@@ -900,7 +900,15 @@ function main(): void {
     if (resolvedAliases.length > 0) {
       suggestions.push(`Resolved via references/service-logo-keys.md Aliases: ${resolvedAliases.map((s) => `${s} -> ${aliases.get(s)}`).join(", ")}.`);
     }
-    const missing = comparison.filter((c) => c.key === null).map((c) => (c.canonical !== c.slug ? `${c.slug} (aliased to ${c.canonical}, no key for either)` : c.slug));
+    const logoFile = (slug: string): string => join(SKILL_DIR, "assets/service-logos", `${slug}.svg`);
+    if (codeRoute) {
+      const noFile = comparison.filter((c) => !existsSync(logoFile(c.canonical)) && !existsSync(logoFile(c.slug))).map((c) => c.slug);
+      if (noFile.length > 0) {
+        questions.push(`No logo in assets/service-logos for: ${noFile.join(", ")}. Add the mark (references/add-mark.md), or re-run with --fallback "<reason>" instead of --comparison for a Panel Bottom cover.`);
+      }
+      if (args.logo !== undefined && args.logo !== brand) questions.push(`A VS card carries the ${brand} logo; --logo "${args.logo}" only applies to covers.`);
+    }
+    const missing = codeRoute ? [] : comparison.filter((c) => c.key === null).map((c) => (c.canonical !== c.slug ? `${c.slug} (aliased to ${c.canonical}, no key for either)` : c.slug));
     if (missing.length > 0) {
       questions.push(`No ServiceLogo key for: ${missing.join(", ")}. If the mark belongs to a parent brand under a different slug, add a row to the Aliases section of references/service-logo-keys.md instead of minting a duplicate mark. Otherwise read mainComponent.key off an existing ServiceLogo/<slug> instance in the file, or exact-name-match "ServiceLogo/<slug>" via get_libraries/search_design_system (fuzzy matches rejected); append new keys to references/service-logo-keys.md. Otherwise re-run find-slot with --fallback "<reason>" (Panel Bottom cover) and report it.`);
     }
@@ -939,8 +947,11 @@ function main(): void {
     const vsRest = args.subtitle?.trim() ?? (forIdx > 0 ? post.title.slice(forIdx + 5).trim() : "");
     const forLine = `for ${vsRest}`;
     if (!vsRest) suggestions.push("Could not derive the VS sub-line from the title; pass --subtitle '<rest>' (rendered as 'for <rest>').");
-    if (vsTitle.length > VS_TITLE_MAX) warn(`VS title is ${vsTitle.length} chars; the limit is ${VS_TITLE_MAX} (e.g. "8 Braintrust Alternatives"). Pass a shorter --title.`);
-    if (vsRest && forLine.length > VS_FOR_LINE_MAX) warn(`VS "for" line is ${forLine.length} chars ("${forLine}"); the limit is ${VS_FOR_LINE_MAX}. Pass a shorter --subtitle.`);
+    if (!args.noSubtitle && vsRest && normalizeCopy(vsTitle).includes(normalizeCopy(vsRest))) {
+      (codeRoute ? questions : suggestions).push(`The for-line "${vsRest}" repeats the VS headline "${vsTitle}". Pass another --subtitle, or --no-subtitle.`);
+    }
+    if (!codeRoute && vsTitle.length > VS_TITLE_MAX) warn(`VS title is ${vsTitle.length} chars; the limit is ${VS_TITLE_MAX} (e.g. "8 Braintrust Alternatives"). Pass a shorter --title.`);
+    if (!codeRoute && vsRest && forLine.length > VS_FOR_LINE_MAX) warn(`VS "for" line is ${forLine.length} chars ("${forLine}"); the limit is ${VS_FOR_LINE_MAX}. Pass a shorter --subtitle.`);
     vs = {
       name: post.slug,
       sectionName,
@@ -950,7 +961,7 @@ function main(): void {
       title: vsTitle,
       subtitleLead: "for ",
       subtitleRest: vsRest,
-      tiles: comparison.map((c, index) => ({ index, slug: c.slug, key: c.key })),
+      tiles: comparison.map((c, index) => ({ index, slug: c.slug, key: c.key, logo: existsSync(logoFile(c.canonical)) ? c.canonical : c.slug })),
       tileBatches,
       tileBatch,
       tileRange: tileBatches[tileBatch],

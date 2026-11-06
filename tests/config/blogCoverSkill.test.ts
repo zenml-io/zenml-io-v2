@@ -3,6 +3,7 @@ import {
   copyFileSync,
   existsSync,
   mkdtempSync,
+  readdirSync,
   readFileSync,
   rmSync,
 } from "node:fs";
@@ -15,12 +16,15 @@ import {
   type Measured,
 } from "../../.claude/skills/figma-blog-cover/scripts/lib/cover-renderer";
 
+import { vsHtml } from "../../.claude/skills/figma-blog-cover/scripts/lib/vs-card";
+
 const SKILL = ".claude/skills/figma-blog-cover";
 const SLUG = "unified-mlops-for-defense";
 const STYLES = ["chevron", "deep", "field", "mesh", "tint"];
 const PHOTOS = ["01", "02", "03", "04", "05", "06", "07", "08", "09"];
 
 interface Plan {
+  suggestions: string[];
   gate: unknown;
   logo: string;
   eyebrow: string;
@@ -322,4 +326,364 @@ describe("blog cover skill without Figma", () => {
   it("takes the eyebrow from the flag", () => {
     expect(plan("--eyebrow", "deep dive").eyebrow).toBe("DEEP DIVE");
   });
+
+  it("keeps every service logo on the 24 x 24 contract", () => {
+    const dir = join(SKILL, "assets/service-logos");
+    const files = readdirSync(dir);
+    expect(files.length).toBeGreaterThan(200);
+    for (const file of files) {
+      const svg = readFileSync(join(dir, file), "utf8");
+      expect(svg, file).toContain('viewBox="0 0 24 24"');
+      expect(svg, file).not.toMatch(/<script|href="http/);
+    }
+  });
+
+  it("resolves every reference inside a service logo", () => {
+    const dir = join(SKILL, "assets/service-logos");
+    for (const file of readdirSync(dir)) {
+      const svg = readFileSync(join(dir, file), "utf8");
+      const ids = new Set(
+        [...svg.matchAll(/\bid="([^"]+)"/g)].map((m) => m[1]),
+      );
+      const refs = [
+        ...svg.matchAll(/url\(#([^)]+)\)/g),
+        ...svg.matchAll(/href="#([^"]+)"/g),
+      ].map((m) => m[1]);
+      expect(
+        refs.filter((r) => !ids.has(r)),
+        file,
+      ).toEqual([]);
+    }
+  });
+
+  it("draws every tile count with and without the brand tile", () => {
+    const logos = Array.from({ length: 10 }, () => "langfuse");
+    for (const includeBrandTile of [true, false]) {
+      for (let count = 1; count <= 10; count += 1) {
+        const html = vsHtml(
+          {
+            brand: "ZenML",
+            includeBrandTile,
+            logos: logos.slice(0, count),
+            title: "T",
+            qualifier: "Q",
+          },
+          [72, 60],
+          "",
+        );
+        const tiles = html.match(/stroke-width="2"/g)?.length;
+        const badges = html.match(/class="badge"/g)?.length ?? 0;
+        const rows = count >= 5 ? 2 : 1;
+        expect(tiles).toBe(count);
+        expect(badges).toBe(includeBrandTile ? count : count - rows);
+      }
+    }
+  });
+
+  it("places tiles and logos in Figma's order", () => {
+    const logos = [
+      "langfuse",
+      "mlflow",
+      "wandb",
+      "dbos",
+      "restate",
+      "n8n",
+      "make",
+    ];
+    const html = vsHtml(
+      {
+        brand: "Kitaru",
+        includeBrandTile: true,
+        logos,
+        title: "T",
+        qualifier: "",
+      },
+      [72, 60],
+      "",
+    );
+    const lefts = [
+      ...html.matchAll(/style="left:([\d.]+)px;top:[\d.]+px" width="180"/g),
+    ].map((m) => Number(m[1]));
+    expect(lefts).toEqual([734, 1018, 1302, 1586, 876, 1160, 1444]);
+    const drawn = [
+      ...html.matchAll(
+        /src="data:image\/svg\+xml;base64,([^"]+)" style="left:[\d.]+px;top:[\d.]+px;width:100px/g,
+      ),
+    ].map((m) => m[1]);
+    expect(drawn).toEqual(
+      logos.map((l) =>
+        readFileSync(join(SKILL, "assets/service-logos", `${l}.svg`)).toString(
+          "base64",
+        ),
+      ),
+    );
+  });
+
+  it("checks a VS qualifier against the VS headline, not the post title", () => {
+    const slug = "langsmith-alternatives";
+    const flags = ["--renderer", "code", "--comparison", "langfuse,mlflow"];
+    expect(
+      planFor(slug, ...flags, "--subtitle", "LLM Observability").questions,
+    ).toEqual([]);
+    expect(
+      planFor(
+        slug,
+        ...flags,
+        "--subtitle",
+        "LangSmith Alternatives",
+      ).questions.join(),
+    ).toContain("repeats the VS headline");
+  });
+
+  it("skips the VS repeat check when the for-line is not drawn", () => {
+    const flags = [
+      "--comparison",
+      "langfuse,mlflow",
+      "--title",
+      "LLM Observability",
+    ];
+    const slug = "langsmith-alternatives";
+    expect(
+      planFor(slug, "--renderer", "code", ...flags, "--no-subtitle").questions,
+    ).toEqual([]);
+    expect(
+      planFor(slug, "--renderer", "code", ...flags).questions.join(),
+    ).toContain("repeats the VS headline");
+  });
+
+  it("only advises on a repeated VS for-line on the Figma route", () => {
+    const { questions, suggestions } = planFor(
+      "langsmith-alternatives",
+      "--renderer",
+      "figma",
+      "--comparison",
+      "langfuse,mlflow",
+      "--title",
+      "3 LangSmith Alternatives",
+      "--subtitle",
+      "3 LangSmith Alternatives",
+    );
+    expect(suggestions.join()).toContain("repeats the VS headline");
+    expect(questions.join()).not.toContain("repeats the VS headline");
+  });
+
+  it("does not let neighbouring covers block a VS card", () => {
+    const { orderedSlugs } = planFor(
+      "everything-you-ever-wanted-to-know-about-llmops-maturity-models",
+      "--renderer",
+      "code",
+    ) as Plan & { orderedSlugs: string[] };
+    // Slot 7 in a five-column grid has a neighbour on all four sides.
+    const i = 7;
+    const slug = orderedSlugs[i];
+    const layouts = ["Text", "Panel Bottom", "Image Right", "Image Left"];
+    const around = [i - 1, i + 1, i - 5, i + 5].map((n) => orderedSlugs[n]);
+    expect(around.every(Boolean)).toBe(true);
+    const siblings = JSON.stringify(
+      orderedSlugs
+        .filter((s) => s !== slug)
+        .map((s) => ({
+          slug: s,
+          layout: layouts[around.indexOf(s)] ?? "Text",
+          bgStyle: "Tint",
+        })),
+    );
+    const flags = ["--renderer", "code", "--siblings", siblings];
+    expect(planFor(slug, ...flags).questions.join()).toContain("No layout");
+    expect(
+      planFor(slug, ...flags, "--comparison", "langfuse,mlflow").questions,
+    ).toEqual([]);
+  });
+
+  it("asks for a logo the code route does not have", () => {
+    const { questions } = planFor(
+      SLUG,
+      "--renderer",
+      "code",
+      "--comparison",
+      "langfuse,not-a-real-tool",
+    );
+    expect(questions.join()).toContain("not-a-real-tool");
+  });
+
+  it("resolves aliases to the logo file on the code route", () => {
+    const plan = planFor(
+      SLUG,
+      "--renderer",
+      "code",
+      "--comparison",
+      "weave,langfuse",
+    ) as Plan & { vs: { tiles: { logo: string }[] } };
+    expect(plan.questions).toEqual([]);
+    expect(plan.vs.tiles.map((t) => t.logo)).toEqual(["wandb", "langfuse"]);
+  });
+
+  it.skipIf(!existsSync(chromium.executablePath()))(
+    "adapts VS copy to the space next to the logo",
+    () => {
+      const manifest = join(
+        mkdtempSync(join(tmpdir(), "cover-")),
+        "manifest.json",
+      );
+      copyFileSync(join(SKILL, "assets/cover-manifest.json"), manifest);
+      const render = (...args: string[]) =>
+        spawnSync(
+          process.execPath,
+          [
+            "--import",
+            "tsx",
+            join(SKILL, "scripts/render-cover.ts"),
+            SLUG,
+            "--dry-run",
+            "--comparison",
+            "langfuse,mlflow",
+            ...args,
+          ],
+          {
+            encoding: "utf8",
+            env: { ...process.env, COVER_MANIFEST: manifest },
+          },
+        );
+      const out = (...args: string[]) => {
+        const run = render(...args);
+        expect(run.status, run.stderr).toBe(0);
+        return JSON.parse(run.stdout);
+      };
+      const longLine =
+        "Experiment Tracking and Model Registry for Regulated Teams";
+      const longTitle = "Microsoft Agent Framework vs Semantic Kernel vs ZenML";
+
+      expect(
+        out("--title", "8 Comet Alternatives", "--subtitle", "Evaluation")
+          .typeSizes,
+      ).toEqual([72, 60]);
+      expect(
+        out(
+          "--title",
+          "A Short Title",
+          "--subtitle",
+          "Experiment Tracking and Model Registry Teams",
+        ).typeSizes[0],
+      ).toBeLessThan(72);
+      expect(
+        render(
+          "--title",
+          "8 Comet Alternatives",
+          "--subtitle",
+          longLine + longLine,
+        ).status,
+      ).toBe(1);
+      const wrapped = out("--title", longTitle, "--no-subtitle");
+      expect(wrapped.typeSizes).toEqual([56, 46]);
+      expect(wrapped.suggestions.join()).toContain("two lines");
+    },
+    60_000,
+  );
+
+  it.skipIf(!existsSync(chromium.executablePath()))(
+    "keeps every service logo the same size when rendered",
+    async () => {
+      const dir = join(SKILL, "assets/service-logos");
+      const browser = await chromium.launch();
+      const page = await browser.newPage();
+      for (const file of readdirSync(dir)) {
+        const uri = `data:image/svg+xml;base64,${readFileSync(join(dir, file)).toString("base64")}`;
+        const box = await page.evaluate(async (src) => {
+          const image = new Image();
+          image.src = src;
+          await image.decode();
+          const canvas = document.createElement("canvas");
+          canvas.width = canvas.height = 240;
+          const context = canvas.getContext("2d") as CanvasRenderingContext2D;
+          context.drawImage(image, 0, 0, 240, 240);
+          const pixels = context.getImageData(0, 0, 240, 240).data;
+          let left = 240;
+          let right = -1;
+          let top = 240;
+          let bottom = -1;
+          for (let y = 0; y < 240; y += 1) {
+            for (let x = 0; x < 240; x += 1) {
+              if (pixels[(y * 240 + x) * 4 + 3] <= 16) continue;
+              left = Math.min(left, x);
+              right = Math.max(right, x);
+              top = Math.min(top, y);
+              bottom = Math.max(bottom, y);
+            }
+          }
+          return {
+            w: (right - left + 1) / 10,
+            h: (bottom - top + 1) / 10,
+            cx: (left + right + 1) / 20,
+            cy: (top + bottom + 1) / 20,
+          };
+        }, uri);
+        expect(Math.abs(Math.max(box.w, box.h) - 20), file).toBeLessThanOrEqual(
+          0.7,
+        );
+        expect(Math.abs(box.cx - 12), file).toBeLessThanOrEqual(0.5);
+        expect(Math.abs(box.cy - 12), file).toBeLessThanOrEqual(0.5);
+      }
+      await browser.close();
+    },
+    60_000,
+  );
+
+  it.skipIf(!existsSync(chromium.executablePath()))(
+    "writes a VS card and records it, dropping a derived for-line that cannot fit",
+    () => {
+      const dir = mkdtempSync(join(tmpdir(), "cover-"));
+      const manifest = join(dir, "manifest.json");
+      copyFileSync(join(SKILL, "assets/cover-manifest.json"), manifest);
+      const render = (slug: string, ...args: string[]) => {
+        const run = spawnSync(
+          process.execPath,
+          [
+            "--import",
+            "tsx",
+            join(SKILL, "scripts/render-cover.ts"),
+            slug,
+            "--comparison",
+            "langfuse,mlflow",
+            ...args,
+          ],
+          {
+            encoding: "utf8",
+            env: {
+              ...process.env,
+              COVER_MANIFEST: manifest,
+              COVER_OUT_DIR: dir,
+            },
+          },
+        );
+        expect(run.status, run.stderr).toBe(0);
+        const file = readFileSync(join(dir, `${slug}.png`));
+        expect([file.readUInt32BE(16), file.readUInt32BE(20)]).toEqual([
+          3840, 2160,
+        ]);
+        const rows = JSON.parse(readFileSync(manifest, "utf8")) as {
+          slug: string;
+          layout: string;
+        }[];
+        expect(rows.find((r) => r.slug === slug)?.layout).toBe("VS");
+        return JSON.parse(run.stdout);
+      };
+      try {
+        render(
+          "unified-mlops-for-defense",
+          "--title",
+          "8 Comet Alternatives",
+          "--subtitle",
+          "Evaluation",
+        );
+        const dropped = render(
+          "8-alternatives-to-kubeflow-for-ml-workflow-orchestration-and-why-you-might-switch",
+        );
+        expect(dropped.forLine).toBe("");
+        expect(dropped.suggestions.join()).toContain("Dropped");
+      } finally {
+        rmSync(dir, { recursive: true, force: true });
+      }
+    },
+    60_000,
+  );
 });

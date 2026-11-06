@@ -6,14 +6,11 @@
  * `Blog Cover / 16:9` variants (162:1845); references/code-renderer.md has the traps and the test.
  */
 
-import { readFileSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { join } from "node:path";
 import { chromium, type Browser, type Page } from "playwright";
 import sharp from "sharp";
-
-const SKILL_DIR = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
-const REPO = resolve(SKILL_DIR, "../../..");
+import { escapeHtml, fontFace, SKILL_DIR, svgUri } from "./html";
+import { VS_FONTS, vsHtml, VS_TYPE_STEPS, vsCopyLimit, type VsFit, type VsSpec } from "./vs-card";
 
 export type Brand = "ZenML" | "Kitaru";
 export type Logo = Brand | "ZenML Labs";
@@ -117,14 +114,6 @@ export function backgroundFile(brand: Brand, bg: string): string {
   return join(SKILL_DIR, "assets/backgrounds", `${name}.webp`);
 }
 
-const base64 = (path: string): string => readFileSync(path).toString("base64");
-const escapeHtml = (s: string): string => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
-function fontFace(family: string, file: string, weight: number, ascent: number, descent: number): string {
-  const src = `data:font/woff;base64,${base64(join(REPO, "public/fonts", file))}`;
-  return `@font-face{font-family:'${family}';font-weight:${weight};ascent-override:${ascent}%;descent-override:${descent}%;line-gap-override:0%;src:url(${src}) format('woff')}`;
-}
-
 const FONTS = () =>
   fontFace("Borna", "borna-medium.woff", 500, 95.5, 26.3) +
   fontFace("Nudica Mono", "nudica-mono-regular.woff", 400, 96.3, 25.7) +
@@ -135,7 +124,7 @@ function pageHtml(spec: CoverSpec, fonts: string, wrap: Measured["wrap"]): strin
   const c = palette(spec.brand, spec.layout);
   const [left, top, width, height] = g.box;
   const tone = spec.layout === "Full Bleed" ? "negative" : "positive";
-  const logo = `data:image/svg+xml;base64,${base64(join(SKILL_DIR, "assets/logos", `${LOGO_FILE[spec.logo]}-${tone}.svg`))}`;
+  const logo = svgUri(join(SKILL_DIR, "assets/logos", `${LOGO_FILE[spec.logo]}-${tone}.svg`));
   const css = `*{box-sizing:border-box;margin:0;padding:0}
 html,body{width:1920px;height:1080px;background:transparent;overflow:hidden}
 body{position:relative;-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision;font-kerning:normal}
@@ -276,6 +265,38 @@ export class CoverRenderer {
   async render(spec: CoverSpec): Promise<Buffer> {
     const overlay = await this.overlay(spec);
     return sharp(backgroundFile(spec.brand, spec.bg)).removeAlpha().composite([{ input: overlay }]).png().toBuffer();
+  }
+
+  private async layVs(spec: VsSpec, step: readonly [number, number]): Promise<{ title: number; subtitle: number; titleLines: number }> {
+    await this.page.setContent(vsHtml(spec, step, this.fonts + VS_FONTS()));
+    await this.page.evaluate(async () => {
+      await document.fonts.ready;
+      await Promise.all([...document.images].map((i) => i.decode()));
+    });
+    const width = (sel: string): Promise<number> => this.page.evaluate((s) => document.querySelector(s)?.getBoundingClientRect().width ?? 0, sel);
+    const titleLines = await this.page.evaluate(() => {
+      const range = document.createRange();
+      range.selectNodeContents(document.querySelector("#vs-title") as Element);
+      return new Set([...range.getClientRects()].map((r) => Math.round(r.top))).size;
+    });
+    return { title: await width("#vs-title"), subtitle: await width("#vs-subtitle"), titleLines };
+  }
+
+  /** The largest type step at which both lines stay clear of the logo; null when none does. */
+  async fitVs(spec: VsSpec): Promise<VsFit | null> {
+    const limit = vsCopyLimit(spec.brand);
+    const steps = spec.wrapTitle ? VS_TYPE_STEPS.slice(-1) : VS_TYPE_STEPS;
+    for (const step of steps) {
+      const { title, subtitle, titleLines } = await this.layVs(spec, step);
+      if (Math.max(title, subtitle) <= limit && titleLines <= (spec.wrapTitle ? 2 : 1)) return { step, titleWidth: title, subtitleWidth: subtitle };
+    }
+    return null;
+  }
+
+  /** The finished 3840 x 2160 PNG. */
+  async renderVs(spec: VsSpec, step: readonly [number, number]): Promise<Buffer> {
+    await this.layVs(spec, step);
+    return this.page.screenshot({ type: "png" });
   }
 
   close(): Promise<void> {

@@ -6,6 +6,8 @@
 |---|---|
 | `assets/backgrounds/` | The Cover BG variants as 3840 x 2160 WebP (quality 90): five styles per brand and photos 01 to 09 |
 | `assets/logos/` | ZenML, Kitaru and ZenML Labs, positive and negative |
+| `assets/service-logos/` | Every `ServiceLogo` mark from the Hashi library as a 24 x 24 SVG, longest side 20, centred. Exported from the library page on 2026-11-06, with 9 uneven marks normalised |
+| `assets/vs/` | The ZenML and Kitaru brand hexagons |
 | `assets/cover-manifest.json` | One row per cover, seeded from the Figma page on 2026-11-06. It replaces the canvas as the record of what a month has used |
 
 ## How it renders
@@ -37,4 +39,10 @@ These sets also tuned the fixes, so they are not held out. Linux x86 and Windows
 
 ## When the Figma template changes
 
-Update the tables in `cover-renderer.ts`, re-export any changed background, and repeat the test. VS cards are not built here: they need every `ServiceLogo` mark as a file.
+Update the tables in `cover-renderer.ts` or `vs-card.ts`, re-export any changed background, and repeat the test.
+
+## VS cards
+
+`scripts/lib/vs-card.ts` holds all 20 tile arrangements from `Template — VS Comparison` (`113:300`). ZenML and Kitaru share the geometry. The page is drawn whole, so it needs no background file.
+
+Tested 2026-11-06 against 25 published cards covering 12 of the 20 arrangements; the rest have no live card and were checked by eye. The six cards with the template's fonts reach 0.998+ SSIM in the header. Three of those with no normalised mark score 0.994 to 0.995 on the tiles. Cards that use one of the 9 normalised marks score lower on purpose. 77 live cards lost the SemiBold on the for-line and 10 set a SemiBold title, so their headers differ from the template and from new cards.
