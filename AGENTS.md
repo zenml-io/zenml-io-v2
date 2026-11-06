@@ -65,7 +65,7 @@ positioning; MERGE_PLAN.md records the merge history.
 
 ## Contributing Blog Posts
 - Use [blog-post-contributor](.agents/skills/blog-post-contributor/SKILL.md) to import Markdown or Notion content into src/content/blog/<slug>.md on a blog/<slug> branch. Reuse an explicitly authorized feature branch rather than switching a user's active checkout.
-- Use [figma-blog-cover](.agents/skills/figma-blog-cover/SKILL.md) to generate the post's cover from the Figma template; it places the cover on the Blog Covers page, exports it, and uploads AVIF + JPEG to R2. This applies to every new or imported post, including posts merged in from main; a post that arrives with a purple-era or non-16:9 cover is regenerated before it ships.
+- Use [figma-blog-cover](.agents/skills/figma-blog-cover/SKILL.md) to generate the post's cover, in code with `render-cover.ts` when Figma is not connected (VS cards need Figma), or from the Figma template; there it places the cover on the Blog Covers page, exports it, and uploads AVIF + JPEG to R2. This applies to every new or imported post, including posts merged in from main; a post that arrives with a purple-era or non-16:9 cover is regenerated before it ships.
 - Match blogSchema in src/content.config.ts; webflow metadata is unnecessary for native posts. Resolve author/category/tag slugs against their collections; create missing authors/tags from supplied facts. Restart pnpm dev after adding categories/tags because referenceSlugSets loads at config evaluation.
 - For Kitaru posts, use category: "kitaru" and make "kitaru" the first tag. Preserve source authorship and intended publication state. Missing cover art blocks readiness to publish, not independent content preparation; do not invent image URLs.
 
