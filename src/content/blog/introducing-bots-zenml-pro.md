@@ -1,5 +1,5 @@
 ---
-title: "Introducing Bots: a team of AI engineers in ZenML Pro"
+title: "Introducing Bots: your very own team of AI engineers in ZenML Pro"
 slug: "introducing-bots-zenml-pro"
 draft: false
 author: "alexej-penner"
@@ -13,7 +13,7 @@ tags:
 date: "2026-11-06T00:00:00.000Z"
 readingTime: "5 mins"
 seo:
-  title: "Introducing Bots: a team of AI engineers in ZenML Pro"
+  title: "Introducing Bots: your very own team of AI engineers in ZenML Pro"
   description: "Delegate ML and AI operations to Bots in ZenML Pro: investigate failures, propose fixes, and schedule recurring reviews of pipeline and agent performance."
   canonical: "https://www.zenml.io/blog/introducing-bots-zenml-pro"
 ---
