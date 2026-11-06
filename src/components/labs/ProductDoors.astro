@@ -5,6 +5,11 @@
  * prop (`LABS_DOORS` on `/`); nothing here is retyped. Each card opens with
  * the product wordmark over a static grain wash that fades out from the
  * top-left corner in the product's lightest tint (`door.tint`).
+ *
+ * With `content.pro` the doors sit under the paid layer: a ZenML Pro card
+ * (what it is, what it adds, the price, a pricing link) with a short label
+ * between it and the two open-source cards, so the page reads top-down as
+ * "Pro, built on these two".
  */
 import type { ProductDoor, ProductDoorsContent } from "../../lib/labs-home";
 import "../../styles/labs-scroll-reveal.css";
@@ -16,6 +21,7 @@ interface Props {
   content: ProductDoorsContent;
 }
 const { content } = Astro.props;
+const { pro } = content;
 
 const TINT_VARS: Record<ProductDoor["tint"], string> = {
   sage: "var(--color-sage-100)",
@@ -45,6 +51,33 @@ const ROW_ARROW: Record<ProductDoor["tint"], string> = {
       <h2 class="reveal-child font-display text-[31px] leading-[33px] text-(--color-cream-900) md:text-[56px] md:leading-[60px]">
         {content.headline}
       </h2>
+    )}
+
+    {pro && (
+      <div class="-mb-6 flex flex-col gap-6">
+        <div class="reveal-child flex flex-col gap-8 rounded-[20px] bg-(--color-sage-100) p-10 lg:flex-row lg:items-end lg:justify-between lg:gap-16">
+          <div class="flex max-w-[720px] flex-col gap-5">
+            <p class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <span class="font-display text-[22px] leading-7 text-(--color-cream-900)">{pro.name}</span>
+              <span class="font-mono text-[13px] leading-5 text-(--color-cream-700)">{pro.tag}</span>
+            </p>
+            <h3 class="font-display text-[24px] leading-[30px] text-balance text-(--color-cream-900) md:text-[34px] md:leading-[40px]">
+              {pro.headline}
+            </h3>
+            <p class="font-sans text-[17px] leading-[26px] text-pretty text-foreground">{pro.body}</p>
+            <ul class="flex flex-wrap gap-2" aria-label={`What ${pro.name} adds`}>
+              {pro.adds.map((item) => (
+                <li class="rounded-full bg-(--color-cream-50) px-3 py-1 font-sans text-[14px] leading-5 text-(--color-cream-900)">{item}</li>
+              ))}
+            </ul>
+          </div>
+          <LabsButton cta={pro.cta} class="w-fit shrink-0" />
+        </div>
+        <p class="reveal-child stagger-1 flex items-center gap-3 font-sans text-[14px] leading-5 text-(--color-cream-700)">
+          <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6" /></svg>
+          {pro.underneath}
+        </p>
+      </div>
     )}
 
     {/* Its own reveal section, so each door rises in turn (60ms apart). */}

@@ -107,6 +107,11 @@ export const FOOTER_LEGAL: FooterLink[] = [
   { label: "Privacy Policy", href: "/privacy-policy" },
   { label: "Terms of Service", href: "/terms-of-service" },
   {
+    label: "Trust Center",
+    href: "https://security.zenml.io",
+    external: true,
+  },
+  {
     label: "Status",
     href: "https://status.zenml.io",
     external: true,

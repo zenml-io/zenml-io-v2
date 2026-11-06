@@ -9,7 +9,8 @@ import {
 import {
   LABS_DOORS,
   LABS_HERO,
-  LABS_HERO_SESSION,
+  LABS_HERO_DEMO,
+  LABS_HOME_BENCHMARKS,
   LABS_HOME_CLOSE,
   LABS_HOME_SEO,
   LABS_LOGO_GRID,
@@ -36,7 +37,8 @@ export function GET(): Response {
       "## Summary",
       LABS_HERO.headlineLines.join(" "),
       LABS_HERO.deck,
-      LABS_HERO_SESSION.label,
+      LABS_HERO_DEMO.label,
+      markdownLink(LABS_HERO_DEMO.link.label, LABS_HERO_DEMO.link.href),
     ),
     joinMarkdownSections(
       "## Main CTA",
@@ -50,26 +52,29 @@ export function GET(): Response {
     joinMarkdownSections(
       `## ${LABS_ONBOARDING.headline}`,
       LABS_ONBOARDING.deck,
-      ...LABS_ONBOARDING.steps.map((step, i) =>
-        joinMarkdownSections(`### ${i + 1}. ${step.title}`, step.body),
+      markdownBulletList(
+        LABS_ONBOARDING.steps.map((step) => `${step.title}: ${step.body}`),
+      ),
+    ),
+    joinMarkdownSections(
+      `## ${LABS_HOME_BENCHMARKS.headline}`,
+      LABS_HOME_BENCHMARKS.deck,
+      markdownLink(
+        LABS_HOME_BENCHMARKS.link.label,
+        LABS_HOME_BENCHMARKS.link.href,
       ),
     ),
     joinMarkdownSections(
       `## ${LABS_STACK_LAYER.headline}`,
       LABS_STACK_LAYER.deck,
-      LABS_STACK_LAYER.layer.title,
       markdownBulletList(
         LABS_STACK_LAYER.columns.map(
           (column) =>
             `${column.title}: ${column.marks.map((mark) => mark.name).join(", ")}`,
         ),
       ),
-      `### ${LABS_STACK_LAYER.journeyLabel}`,
-      markdownBulletList(
-        LABS_STACK_LAYER.journey.map(
-          (step) => `${step.tag}: ${step.title} (${step.detail})`,
-        ),
-      ),
+      LABS_STACK_LAYER.trust.line,
+      LABS_STACK_LAYER.trust.badges.join(", "),
       markdownLink(LABS_STACK_LAYER.link.label, LABS_STACK_LAYER.link.href),
     ),
     joinMarkdownSections(

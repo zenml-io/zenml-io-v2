@@ -1,14 +1,14 @@
-# One plan, $39 a month
+# ZenML Pro, $39 a month
 
 Canonical HTML URL: https://www.zenml.io/pricing
 
-One plan, $39 a month: your AI engineer on one AI agent, one ML project and your whole team. Open source is free; more agents, projects and on-prem are a conversation.
+One plan, $39 a month: your AI engineers on one AI agent, one ML project and your whole team. Open source is free; more agents, projects and on-prem are a conversation.
 
 Note: this is a repo-owned Markdown mirror for agents and readers. It omits visual-only UI, decorative media, navigation, analytics, and other browser chrome.
 
 ## Summary
 
-Your AI engineer on one AI agent, one ML project, and your whole team. Need more, or on-prem? Talk to us.
+ZenML Pro is our paid platform. It hosts Kitaru and ZenML for your team and adds a team of AI engineers that watch your AI agents and ML pipelines around the clock. Starter covers one AI agent, one ML project and your whole team. Need more, or on-prem? Talk to us.
 
 ## Main CTAs
 
@@ -19,7 +19,7 @@ Your AI engineer on one AI agent, one ML project, and your whole team. Need more
 
 ## Plans
 
-An AI agent is anything you want your AI engineer to watch: its code, in one repo or several, and the traces it sends. Starter covers one AI agent and one ML project. Need more? Talk to us.
+An AI agent is anything you want your AI engineers to watch: its code, in one repo or several, and the traces it sends. Starter covers one AI agent and one ML project. Need more? Talk to us.
 
 ### Open Source
 
@@ -36,7 +36,7 @@ Run it yourself
 
 - CTA: [Get started](https://www.zenml.io/get-started)
 
-### Starter
+### Pro Starter
 
 For startups shipping their first agent
 
@@ -44,14 +44,14 @@ For startups shipping their first agent
 - Limits: 1 AI agent · 1 ML project · Unlimited seats
 
 - Everything in Open Source, plus:
-  - An AI engineer for your agents and ML pipelines
+  - AI engineers for your agents and ML pipelines
   - Finds what your evals miss, on its own
   - Schedules, triggers and alerts
   - Fully hosted, set up in minutes
 
 - CTA: [Sign up free](https://cloud.zenml.io/signup?utm_source=zenml.io&utm_medium=website&utm_campaign=signup&utm_content=kitaru)
 
-### Enterprise
+### Pro Enterprise
 
 For more agents, more projects or regulated data
 
@@ -73,7 +73,7 @@ One price, unlimited seats. 14-day trial, no credit card.
 
 ### Plan
 
-| Feature | Open Source | Starter | Enterprise |
+| Feature | Open Source | Pro Starter | Pro Enterprise |
 | --- | --- | --- | --- |
 | Price | Free | $39 / month | Custom |
 | Free trial | — | 14 days, no credit card | — |
@@ -82,9 +82,9 @@ One price, unlimited seats. 14-day trial, no credit card.
 | Pipeline runs a month | Unlimited | 100 | Custom |
 | Team members | Unlimited | Unlimited | Unlimited |
 
-### Your AI engineer, on agents and ML pipelines
+### Your AI engineers, on agents and ML pipelines
 
-| Feature | Open Source | Starter | Enterprise |
+| Feature | Open Source | Pro Starter | Pro Enterprise |
 | --- | --- | --- | --- |
 | How it runs | You drive it from your coding agent | On its own, around the clock | On its own, around the clock |
 | Agents: reads every trace, flags wrong or missing evals | No | Yes | Yes |
@@ -94,7 +94,7 @@ One price, unlimited seats. 14-day trial, no credit card.
 
 ### Agents and evals
 
-| Feature | Open Source | Starter | Enterprise |
+| Feature | Open Source | Pro Starter | Pro Enterprise |
 | --- | --- | --- | --- |
 | Trace import | Yes | Yes | Yes |
 | Evaluators, cohorts and replay | Yes | Yes | Yes |
@@ -104,7 +104,7 @@ One price, unlimited seats. 14-day trial, no credit card.
 
 ### Pipelines and models
 
-| Feature | Open Source | Starter | Enterprise |
+| Feature | Open Source | Pro Starter | Pro Enterprise |
 | --- | --- | --- | --- |
 | Pipeline orchestration | Yes | Yes | Yes |
 | Artifact versioning and lineage | Yes | Yes | Yes |
@@ -114,7 +114,7 @@ One price, unlimited seats. 14-day trial, no credit card.
 
 ### Security and deployment
 
-| Feature | Open Source | Starter | Enterprise |
+| Feature | Open Source | Pro Starter | Pro Enterprise |
 | --- | --- | --- | --- |
 | SOC 2 Type II and ISO 27001 | No | Yes | Yes |
 | On-prem or air-gapped | Yes | No | Yes |
@@ -125,7 +125,7 @@ One price, unlimited seats. 14-day trial, no credit card.
 
 ### Support
 
-| Feature | Open Source | Starter | Enterprise |
+| Feature | Open Source | Pro Starter | Pro Enterprise |
 | --- | --- | --- | --- |
 | Support level | Community | Email | Dedicated + SLA |
 | Workshops and architecture reviews | No | No | Yes |
@@ -134,15 +134,15 @@ One price, unlimited seats. 14-day trial, no credit card.
 
 ### What do I get for $39?
 
-One AI agent with your AI engineer on it, one ML project with up to 100 pipeline runs a month, and as many seats as you want. It starts with a 14-day trial, no credit card.
+One AI agent with your AI engineers on it, one ML project with up to 100 pipeline runs a month, and as many seats as you want. It starts with a 14-day trial, no credit card.
 
 ### What counts as an agent?
 
-An AI agent is anything you want your AI engineer to watch: its code, in one repo or several, and the traces it sends. A LangGraph app with three sub-agents that ships as one product is one agent.
+An AI agent is anything you want your AI engineers to watch: its code, in one repo or several, and the traces it sends. A LangGraph app with three sub-agents that ships as one product is one agent.
 
 ### Is there a limit on sessions?
 
-No. Your AI engineer reads every session your agent sends. Replays run with your own model keys, so those model costs stay on your bill.
+No. Your AI engineers read every session your agent sends. Replays run with your own model keys, so those model costs stay on your bill.
 
 ### What if we need more agents, projects or runs?
 
@@ -158,15 +158,15 @@ The trial is full access and needs no credit card. When it ends, add a card to k
 
 ### Do you see my traces?
 
-On Starter, your AI engineer runs in our cloud and reads traces from your tracing tool through keys you can revoke. ZenML stores only metadata; your data, artifacts and compute stay in your cloud. Self-hosted or on Enterprise on-prem, nothing leaves your infrastructure.
+On Starter, your AI engineers run in our cloud and read traces from your tracing tool through keys you can revoke. ZenML stores only metadata; your data, artifacts and compute stay in your cloud. Self-hosted or on Enterprise on-prem, nothing leaves your infrastructure.
 
 ### Can we run it on-prem?
 
-Yes, on Enterprise. Your AI engineer and ZenML run inside your own cloud or on-prem, air-gapped if you need it, with your own LLM endpoint.
+Yes, on Enterprise. Your AI engineers and ZenML run inside your own cloud or on-prem, air-gapped if you need it, with your own LLM endpoint.
 
 ### How is this different from Langfuse, Braintrust or LangSmith?
 
-They show you what happened. Our AI engineer reads those traces next to your evals and shows you which evals are wrong or missing, then Kitaru replays your agent to test the fix against real sessions. Kitaru imports from Langfuse, LangSmith, Braintrust, Logfire, MLflow or Phoenix, so your tracing tool stays your system of record.
+They show you what happened. Our AI engineers read those traces next to your evals and show you which evals are wrong or missing, then Kitaru replays your agent to test the fix against real sessions. Kitaru imports from Langfuse, LangSmith, Braintrust, Logfire, MLflow or Phoenix, so your tracing tool stays your system of record.
 
 ### Is there a startup or academic discount?
 
@@ -174,13 +174,13 @@ Yes. Early-stage companies, universities and research institutions can apply for
 
 Still not clear? [Still not clear? Ask us on Slack](https://www.zenml.io/slack)
 
-## Your agents and your ML, one AI engineer
+## Your agents and your ML, one team of AI engineers
 
-Pro is one platform: your AI engineer works across your AI agents on Kitaru and your ML pipelines on ZenML, on one account and one bill.
+Pro is one platform: your AI engineers work across your AI agents on Kitaru and your ML pipelines on ZenML, on one account and one bill.
 
 ### ML pipelines and models
 
-Training, fine-tuning and batch inference on any orchestrator. Your AI engineer watches every run and flags failures and drift.
+Training, fine-tuning and batch inference on any orchestrator. Your AI engineers watch every run and flag failures and drift.
 
 - Pipeline DAGs, artifact store, model registry: Version every step, every dataset, every model.
 - Run on Kubernetes, Vertex, SageMaker, AzureML: One pipeline, any orchestrator, no rewrites.
@@ -192,7 +192,7 @@ Training, fine-tuning and batch inference on any orchestrator. Your AI engineer 
 
 ### AI agents and evals
 
-Your AI engineer finds the evals you got wrong or never wrote, then replays your agent to test the fix.
+Your AI engineers find the evals you got wrong or never wrote, then replay your agent to test the fix.
 
 - Insights from your traces: Finds wrong and missing evals, then turns your answers into checks.
 - $39 a month on Starter: One AI agent and one ML project, one price.
@@ -212,7 +212,7 @@ Apply for a special price to access ZenML Pro features for early-stage companies
 
 ## Your VPC, your data
 
-ZenML stores only metadata, so your data and compute stay in your cloud. Your AI engineer reads traces through keys you can revoke, or runs inside your cloud on Enterprise.
+ZenML stores only metadata, so your data and compute stay in your cloud. Your AI engineers read traces through keys you can revoke, or run inside your cloud on Enterprise.
 
 ### We Take Security Seriously
 
@@ -222,6 +222,6 @@ Security badges: SOC 2 Type II Badge, ISO/IEC 27001:2022 certification badge.
 
 ## Start with one agent and your whole team
 
-Your AI engineer reads your traces next to your evals and shows you what they miss. 14-day trial, no credit card.
+Your AI engineers read your traces next to your evals and show you what they miss. 14-day trial, no credit card.
 
 - [Sign up free](https://cloud.zenml.io/signup?utm_source=zenml.io&utm_medium=website&utm_campaign=signup&utm_content=kitaru)

@@ -22,10 +22,10 @@ import { defaultOgUrl } from "./seo";
 export const OSS_VS_PRO_SEO = {
   title: "Open Source vs Pro: ZenML and Kitaru | ZenML",
   description:
-    "Open source runs when you drive it. Pro adds an AI engineer that watches your agents and ML pipelines around the clock, plus automations, a hosted dashboard and team controls.",
+    "Open source runs when you drive it. Pro adds a team of AI engineers that watch your agents and ML pipelines around the clock, plus automations, a hosted dashboard and team controls.",
   ogTitle: "ZenML Open Source vs Pro",
   ogDescription:
-    "Open source runs when you drive it. Pro adds an AI engineer that works on its own, around the clock.",
+    "Open source runs when you drive it. Pro adds a team of AI engineers that work around the clock.",
   ogImage: defaultOgUrl("pages", "open-source-vs-pro"),
 } as const;
 
@@ -35,7 +35,7 @@ export const OSS_VS_PRO_SEO = {
 export const OSS_VS_PRO_HERO = {
   eyebrow: "Open source vs Pro",
   headline: "You drive it, or it runs on its own",
-  deck: "ZenML and Kitaru are open source, and they do the work when you or your coding agent ask. Pro adds an AI engineer that watches your agents and ML pipelines around the clock, with the automations, dashboard and controls a team needs.",
+  deck: "ZenML and Kitaru are open source, and they do the work when you or your coding agent ask. Pro adds a team of AI engineers that watch your agents and ML pipelines around the clock, with the automations, dashboard and controls a team needs.",
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -47,7 +47,7 @@ export const OSS_VS_PRO_VALUE_PROPS: ValuePropsContent = {
   items: [
     {
       index: "01.",
-      title: "An AI engineer that never stops",
+      title: "AI engineers that never stop",
       body: "It reads every new trace and pipeline run, flags evals that are wrong or missing, failures and drift, and asks you only when something needs your call.",
     },
     {
@@ -95,7 +95,7 @@ export const OSS_VS_PRO_COMPARISON = {
       description: "Traces, evals and fixes",
       columns: [
         "Import traces, review sessions, write evals and replay a fix yourself",
-        "Your AI engineer reads every trace and flags evals that are wrong or missing",
+        "Your AI engineers read every trace and flag evals that are wrong or missing",
       ],
     },
     {
@@ -103,7 +103,7 @@ export const OSS_VS_PRO_COMPARISON = {
       description: "Training, batch inference, fine-tuning",
       columns: [
         "Orchestrate on any stack, with versioned artifacts and lineage",
-        "Your AI engineer watches every run and flags failures and drift",
+        "Your AI engineers watch every run and flag failures and drift",
       ],
     },
     {

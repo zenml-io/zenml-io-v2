@@ -55,7 +55,7 @@ const hasVisual = Astro.slots.has("visual");
   ) : (
     <div class={hasVisual ? "grid grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] lg:gap-16" : undefined}>
     <div>
-      <h1 class="font-display text-[44px] leading-[48px] text-balance text-(--color-cream-900) md:text-[80px] md:leading-[86px]">
+      <h1 class:list={["font-display text-[44px] leading-[48px] text-balance text-(--color-cream-900)", hasVisual ? "md:text-[64px] md:leading-[70px]" : "md:text-[80px] md:leading-[86px]"]}>
         {props.content.headlineLines[0]}
         <br />
         {props.content.headlineLines[1]}

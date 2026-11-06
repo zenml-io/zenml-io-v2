@@ -208,7 +208,7 @@ export const GET_STARTED_RESOURCES: {
 // ---------------------------------------------------------------------------
 export const GET_STARTED_CLOSE: LabsBandContent = {
   headlineLines: ["Want it to run", "on its own?"],
-  deck: `Pro adds an AI engineer that watches your agents and ML pipelines around the clock. ${KITARU_TRIAL_DAYS} days free, no credit card.`,
+  deck: `Pro adds a team of AI engineers that watch your agents and ML pipelines around the clock. ${KITARU_TRIAL_DAYS} days free, no credit card.`,
   cta: {
     label: "Start free",
     href: cloudSignupUrl("get-started"),

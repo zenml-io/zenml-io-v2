@@ -74,7 +74,7 @@ export const STEPS = [
 /** The hosted part, said once under the steps. */
 export const HOSTED_NOTE = {
   title: "Rather not do the reading?",
-  body: `Our AI engineer reads your traces next to your evals, shows you what they miss, and keeps watching every new trace. It asks you only when a session needs your call. ${KITARU_CLOUD_PRICE} a month.`,
+  body: `Our AI engineers read your traces next to your evals, show you what they miss, and keep watching every new trace. They ask you only when a session needs your call. ${KITARU_CLOUD_PRICE} a month.`,
   link: {
     label: "See pricing",
     href: "/pricing",
@@ -89,7 +89,7 @@ export const HOSTED_NOTE = {
 export const FAQ_ITEMS: readonly FaqItem[] = [
   {
     question: "What is open source, and what is hosted?",
-    answer: `Kitaru is open source (${KITARU_LICENSE}). You install it with one curl command and it runs on your machine: import, insights, checks and replay. Our AI engineer is the hosted part. It does the reading and asks you questions, for ${KITARU_CLOUD_PRICE} a month on Starter. See <a href="/pricing">pricing</a>.`,
+    answer: `Kitaru is open source (${KITARU_LICENSE}). You install it with one curl command and it runs on your machine: import, insights, checks and replay. Our AI engineers are the hosted part. They do the reading and ask you questions, for ${KITARU_CLOUD_PRICE} a month on Starter. See <a href="/pricing">pricing</a>.`,
   },
   {
     question: "How is this different from Langfuse, Braintrust or LangSmith?",
@@ -111,11 +111,47 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
   },
   {
     question: "How much of my time does it take?",
-    answer: `Very little. Our AI engineer runs on its own and asks you only when a session needs your call, a few quick questions at a time. Doing it yourself in Kitaru takes longer; the <a href="${KITARU_DOCS_URL}">docs</a> walk through it.`,
+    answer: `Very little. Our AI engineers work on their own and ask you only when a session needs your call, a few quick questions at a time. Doing it yourself in Kitaru takes longer; the <a href="${KITARU_DOCS_URL}">docs</a> walk through it.`,
   },
   {
     question: "Something's broken. How do I reach you?",
     answer:
       'Three routes, all reaching a human: the <a href="https://kitaru.ai/slack">Slack community</a>, <a href="https://kitaru.ai/help">kitaru.ai/help</a> (goes straight to GitHub issues), or <a href="mailto:support@kitaru.ai">support@kitaru.ai</a>.',
+  },
+] as const;
+
+/** The four questions the scenario strip on /product/kitaru asks of one cohort. */
+export const SCENARIOS = [
+  {
+    tag: "understand",
+    q: "What does good even mean here?",
+    outcome:
+      "Read twenty of them and write what you notice. Your notes become the cohorts.",
+    stat: "20",
+    statLabel: "read · not 1,824",
+  },
+  {
+    tag: "trust",
+    q: "Can I believe my own check?",
+    outcome:
+      "Apply it blind to sessions you never read, then reveal the labels.",
+    stat: "held-out",
+    statLabel: "predictions locked first",
+  },
+  {
+    tag: "decide",
+    q: "Can we ship the cheaper model?",
+    outcome:
+      "Same cohort, one model swapped. The answer is two runs, compared.",
+    stat: "−61%",
+    statLabel: "cost · 196/200 unchanged",
+  },
+  {
+    tag: "guard",
+    q: "Will it stay fixed?",
+    outcome:
+      "The same experiment runs on every commit, on the cases that caught it.",
+    stat: "0",
+    statLabel: "regressions reach production",
   },
 ] as const;

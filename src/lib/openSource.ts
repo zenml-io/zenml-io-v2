@@ -53,7 +53,7 @@ const COMMUNITY_SLACK = {
 export const KITARU_OPEN_SOURCE: OpenSourceBandContent = {
   eyebrow: "Open source",
   headline: "Free to run, yours to keep",
-  deck: `Kitaru is ${KITARU_LICENSE}. Install it in one line and run it on your own machine, with your own model keys. No account needed. Our AI engineer is the hosted part on top.`,
+  deck: `Kitaru is ${KITARU_LICENSE}. Install it in one line and run it on your own machine, with your own model keys. No account needed. Our AI engineers are the hosted part on top.`,
   install: { cmd: KITARU_INSTALL_CMD, analytics: "Kitaru-OSS-Install" },
   github: {
     href: KITARU_GITHUB_REPO_URL,

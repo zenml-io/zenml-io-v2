@@ -18,10 +18,10 @@ const R2 = R2_WEBFLOW_BASE;
 export const BOOK_YOUR_DEMO_SEO: SEOProps = {
   title: "Signup for Demo",
   description:
-    "Bring one agent and a week of traces. Our AI engineer shows you which evals you are missing. Running pipelines too? See how ZenML orchestrates them.",
+    "Bring one agent and a week of traces. Our AI engineers show you which evals you are missing. Running pipelines too? See how ZenML orchestrates them.",
   ogTitle: "Signup for Demo",
   ogDescription:
-    "Bring one agent and a week of traces. Our AI engineer shows you which evals you are missing. Running pipelines too? See how ZenML orchestrates them.",
+    "Bring one agent and a week of traces. Our AI engineers show you which evals you are missing. Running pipelines too? See how ZenML orchestrates them.",
 };
 
 // ---------------------------------------------------------------------------
@@ -32,7 +32,7 @@ export const BOOK_YOUR_DEMO_HERO = {
   headlinePrefix: "Bring ",
   headlineHighlight: "one agent",
   headlineSuffix: " and a week of traces",
-  deck: "Our AI engineer reads your traces next to your evals and shows you what they miss. Running pipelines, training or fine-tuning? We cover ZenML orchestration too. 30 minutes with our team.",
+  deck: "Our AI engineers read your traces next to your evals and show you what they miss. Running pipelines, training or fine-tuning? We cover ZenML orchestration too. 30 minutes with our team.",
 };
 
 /**
@@ -44,7 +44,7 @@ export const BOOK_YOUR_DEMO_STATS = [
   { value: "1 agent", label: "and a week of traces is enough to start" },
   {
     value: `${KITARU_TRIAL_DAYS} days`,
-    label: "Free trial of our AI engineer, unlimited seats",
+    label: "Free trial of our AI engineers, unlimited seats",
   },
   { value: "SOC 2", label: "Type II and ISO 27001 for your security review" },
   { value: "1,000+", label: "ML and AI teams trust ZenML worldwide" },
@@ -148,7 +148,7 @@ export const BOOK_YOUR_DEMO_TESTIMONIAL = {
 export const BOOK_KITARU_DEMO_SEO: SEOProps = {
   title: "Book a Kitaru demo",
   description:
-    "See what your agent's evals miss: our AI engineer and Kitaru read your traces next to your evals, surface the patterns and turn them into checks. 30 minutes with the ZenML team.",
+    "See what your agent's evals miss: our AI engineers and Kitaru read your traces next to your evals, surface the patterns and turn them into checks. 30 minutes with the ZenML team.",
   // ogTitle / ogDescription intentionally omitted — resolveSeo() falls back to title / description.
 };
 
