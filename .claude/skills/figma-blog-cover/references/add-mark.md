@@ -105,6 +105,8 @@ PNG). Unless `--no-monorepo`, also copies the normalized SVG to
 file there unless this script's own `--force` is passed (distinct from the normalizer's internal
 `--force`, which only ever touches the scratch cache dir and is always on).
 
+A mark must also be in `assets/service-logos/<slug>.svg` for the code route, and `normalize-mark.sh` copies it there.
+
 ## Visual acceptance
 
 Look at `.cache/marks/<slug>/<slug>.preview.png` (and, once M1 has created the component, the mark

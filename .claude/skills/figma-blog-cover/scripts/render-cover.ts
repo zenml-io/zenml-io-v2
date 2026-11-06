@@ -6,6 +6,9 @@
  *     [--layout <Layout>] [--bg <Style>] [--brand ZenML|Kitaru] [--logo "ZenML Labs"] \
  *     [--eyebrow "DEEP DIVE"] [--title <headline>] [--subtitle <text>] [--no-subtitle] [--fallback "<reason>"]
  *
+ *   ... render-cover.ts <slug> --comparison a,b,c [--brand ZenML|Kitaru] [--include-zenml True|False]
+ *     Makes a VS card. Long copy adapts: smaller type, then no derived for-line, then a two-line headline.
+ *
  *   ... render-cover.ts <slug> --record --layout <Layout> --bg <Style> --brand <Brand>
  *   ... render-cover.ts <slug> --record --comparison a,b,c
  *     Writes the manifest row only, for a cover or VS card made on the Figma route.
@@ -25,11 +28,12 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { CoverRenderer, copyProblems, type Brand, type CoverSpec, type Layout, type Logo, type Measured } from "./lib/cover-renderer";
+import type { VsFit, VsSpec } from "./lib/vs-card";
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(SCRIPT_DIR, "../../../..");
 const MANIFEST = resolve(process.env.COVER_MANIFEST ?? join(SCRIPT_DIR, "../assets/cover-manifest.json"));
-const OUT_DIR = join(REPO, ".cache/covers");
+const OUT_DIR = resolve(process.env.COVER_OUT_DIR ?? join(REPO, ".cache/covers"));
 
 interface Plan {
   slug: string;
@@ -42,7 +46,7 @@ interface Plan {
   chosenLayout: Layout;
   chosenBg: string;
   layoutOptions: { layout: Layout; bg: string; headline: string; repeatsNeighbour?: boolean }[];
-  vs: unknown;
+  vs: { brand: Brand; includeZenml: string; title: string; subtitleRest: string; tiles: { logo: string }[] } | null;
   suggestions: string[];
   questions: string[];
 }
@@ -88,12 +92,52 @@ if (recordOnly) {
   console.log(`${dryRun ? "would record" : "recorded"} ${slug}: ${row.layout}${row.bgStyle ? `, ${row.bgStyle}` : ""}`);
   process.exit(0);
 }
-if (plan.vs) {
-  console.error('VS cards need the Figma template. Without Figma, re-run with --fallback "<reason>" instead of --comparison for a Panel Bottom cover.');
-  process.exit(1);
+
+/** Largest type that fits; a derived for-line goes before the card fails, an explicit one never does. */
+async function renderVsCard(renderer: CoverRenderer, vs: NonNullable<Plan["vs"]>): Promise<void> {
+  const spec: VsSpec = {
+    brand: vs.brand,
+    includeBrandTile: vs.includeZenml === "True",
+    logos: vs.tiles.map((t) => t.logo),
+    title: vs.title,
+    qualifier: rest.includes("--no-subtitle") ? "" : vs.subtitleRest,
+  };
+  let fit: VsFit | null = await renderer.fitVs(spec);
+  const notes: string[] = [];
+  if (!fit && spec.qualifier && !rest.includes("--subtitle")) {
+    notes.push(`Dropped "for ${spec.qualifier}": it does not fit next to the logo.`);
+    spec.qualifier = "";
+    fit = await renderer.fitVs(spec);
+  }
+  if (!fit && !spec.qualifier) {
+    spec.wrapTitle = true;
+    fit = await renderer.fitVs(spec);
+    if (fit) notes.push("The headline wraps to two lines: it does not fit on one.");
+  }
+  if (!fit) {
+    console.error("This copy does not fit next to the logo at the smallest size. Shorten it with --title or --subtitle.");
+    process.exitCode = 1;
+    return;
+  }
+  if (fit.step[0] !== 72) notes.push(`Type stepped down to ${fit.step[0]}/${fit.step[1]} so the copy clears the logo.`);
+  const png = dryRun ? null : join(OUT_DIR, `${slug}.png`);
+  if (png) {
+    mkdirSync(OUT_DIR, { recursive: true });
+    writeFileSync(png, await renderer.renderVs(spec, fit.step));
+    record(plan, { layout: "VS" });
+  }
+  console.log(JSON.stringify({ slug, png, brand: spec.brand, layout: "VS", title: spec.title, forLine: spec.qualifier ? `for ${spec.qualifier}` : "", typeSizes: fit.step, tiles: spec.logos, suggestions: [...plan.suggestions, ...notes] }, null, 2));
 }
 
 const renderer = await CoverRenderer.open();
+if (plan.vs) {
+  try {
+    await renderVsCard(renderer, plan.vs);
+  } finally {
+    await renderer.close();
+  }
+  process.exit();
+}
 try {
   const subtitle = plan.showSubtitle ? plan.subtitle : "";
   const tried: string[] = [];

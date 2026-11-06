@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><g transform="translate(-288.000 -585.452)"><g clip-path="url(#clip43_731_2)">
+<g clip-path="url(#clip44_731_2)">
+<g>
+<g>
+<mask id="mask17_731_2" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="287" y="585" width="25" height="25">
+<g>
+<path d="M311.487 585.455H287.52V609.422H311.487V585.455Z" fill="white" />
+</g>
+</mask>
+<g mask="url(#mask17_731_2)">
+<g>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M293.735 587.452L299.43 592.699V592.698V587.464H300.538V592.722L306.259 587.452V593.434H308.608V602.064H306.266V607.391L300.538 602.358V607.448H299.43V602.441L293.741 607.452V602.064H291.392V593.434H293.735V587.452ZM298.594 594.529H292.501V600.968H293.74V598.937L298.594 594.529ZM294.85 599.423V605.008L299.43 600.974V595.263L294.85 599.423ZM300.57 600.921V595.258L305.152 599.418V602.064H305.157V604.951L300.57 600.921ZM306.266 600.968H307.499V594.529H301.451L306.266 598.892V600.968ZM305.15 593.434V589.971L301.391 593.434H305.15ZM298.603 593.434H294.843V589.971L298.603 593.434Z" fill="black" />
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g><defs><clipPath id="clip43_731_2">
+<rect width="24" height="24" fill="white" transform="translate(288 585.452)" />
+</clipPath>
+<clipPath id="clip44_731_2">
+<rect width="24" height="24" fill="white" transform="translate(288 585.452)" />
+</clipPath>
+</defs></svg>

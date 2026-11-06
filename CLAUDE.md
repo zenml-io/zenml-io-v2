@@ -169,7 +169,7 @@ const url = `${ASSET_BASE_URL}/content/uploads/1a2b3c4d/hero.webp`;
 **Claude Code skills:**
 - `r2-image-upload` (`.claude/skills/r2-image-upload/SKILL.md`) — upload images to R2. Triggers: "upload image", "add image to R2", "new blog image".
 - `blog-post-contributor` (`.claude/skills/blog-post-contributor/SKILL.md`) — full blog post workflow from markdown or Notion. Triggers: "new blog post", "add blog", "blog from Notion".
-- `figma-blog-cover` (`.claude/skills/figma-blog-cover/SKILL.md`) — a post's cover or VS card from the new-brand templates, in Figma or in code with `render-cover.ts` when Figma is not connected (VS cards need Figma): convert, upload to R2, print frontmatter. Also adds missing competitor marks to the Hashi library (a human republishes). Triggers: "blog cover", "figma cover", "cover image for post", "add logo", "missing mark", "new service logo".
+- `figma-blog-cover` (`.claude/skills/figma-blog-cover/SKILL.md`) — a post's cover or VS card from the new-brand templates, in Figma or in code with `render-cover.ts` when Figma is not connected: convert, upload to R2, print frontmatter. Also adds missing competitor marks to the Hashi library (a human republishes). Triggers: "blog cover", "figma cover", "cover image for post", "add logo", "missing mark", "new service logo".
 
 ### Compare-page OG card generator
 
