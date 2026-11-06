@@ -7,7 +7,10 @@
  *     [--eyebrow "DEEP DIVE"] [--title <headline>] [--subtitle <text>] [--no-subtitle] [--fallback "<reason>"]
  *
  *   ... render-cover.ts <slug> --record --layout <Layout> --bg <Style> --brand <Brand>
- *     Writes the manifest row only, for a cover made on the Figma route.
+ *   ... render-cover.ts <slug> --record --comparison a,b,c
+ *     Writes the manifest row only, for a cover or VS card made on the Figma route.
+ *
+ * --dry-run does everything except write the PNG and the manifest.
  *
  * Every flag goes to find-slot.ts, which applies the design rules. This script then measures the
  * real lines in Chromium, moves to the next legal layout when the copy does not hold, writes
@@ -25,7 +28,7 @@ import { CoverRenderer, copyProblems, type Brand, type CoverSpec, type Layout, t
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(SCRIPT_DIR, "../../../..");
-const MANIFEST = resolve(SCRIPT_DIR, "../assets/cover-manifest.json");
+const MANIFEST = process.env.COVER_MANIFEST ?? resolve(SCRIPT_DIR, "../assets/cover-manifest.json");
 const OUT_DIR = join(REPO, ".cache/covers");
 
 interface Plan {
@@ -44,10 +47,9 @@ interface Plan {
   questions: string[];
 }
 
-function record(plan: Plan, layout: string, bg: string): void {
+function record(plan: Plan, row: Record<string, string>): void {
   const rows = JSON.parse(readFileSync(MANIFEST, "utf8")) as Record<string, string>[];
-  const row = { slug: plan.slug, month: plan.month, brand: plan.brand, layout, bgStyle: bg };
-  const next = [...rows.filter((r) => r.slug !== plan.slug), row].sort((a, b) => a.month.localeCompare(b.month) || a.slug.localeCompare(b.slug));
+  const next = [...rows.filter((r) => r.slug !== plan.slug), { slug: plan.slug, month: plan.month, ...row }].sort((a, b) => a.month.localeCompare(b.month) || a.slug.localeCompare(b.slug));
   writeFileSync(MANIFEST, `[\n${next.map((r) => JSON.stringify(r)).join(",\n")}\n]\n`);
 }
 
@@ -72,11 +74,17 @@ if (!slug || slug.startsWith("--")) {
   process.exit(2);
 }
 const recordOnly = rest.includes("--record");
+const dryRun = rest.includes("--dry-run");
 const plan = planCover(slug, rest.filter((a) => a !== "--record"));
 
 if (recordOnly) {
-  record(plan, plan.chosenLayout, plan.chosenBg);
-  console.log(`recorded ${slug}: ${plan.chosenLayout}, ${plan.chosenBg}`);
+  if (!plan.vs && !(rest.includes("--layout") && rest.includes("--bg"))) {
+    console.error("--record needs the --layout and --bg the cover uses, or --comparison for a VS card.");
+    process.exit(2);
+  }
+  const row: Record<string, string> = plan.vs ? { layout: "VS" } : { brand: plan.brand, layout: plan.chosenLayout, bgStyle: plan.chosenBg };
+  if (!dryRun) record(plan, row);
+  console.log(`${dryRun ? "would record" : "recorded"} ${slug}: ${row.layout}${row.bgStyle ? `, ${row.bgStyle}` : ""}`);
   process.exit(0);
 }
 if (plan.vs) {
@@ -103,10 +111,12 @@ try {
     console.error(`No legal layout holds this copy. Shorten it with --title or --subtitle.\n  ${tried.join("\n  ")}`);
     process.exitCode = 1;
   } else {
-    mkdirSync(OUT_DIR, { recursive: true });
-    const png = join(OUT_DIR, `${slug}.png`);
-    writeFileSync(png, await renderer.render(chosen.spec));
-    record(plan, chosen.spec.layout, chosen.spec.bg);
+    const png = dryRun ? null : join(OUT_DIR, `${slug}.png`);
+    if (png) {
+      mkdirSync(OUT_DIR, { recursive: true });
+      writeFileSync(png, await renderer.render(chosen.spec));
+      record(plan, { brand: plan.brand, layout: chosen.spec.layout, bgStyle: chosen.spec.bg });
+    }
     console.log(
       JSON.stringify(
         {

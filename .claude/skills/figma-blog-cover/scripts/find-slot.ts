@@ -72,7 +72,7 @@
  *   section height = 1480 + (rows-1)*1280;  year column x = 11620*(2026-year); gap 400
  *
  * `--siblings` is the S1 preflight output (live covers in the month section).
- * It drives the design rules (no adjacent same Layout, unique Photo 0N) and is
+ * It drives the design rules (no adjacent same Layout, photo rotation) and is
  * cross-checked against the content collection: any live cover whose name is
  * not a post of that month, or a post with no live cover other than <slug>,
  * lands in `questions` — stop and ask, do not reflow over it.
@@ -90,7 +90,7 @@ const REPO = resolve(SCRIPT_DIR, "../../../..");
 const BLOG_DIR = join(REPO, "src/content/blog");
 const KEY_TABLE = join(SKILL_DIR, "references/service-logo-keys.md");
 const ENV_FILE = join(REPO, ".env");
-const MANIFEST_FILE = join(SKILL_DIR, "assets/cover-manifest.json");
+const MANIFEST_FILE = process.env.COVER_MANIFEST ?? join(SKILL_DIR, "assets/cover-manifest.json");
 
 // ── Grid + Figma constants ─────────────────────────────────────────────
 const GRID = {
@@ -673,31 +673,22 @@ function main(): void {
     .map((i) => orderedSlugs[i])
     .filter((s) => s !== post.slug);
   const adjacentLayouts = new Set(neighbourSlugs.map((s) => bySlug.get(s)?.layout).filter((l): l is string => typeof l === "string"));
-  // Only numbered photos count toward per-month uniqueness (A3). The target's own live cover
-  // (a re-run) is excluded, otherwise every re-run would rotate to the next free photo.
-  const usedPhotos = new Set(
-    siblings
-      .filter((s) => s.slug !== post.slug)
-      .map((s) => s.bgStyle)
-      .filter((b): b is string => typeof b === "string" && /^Photo 0[1-9]$/.test(b)),
-  );
 
   const brandPhotos = BRAND_PHOTOS[brand as "ZenML" | "Kitaru"];
   const legalBgs: BgStyle[] = BG_STYLES.filter(
-    (b) => !usedPhotos.has(b) && (!(PHOTO_STYLES as readonly string[]).includes(b) || brandPhotos.includes(b)),
+    (b) => !(PHOTO_STYLES as readonly string[]).includes(b) || brandPhotos.includes(b),
   );
   const isPhoto = (b: string | undefined): boolean => typeof b === "string" && /^Photo( 0[1-9])?$/.test(b);
-  const freePhotos = legalBgs.filter((b) => isPhoto(b));
+  const photoBgs = legalBgs.filter((b) => isPhoto(b));
   // Image Right shows a photo's right half, and Photo 08's is nearly plain grey.
-  const photosFor = (layout: string): BgStyle[] => freePhotos.filter((b) => !(layout === "Image Right" && b === "Photo 08"));
+  const photosFor = (layout: string): BgStyle[] => photoBgs.filter((b) => !(layout === "Image Right" && b === "Photo 08"));
   // Neighbouring Panel Bottom covers are fine when both are photo covers (the photo rule wins).
   const photoPanelsMayTouch =
-    freePhotos.length > 0 &&
+    photoBgs.length > 0 &&
     neighbourSlugs.every((s) => bySlug.get(s)?.layout !== PHOTO_LAYOUT || isPhoto(bySlug.get(s)?.bgStyle));
   const legalLayouts: Layout[] = LAYOUT_PREFERENCE.filter((l) => {
     if (l === "Full Bleed" && !isLaunch) return false;
     if (adjacentLayouts.has(l) && !(l === PHOTO_LAYOUT && photoPanelsMayTouch)) return false;
-    if (PHOTO_LAYOUTS.has(l) && photosFor(l).length === 0) return false;
     return true;
   });
 
@@ -713,7 +704,7 @@ function main(): void {
     return [...list].sort((a, b) => score(a) - score(b) || turn(a) - turn(b));
   };
   const neighbourLayouts: Layout[] = LAYOUT_PREFERENCE.filter(
-    (l) => !legalLayouts.includes(l) && l !== "Full Bleed" && (!PHOTO_LAYOUTS.has(l) || photosFor(l).length > 0),
+    (l) => !legalLayouts.includes(l) && l !== "Full Bleed",
   );
   const variedLayouts: Layout[] = [...legalLayouts].sort(
     (a, b) => Number(b === "Full Bleed") - Number(a === "Full Bleed") || used("layout", a) - used("layout", b),
@@ -764,13 +755,13 @@ function main(): void {
     if (!(BG_STYLES as readonly string[]).includes(args.bg)) {
       questions.push(`--bg "${args.bg}" is not a numbered Photo 01–09 or Mesh/Deep/Chevron/Field/Tint (the legacy un-numbered "Photo" is never used on new covers). Confirm?`);
     } else if (!bgCandidates.includes(args.bg as BgStyle)) {
-      questions.push(`--bg "${args.bg}" is illegal with layout "${chosenLayout}" (legal here: ${bgCandidates.join(", ")}), off-brand for ${brand} (${brand} photos: ${brandPhotos.join(", ")}) or already used this month (used photos: ${[...usedPhotos].join(", ") || "none"}). Confirm the override?`);
+      questions.push(`--bg "${args.bg}" is illegal with layout "${chosenLayout}" for ${brand} (legal here: ${bgCandidates.join(", ")}). Confirm the override?`);
     }
   } else if (bgCandidates.length > 0) {
     chosenBg = bgCandidates[0];
   } else {
     chosenBg = "Mesh";
-    questions.push(`No background is legal for layout "${chosenLayout}" this month (used photos: ${[...usedPhotos].join(", ")}). Which Style should be used?`);
+    questions.push(`No background is legal for layout "${chosenLayout}" . Which Style should be used?`);
   }
 
   // Headline / subtitle (copy rule A8). titleSource / subtitleSource are inputs only.
@@ -790,8 +781,9 @@ function main(): void {
     // VS card: budgets are checked on vs.title / the "for" line below.
   } else if (headline.length > titleBudget) {
     const msg = `Headline is ${headline.length} chars; the budget for layout "${chosenLayout}" is ${titleBudget} (about three lines). Shorten it faithfully — drop trailing clauses and questions, keep numbers and product names.`;
-    if (args.title === undefined) questions.push(`${msg} Pass --title "<short title>".`);
-    else warn(msg);
+    // The code route tries every layout before it gives up, so a long headline only stops it further down.
+    if (args.title === undefined && !codeRoute) questions.push(`${msg} Pass --title "<short title>".`);
+    else if (!codeRoute) warn(msg);
   } else if (args.title === undefined && headline !== post.title) {
     suggestions.push(`Headline derived from the title by dropping a trailing clause: "${headline}". Override with --title if a better faithful cut exists.`);
   }
@@ -862,7 +854,7 @@ function main(): void {
   // What render-cover.ts tries, in order: it measures real lines and moves down the list when the
   // copy does not hold. An explicit --layout or --bg narrows the list, never widens it.
   const headlineFor = (l: Layout): string => args.title?.trim() ?? shortenTitle(post.title, TITLE_BUDGET[l]);
-  const layoutOptions =
+  const plannedOptions =
     args.layout || fallback
       ? [{ layout: chosenLayout, bg: chosenBg, headline }]
       : [
@@ -875,6 +867,12 @@ function main(): void {
             .filter((l) => !args.bg || bgsFor(l).includes(args.bg as BgStyle))
             .map((l) => ({ layout: l, bg: args.bg ?? bgsFor(l)[0], headline: headlineFor(l), repeatsNeighbour: true })),
         ];
+
+  const layoutOptions =
+    isVs || args.title !== undefined ? plannedOptions : plannedOptions.filter((o) => o.headline.length <= TITLE_BUDGET[o.layout]);
+  if (codeRoute && !isVs && layoutOptions.length === 0) {
+    questions.push(`The title is too long for every layout available here. Pass --title "<short title>".`);
+  }
 
   // Comparison (VS template)
   let comparison: Array<{ slug: string; key: string | null }> | null = null;

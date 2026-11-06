@@ -36,6 +36,8 @@ export interface Measured {
   gapAbove: number;
   gapBelow: number;
   orphan: boolean;
+  /** A word wider than its text box. */
+  overflow: boolean;
   wrap: "wrap" | "balance";
 }
 
@@ -189,6 +191,13 @@ function settle(baseline: Record<number, number>): Omit<Measured, "wrap"> {
     return out.map((l) => l.text);
   };
   const titleLines = lines(document.querySelector(".title"));
+  const overflow = [".title", ".subtitle"].some((sel) => {
+    const el = document.querySelector(sel);
+    if (!el) return false;
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    return range.getBoundingClientRect().right > el.getBoundingClientRect().right + 0.5;
+  });
   const copy = (document.querySelector(".copy") as HTMLElement).getBoundingClientRect();
   const footer = (document.querySelector(".footer") as HTMLElement).getBoundingClientRect();
   const pill = (document.querySelector(".pill") as HTMLElement).getBoundingClientRect();
@@ -200,6 +209,7 @@ function settle(baseline: Record<number, number>): Omit<Measured, "wrap"> {
     gapAbove: Math.round(copy.top - above),
     gapBelow: Math.round(footer.top - copy.bottom),
     orphan: titleLines.length > 1 && !/\s/.test(titleLines[titleLines.length - 1]),
+    overflow,
   };
 }
 
@@ -219,6 +229,7 @@ export function copyProblems(layout: Layout, m: Measured): string[] {
   if (m.titleLines.length > limit.title) problems.push(`title runs ${m.titleLines.length} lines, the limit is ${limit.title}`);
   if (m.subtitleLines.length > limit.subtitle) problems.push(`subtitle runs ${m.subtitleLines.length} lines, the limit is ${limit.subtitle}`);
   if (m.orphan) problems.push(`"${m.titleLines[m.titleLines.length - 1]}" sits alone on the last line`);
+  if (m.overflow) problems.push("a word runs past the edge of its text box");
   if (Math.min(m.gapAbove, m.gapBelow) < MIN_GAP) problems.push("the copy crowds the logo or the eyebrow");
   return problems;
 }

@@ -22,7 +22,7 @@ pnpm exec playwright install chromium   # once
 pnpm exec tsx .claude/skills/figma-blog-cover/scripts/render-cover.ts <slug> [flags]
 ```
 
-Flags: `--layout`, `--bg`, `--brand`, `--logo "ZenML Labs"`, `--eyebrow "DEEP DIVE"`, `--title`, `--subtitle`, `--no-subtitle`, `--fallback "<reason>"`.
+Flags: `--layout`, `--bg`, `--brand`, `--logo "ZenML Labs"`, `--eyebrow "DEEP DIVE"`, `--title`, `--subtitle`, `--no-subtitle`, `--fallback "<reason>"`, `--dry-run`.
 
 1. With no flags it picks everything inside the rules: the layout and background the month has used least, skipping what the neighbouring covers show. Long copy moves to a layout that holds it. A subtitle derived from `seo.description` is left out if it would stop mid-sentence or repeat the headline, so write one with `--subtitle` when the post deserves it. Pass a flag to choose; an illegal choice stops with a question.
 2. It measures the real lines in Chromium, writes `.cache/covers/<slug>.png` at 3840 x 2160 and adds the cover to `assets/cover-manifest.json`. Commit that file with the post, because it is how the next cover sees this one. Exit 3 means find-slot has questions; exit 1 means no legal layout holds the copy, so shorten it.
@@ -65,7 +65,7 @@ Read `references/figma-ids.md` before the first Figma call; the other references
 - `category == kitaru` or `kitaru ∈ tags` → Brand `Kitaru`, else `ZenML`.
 - Title matching `/alternatives|\bvs\b/i` → find-slot suggests `--comparison`; `/introducing|launch|release/i` → suggests `Full Bleed`.
 - Eyebrow `BLOG` unless `--eyebrow` sets another; Site stays at the component default (`ZENML.IO`). Logo follows the Brand; `--logo "ZenML Labs"` is a ZenML-brand option on the code route only.
-- Layout and Background come from the legal set in `references/design-rules.md`, computed against the month's siblings. Long copy never goes in `Panel Bottom`: find-slot picks a layout with no division or two columns instead. Numbered photos are per brand (`P.brandPhotos`): the same image sits under both Brand variants, so only the brand's own photo numbers are legal. A photo background only ever goes with `Panel Bottom`.
+- Layout and Background come from the legal set in `references/design-rules.md`, computed against the month's siblings. Long copy never goes in `Panel Bottom`: find-slot picks a layout with no division or two columns instead. Numbered photos are per brand (`P.brandPhotos`): the same image sits under both Brand variants, so only the brand's own photo numbers are legal. Photos go with `Panel Bottom`, `Image Left` and `Image Right` only, and `Text` and `Full Bleed` never take one.
 
 ## Steps
 
@@ -81,7 +81,7 @@ Run every step in order. Each `scripts/figma/s*.js` starts with `const P = __PAR
 
 **S4 reflow.** `scripts/figma/s4-reflow.js` sets x/y of every child of the month section from `P`'s ordered positions and the section height. **Ops: at most 10 per call — a section resize (if any) plus child moves; the rest come back in `pending`; re-run while non-empty** (a section holds at most 20 covers, so at most two or three calls). **Hard rule: when S4 resized the section (`mutatedNodeIds` contains the section id), it must be followed by S2 → S5** — S4 never moves the sections below, so skipping S2 leaves the grown section overlapping the next month.
 
-**S5 verify (read-only).** `scripts/figma/s5-verify.js` compares `absoluteBoundingBox` of every child of every touched section against the section's box plus the expected slot, checks `name === slug`, that `mainComponent.parent` is `162:1845` or `113:300`, and that the target's `Photo 0N` background is in `P.brandPhotos` and sits in `Panel Bottom`. It returns `mismatches`; anything but `[]` → fix, re-run S4/S5, do not export. Its column check already covers every section of the year column, so one S5 run with the target `P` verifies the S2 shift. Running S5 with a `--month` `P` on sections this run did not touch is optional and reports the within-section order the 2026-08-27/28 batch left there (slots that differ from find-slot's date-desc order, even two covers on one slot); those are pre-existing — list them in the report, do not reflow them unless Zuri asks (the `--month` path does that as a separate job).
+**S5 verify (read-only).** `scripts/figma/s5-verify.js` compares `absoluteBoundingBox` of every child of every touched section against the section's box plus the expected slot, checks `name === slug`, that `mainComponent.parent` is `162:1845` or `113:300`, and that the target's `Photo 0N` background is in `P.brandPhotos` and sits in `Panel Bottom`, `Image Left` or `Image Right`. It returns `mismatches`; anything but `[]` → fix, re-run S4/S5, do not export. Its column check already covers every section of the year column, so one S5 run with the target `P` verifies the S2 shift. Running S5 with a `--month` `P` on sections this run did not touch is optional and reports the within-section order the 2026-08-27/28 batch left there (slots that differ from find-slot's date-desc order, even two covers on one slot); those are pre-existing — list them in the report, do not reflow them unless Zuri asks (the `--month` path does that as a separate job).
 
 **S6 export.** Eyeball first: `get_screenshot({fileKey, nodeId})` of the new instance — no clipped type, no orphan words, logos resolved, **and the copy check: a title over three lines, one word alone on the title's last line (an orphan), copy past its layout's limit (a two-line subtitle in `Panel Bottom` above all), or a subtitle that restates the title is a defect — fix it, re-run S3 and screenshot again before exporting.** Remedy for line problems: the image layouts set the title in an 800 px measure, `Panel Bottom` in 1760 px and `Text` / `Full Bleed` in 1680 px (`references/design-rules.md`), so re-run S0 with the same `--siblings` plus `--layout "<wider legal layout>"` or a different `--title` cut; S3 then updates the instance in place. Then export with `download_assets` only:
 ```
@@ -92,14 +92,14 @@ Ignore the `rawImages` / `svgAssets` URLs in the result, and a `svgAssetsTruncat
 
 **S7 publish.** `pnpm exec tsx .claude/skills/figma-blog-cover/scripts/publish-cover.ts <slug> "$S/<slug>.png" [--no-upload] [--allow-1x]`. It asserts the PNG is exactly 3840x2160 (1920x1080 only behind `--allow-1x`, with a printed warning), writes `<slug>-cover.avif` at 1920x1080 (quality 75, 4:4:4) and `<slug>-cover.jpg` at 1200x675 for Open Graph, uploads both to `content/blog/<slug>` on R2, HEADs the URLs, and prints JSON + the YAML block. `--no-upload` stops after the local files. (`--allow-any-source` — any 16:9 image ≥1200 px wide — exists for blog-post-contributor's "cover provided" path only; never for a Figma export.)
 
-**S8 record.** On the Figma route, `pnpm exec tsx .claude/skills/figma-blog-cover/scripts/render-cover.ts <slug> --record --layout "<layout>" --bg "<style>" --brand <brand>` adds the cover to `assets/cover-manifest.json`, so people working without Figma see it. Commit the file with the post.
+**S8 record.** On the Figma route, `pnpm exec tsx .claude/skills/figma-blog-cover/scripts/render-cover.ts <slug> --record --layout "<layout>" --bg "<style>" --brand <brand>` (or `--record --comparison a,b,c` for a VS card) adds the cover to `assets/cover-manifest.json`, so people working without Figma see it. Commit the file with the post.
 
 ## Copy: headline, subtitle, alt text
 
 **Cover copy stays minimal.** The post title and `seo.description` are inputs (`P.titleSource`, `P.subtitleSource`), never pasted onto the card. Character budgets, the punctuation-boundary shortening rule, and worked examples all live in `references/design-rules.md` (Text section) — read it before writing any copy; this section states the rule, not the numbers.
 
 - Headline: **at most three lines, no orphan word on the last line** (`P.titleBudget` carries the layout's character cap). Shorten faithfully, never rewrite — drop trailing clauses and questions, keep numbers and product names, and keep the published title's meaning. find-slot cuts at a punctuation boundary itself and asks (exit 3) when that is not enough; pass `--title "<short title>"` for the final wording.
-- Subtitle: **present by default** — find-slot derives one line, at most 55 characters, from `seo.description` (`--subtitle "<line>"` overrides, `--no-subtitle` clears both fields to `showSubtitle: false` / `subtitle: ""`). Never the full `seo.description`, never two lines, never a body sentence. A derived or supplied subtitle that restates the title is a suggestion, not a question; a supplied subtitle equal to `seo.description` is still a question.
+- Subtitle: **present by default** — find-slot derives one line, at most 55 characters, from `seo.description` (`--subtitle "<line>"` overrides, `--no-subtitle` clears both fields to `showSubtitle: false` / `subtitle: ""`). Never the full `seo.description`, never a body sentence, and never two lines in `Panel Bottom`. Other layouts hold a longer `--subtitle` (limits in `references/design-rules.md`). A derived or supplied subtitle that restates the title is a suggestion, not a question; a supplied subtitle equal to `seo.description` is still a question.
 - VS card: headline `<N> <Competitor> Alternatives`; sub-line `for ` + the title's qualifier (`--subtitle` here sets the qualifier). N counts the listed competitors plus the brand tile when `--include-zenml` is true. find-slot derives the headline from the title and flags a suggestion when the title's own count differs; `--title` overrides a bad derivation.
 - Every cover is screenshot-checked (S6) before it is reported: a copy defect (design-rules.md's Visual acceptance section) must be fixed before export.
 - Alt text (goes in the YAML): one sentence describing what is on the card — brand, headline, and for a VS card the logos in tile order. Pattern from the existing posts: `ZenML blog cover for <title>, showing the logos of A, B, C`; VS card: `<Brand> comparison card for <headline> <for-line>, showing the logos of <Brand>, A, B, C` (brand tile first, then the competitors in tile order).
@@ -127,7 +127,7 @@ When a VS card needs a `ServiceLogo/<slug>` that isn't in `references/service-lo
 ## Verification (before reporting done)
 
 - S5 returned `mismatches: []` for every touched section — including the old month's section after a month change; the new instance's `name === slug`.
-- The S6 screenshot passed the copy check: title on at most three lines with no orphan word on the last line, subtitle absent or a single line at most 55 characters that adds something the title does not say (S3's `props.ShowSubtitle` matches `P.showSubtitle`).
+- The S6 screenshot passed the copy check: title on at most three lines with no orphan word on the last line, subtitle absent or within its layout's limit (one line in `Panel Bottom`) and adding something the title does not say (S3's `props.ShowSubtitle` matches `P.showSubtitle`).
 - Pre-existing mismatches S5 reported in sections this run did not touch are listed in the report as such, and were not reflowed.
 - `sips -g pixelWidth -g pixelHeight "$S/<slug>.png"` → 3840 x 2160.
 - `.cache/covers/<slug>-cover.avif` is 1920x1080 and `.jpg` is 1200x675; `curl -sI <url>` on both R2 URLs → `200` with `content-type: image/avif` / `image/jpeg`.
@@ -149,7 +149,7 @@ The two `sha8` segments differ (content-addressed keys). Do not edit the post's 
 
 - `references/figma-ids.md` — file key, page/section ids, component sets, property keys, variant names, fonts, account gate.
 - `references/grid.md` — slot geometry, section sizes, column layout, reflow algorithm.
-- `references/design-rules.md` — legal Layout/Background combinations, per-month photo uniqueness, character budgets.
+- `references/design-rules.md` — legal Layout/Background combinations, photo rotation, character budgets.
 - `references/traps.md` — ops budget and chunking, fonts, section-relative coordinates, stale API surface, export gotchas, what the first E2E run taught.
 - `references/vs-template.md` — live VS instance tree and the tile-swap recipe.
 - `references/service-logo-keys.md` — `ServiceLogo/<slug>` component keys (supplied, never discovered by `use_figma`).

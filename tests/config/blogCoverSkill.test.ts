@@ -1,7 +1,12 @@
 import { spawnSync } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
+import { copyFileSync, existsSync, mkdtempSync, readFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import {
+  copyProblems,
+  type Measured,
+} from "../../.claude/skills/figma-blog-cover/scripts/lib/cover-renderer";
 
 const SKILL = ".claude/skills/figma-blog-cover";
 const SLUG = "unified-mlops-for-defense";
@@ -132,6 +137,83 @@ describe("blog cover skill without Figma", () => {
     );
     expect(chosenBg).toMatch(/^Photo/);
     expect(chosenBg).not.toBe("Photo 03");
+  });
+
+  it("lets a month reuse a photo", () => {
+    const { questions } = planFor(
+      "there-is-no-best-model-for-your-agent",
+      "--brand",
+      "Kitaru",
+      "--layout",
+      "Image Left",
+      "--bg",
+      "Photo 08",
+    );
+    expect(questions.filter((q) => q.includes("is illegal"))).toEqual([]);
+  });
+
+  it("rejects copy that crowds or overflows its layout", () => {
+    const fits: Measured = {
+      titleLines: ["a b", "c d"],
+      subtitleLines: ["e f"],
+      gapAbove: 80,
+      gapBelow: 80,
+      orphan: false,
+      overflow: false,
+      wrap: "wrap",
+    };
+    expect(copyProblems("Panel Bottom", fits)).toEqual([]);
+    expect(
+      copyProblems("Panel Bottom", { ...fits, subtitleLines: ["e f", "g h"] }),
+    ).not.toEqual([]);
+    expect(
+      copyProblems("Text", { ...fits, subtitleLines: ["e f", "g h"] }),
+    ).toEqual([]);
+    expect(copyProblems("Text", { ...fits, overflow: true })).not.toEqual([]);
+    expect(copyProblems("Text", { ...fits, gapBelow: 10 })).not.toEqual([]);
+  });
+
+  it("records what was made, and nothing on a dry run", () => {
+    const manifest = join(
+      mkdtempSync(join(tmpdir(), "cover-")),
+      "manifest.json",
+    );
+    copyFileSync(join(SKILL, "assets/cover-manifest.json"), manifest);
+    const before = readFileSync(manifest, "utf8");
+    const render = (...args: string[]) =>
+      spawnSync(
+        process.execPath,
+        ["--import", "tsx", join(SKILL, "scripts/render-cover.ts"), ...args],
+        {
+          encoding: "utf8",
+          env: { ...process.env, COVER_MANIFEST: manifest },
+        },
+      );
+    const row = (slug: string) =>
+      (JSON.parse(readFileSync(manifest, "utf8")) as { slug: string }[]).find(
+        (r) => r.slug === slug,
+      );
+
+    expect(render(SLUG, "--record").status).toBe(2);
+    expect(
+      render(
+        "databricks-alternatives",
+        "--record",
+        "--dry-run",
+        "--comparison",
+        "mlflow",
+      ).status,
+    ).toBe(0);
+    expect(readFileSync(manifest, "utf8")).toBe(before);
+    expect(
+      render("databricks-alternatives", "--record", "--comparison", "mlflow")
+        .status,
+    ).toBe(0);
+    expect(row("databricks-alternatives")).toEqual({
+      slug: "databricks-alternatives",
+      month: expect.any(String),
+      layout: "VS",
+    });
   });
 
   it("gives the same answer on a re-run", () => {
