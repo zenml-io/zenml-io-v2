@@ -264,6 +264,53 @@ async function runChecks(baseUrl: string): Promise<CheckResult[]> {
     );
   }
 
+  // Inspect redirects without following or executing the upstream installers.
+  for (const [slug, target] of [
+    [
+      "install",
+      "https://raw.githubusercontent.com/zenml-io/zenml/main/install.sh",
+    ],
+    [
+      "install-zenml",
+      "https://raw.githubusercontent.com/zenml-io/zenml/main/install-zenml.sh",
+    ],
+    ["install-kitaru", "https://kitaru.ai/install"],
+  ]) {
+    for (const suffix of ["", "/", ".sh", ".sh/"]) {
+      const pathname = `/${slug}${suffix}`;
+      for (const method of ["GET", "HEAD"]) {
+        const redirect = await request(baseUrl, pathname, { method });
+        check(
+          results,
+          `${method} ${pathname} temporarily redirects to its installer`,
+          redirect.status === 302 &&
+            redirect.headers.get("location") === target,
+          `status ${redirect.status}, location ${redirect.headers.get("location")}`,
+        );
+        await redirect.body?.cancel();
+      }
+    }
+  }
+
+  for (const pathname of [
+    "/installation",
+    "/install-other",
+    "/install/nested",
+    "/install-zenml/nested",
+    "/install-kitaru/nested",
+  ]) {
+    for (const method of ["GET", "HEAD"]) {
+      const response = await request(baseUrl, pathname, { method });
+      check(
+        results,
+        `${method} ${pathname} remains a website 404`,
+        response.status === 404 && !response.headers.has("location"),
+        `status ${response.status}, location ${response.headers.get("location")}`,
+      );
+      await response.body?.cancel();
+    }
+  }
+
   // Retired forms must reach the maintained flow before a visitor can submit
   // to stale markup. Exercise the generated Worker, not only _redirects.
   for (const pathname of [

@@ -1,5 +1,9 @@
 # Cloudflare Worker Release Runbook
 
+## Installer URL rollout
+
+`public/_redirects` serves exact `/install`, `/install-zenml`, and `/install-kitaru` aliases, including trailing slash and `.sh` variants, as temporary redirects to maintained scripts. `curl -fsSL` follows them. The ZenML aliases become usable once [ZenML #5427](https://github.com/zenml-io/zenml/pull/5427) releases `install.sh` and `install-zenml.sh` to the ZenML repository's `main` branch; coordinate the website rollout with that release. Kitaru keeps its existing `https://kitaru.ai/install` origin. Local runtime checks inspect redirect responses without fetching or executing upstream scripts.
+
 ## Current boundary
 
 The accepted Astro 7 Worker serves `www.zenml.io/*`. The accepted Astro 6

@@ -13,9 +13,19 @@
 /privacy /privacy-policy 301
 /privacy/ /privacy-policy 301
 
-# ── Kitaru installer: the script itself is served from kitaru.ai ──
+# ── Installers: temporary redirects follow the maintained scripts ──
+/install https://raw.githubusercontent.com/zenml-io/zenml/main/install.sh 302
+/install/ https://raw.githubusercontent.com/zenml-io/zenml/main/install.sh 302
+/install.sh https://raw.githubusercontent.com/zenml-io/zenml/main/install.sh 302
+/install.sh/ https://raw.githubusercontent.com/zenml-io/zenml/main/install.sh 302
+/install-zenml https://raw.githubusercontent.com/zenml-io/zenml/main/install-zenml.sh 302
+/install-zenml/ https://raw.githubusercontent.com/zenml-io/zenml/main/install-zenml.sh 302
+/install-zenml.sh https://raw.githubusercontent.com/zenml-io/zenml/main/install-zenml.sh 302
+/install-zenml.sh/ https://raw.githubusercontent.com/zenml-io/zenml/main/install-zenml.sh 302
 /install-kitaru https://kitaru.ai/install 302
 /install-kitaru/ https://kitaru.ai/install 302
+/install-kitaru.sh https://kitaru.ai/install 302
+/install-kitaru.sh/ https://kitaru.ai/install 302
 
 # ── Internal redirects (from Webflow) ──────────────────────────────
 /open-source-vs-managed /open-source-vs-pro 301
