@@ -639,8 +639,10 @@ export const LABS_HOME_BENCHMARKS: BenchmarkBandContent = {
 
 export interface StackMark {
   name: string;
-  /** A full-colour service mark; absent renders the name alone. */
+  /** A full-colour service mark. */
   logo?: string;
+  /** A line icon, for a technique with no mark of its own. */
+  icon?: "scale" | "gauge";
 }
 
 export interface StackColumn {
@@ -682,11 +684,11 @@ export const LABS_STACK_LAYER: StackLayerContent = {
       id: "evals",
       title: "Your evals",
       marks: [
-        { name: "LLM judges" },
+        { name: "LLM judges", icon: "scale" },
         { name: "pytest", logo: "/images/service-logos/pytest.svg" },
         { name: "promptfoo", logo: "/images/service-logos/promptfoo.svg" },
         { name: "DeepEval", logo: "/images/service-logos/deepeval.svg" },
-        { name: "Scores in your tracer" },
+        { name: "Scores in your tracer", icon: "gauge" },
       ],
     },
     {
