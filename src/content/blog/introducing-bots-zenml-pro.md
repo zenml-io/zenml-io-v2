@@ -11,10 +11,14 @@ tags:
   - "llmops"
 date: "2026-11-06T00:00:00.000Z"
 readingTime: "5 mins"
+mainImage:
+  url: "https://assets.zenml.io/content/blog/introducing-bots-zenml-pro/c8c0f244/introducing-bots-zenml-pro-cover.avif"
+  alt: "ZenML Labs blog cover for Introducing Bots: your very own team of AI engineers in ZenML Pro"
 seo:
   title: "Introducing Bots: your very own team of AI engineers in ZenML Pro"
   description: "Delegate ML and AI operations to Bots in ZenML Pro: investigate failures, propose fixes, and schedule recurring reviews of pipeline and agent performance."
   canonical: "https://www.zenml.io/blog/introducing-bots-zenml-pro"
+  ogImage: "https://assets.zenml.io/content/blog/introducing-bots-zenml-pro/57439a42/introducing-bots-zenml-pro-cover.jpg"
 ---
 
 You may have noticed a new look in ZenML Pro. We’ll share more about that next week. Today, we’re introducing something new: Bots.

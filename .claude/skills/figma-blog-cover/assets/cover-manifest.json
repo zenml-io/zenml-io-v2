@@ -360,5 +360,6 @@
 {"slug":"braintrust-pricing","month":"2026-09","brand":"Kitaru","layout":"Image Right","bgStyle":"Photo 01"},
 {"slug":"choosing-a-sandbox-runtime-for-long-lived-coding-agents","month":"2026-09","brand":"Kitaru","layout":"Text","bgStyle":"Chevron"},
 {"slug":"there-is-no-best-model-for-your-agent","month":"2026-10","brand":"Kitaru","layout":"Panel Bottom","bgStyle":"Photo 01"},
-{"slug":"you-cant-pick-your-agents-next-model-from-a-diff","month":"2026-10","brand":"Kitaru","layout":"Panel Bottom","bgStyle":"Photo 08"}
+{"slug":"you-cant-pick-your-agents-next-model-from-a-diff","month":"2026-10","brand":"Kitaru","layout":"Panel Bottom","bgStyle":"Photo 08"},
+{"slug":"introducing-bots-zenml-pro","month":"2026-11","brand":"ZenML","layout":"Full Bleed","bgStyle":"Deep"}
 ]
