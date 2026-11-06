@@ -92,7 +92,7 @@ describe("blog cover skill without Figma", () => {
   });
 
   it("switches half-half covers between photos and gradients", () => {
-    const after = (bgStyle: string): string => {
+    const nextTo = (bgStyle: string): string => {
       const siblings = JSON.stringify([
         {
           slug: "you-cant-pick-your-agents-next-model-from-a-diff",
@@ -108,8 +108,8 @@ describe("blog cover skill without Figma", () => {
         siblings,
       ).chosenBg;
     };
-    expect(after("Mesh")).toMatch(/^Photo/);
-    expect(after("Photo 03")).toMatch(/^(Mesh|Deep)$/);
+    expect(nextTo("Mesh")).toMatch(/^Photo/);
+    expect(nextTo("Photo 03")).toMatch(/^(Mesh|Deep)$/);
   });
 
   it("gives the same answer on a re-run", () => {
