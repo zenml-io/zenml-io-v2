@@ -53,7 +53,7 @@ Dev tools were built for people. A dashboard to click through. A CLI to type int
 
 That's changing. The first user of a dev tool is now often an agent. Coding agents read the repo and open the PR. Engineers review more and type less.
 
-So the job of a tool changes too. It has to give an agent context, limits, and a way to prove its work. And it has to put a person where it matters.
+So the job of a tool changes too. It has to give an agent context, limits, and a way to prove its work. And keep humans in control where it matters.
 
 Keeping AI good in production means reading traces, deciding which failures matter, writing the check, testing the fix, training a better model and getting it deployed. Agents can do that work, given the right context and limits.
 
