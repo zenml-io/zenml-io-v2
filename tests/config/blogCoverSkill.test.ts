@@ -1,7 +1,14 @@
 import { spawnSync } from "node:child_process";
-import { copyFileSync, existsSync, mkdtempSync, readFileSync } from "node:fs";
+import {
+  copyFileSync,
+  existsSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { chromium } from "playwright";
 import { describe, expect, it } from "vitest";
 import {
   copyProblems,
@@ -140,6 +147,13 @@ describe("blog cover skill without Figma", () => {
   });
 
   it("lets a month reuse a photo", () => {
+    const siblings = JSON.stringify([
+      {
+        slug: "you-cant-pick-your-agents-next-model-from-a-diff",
+        layout: "Image Right",
+        bgStyle: "Photo 08",
+      },
+    ]);
     const { questions } = planFor(
       "there-is-no-best-model-for-your-agent",
       "--brand",
@@ -148,8 +162,27 @@ describe("blog cover skill without Figma", () => {
       "Image Left",
       "--bg",
       "Photo 08",
+      "--siblings",
+      siblings,
     );
     expect(questions.filter((q) => q.includes("is illegal"))).toEqual([]);
+  });
+
+  it("lets a long title repeat a neighbour's layout when nothing else holds it", () => {
+    const siblings = JSON.stringify([
+      {
+        slug: "deep-learning-on-33-000-000-data-points-using-a-few-lines-of-yaml",
+        layout: "Text",
+        bgStyle: "Mesh",
+      },
+    ]);
+    const slug =
+      "predicting-the-winner-of-a-dota-2-match-using-distributed-deep-learning-pipelines";
+    const { layoutOptions, questions } = planFor(slug, "--siblings", siblings);
+    expect(questions).toEqual([]);
+    expect(layoutOptions).toContainEqual(
+      expect.objectContaining({ layout: "Text", repeatsNeighbour: true }),
+    );
   });
 
   it("rejects copy that crowds or overflows its layout", () => {
@@ -215,6 +248,50 @@ describe("blog cover skill without Figma", () => {
       layout: "VS",
     });
   });
+
+  it.skipIf(!existsSync(chromium.executablePath()))(
+    "measures overflow and writes nothing on a dry run in Chromium",
+    () => {
+      const manifest = join(
+        mkdtempSync(join(tmpdir(), "cover-")),
+        "manifest.json",
+      );
+      copyFileSync(join(SKILL, "assets/cover-manifest.json"), manifest);
+      const before = readFileSync(manifest, "utf8");
+      const render = (...args: string[]) =>
+        spawnSync(
+          process.execPath,
+          [
+            "--import",
+            "tsx",
+            join(SKILL, "scripts/render-cover.ts"),
+            SLUG,
+            "--dry-run",
+            "--layout",
+            "Text",
+            "--bg",
+            "Mesh",
+            ...args,
+          ],
+          {
+            encoding: "utf8",
+            env: { ...process.env, COVER_MANIFEST: manifest },
+          },
+        );
+      const png = join(".cache/covers", `${SLUG}.png`);
+      rmSync(png, { force: true });
+
+      expect(render("--title", "W".repeat(50), "--no-subtitle").status).toBe(1);
+      const fits = render("--title", "A title that fits", "--no-subtitle");
+      expect(fits.status).toBe(0);
+      expect(JSON.parse(fits.stdout)).toMatchObject({
+        png: null,
+        layout: "Text",
+      });
+      expect(existsSync(png)).toBe(false);
+      expect(readFileSync(manifest, "utf8")).toBe(before);
+    },
+  );
 
   it("gives the same answer on a re-run", () => {
     const { chosenLayout, chosenBg } = plan();

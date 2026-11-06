@@ -28,7 +28,7 @@ import { CoverRenderer, copyProblems, type Brand, type CoverSpec, type Layout, t
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(SCRIPT_DIR, "../../../..");
-const MANIFEST = process.env.COVER_MANIFEST ?? resolve(SCRIPT_DIR, "../assets/cover-manifest.json");
+const MANIFEST = resolve(process.env.COVER_MANIFEST ?? join(SCRIPT_DIR, "../assets/cover-manifest.json"));
 const OUT_DIR = join(REPO, ".cache/covers");
 
 interface Plan {
@@ -57,6 +57,7 @@ function planCover(slug: string, flags: string[]): Plan {
   const run = spawnSync(process.execPath, ["--import", "tsx", join(SCRIPT_DIR, "find-slot.ts"), slug, "--renderer", "code", ...flags], {
     cwd: REPO,
     encoding: "utf8",
+    env: { ...process.env, COVER_MANIFEST: MANIFEST },
   });
   if (run.stderr) process.stderr.write(run.stderr);
   if (run.status !== 0 && run.status !== 3) process.exit(run.status ?? 1);
