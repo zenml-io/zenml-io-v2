@@ -127,7 +127,7 @@ seo:
 
 <h2>17. Changes to These Terms</h2>
 <p>17.1 We may change these Terms for the future if there is a valid reason, such as a change in law or case law, a security need, a new or changed feature, or closing a gap that has come to light, and the change is reasonable for you. We will not use this Section to change the main obligations of either party, such as the type of service, the term or the fees, or to materially shift the balance of the agreement. Section 4.3 covers fees.</p>
-<p>17.2 We will send you the changes in text form at least 30 days before they take effect. You may object within that period. If you do not object and keep using the Services, the changes take effect, and we will point this out in our notice. If you object, the previous Terms continue to apply, and either party may terminate the affected subscription with effect from the date the change would have taken effect. We will refund prepaid fees for the period after that date.</p>
+<p>17.2 We will post the updated Terms on this page and change the "Last updated" date. The updated Terms apply from that date. If you keep using the Services, you accept them. If you do not agree, you can stop using the Services and cancel your subscription under Section 4.2.</p>
 <p>17.3 Changes to these Terms that only add a Subprocessor follow Section 12.4. Terms for using the Site alone apply as posted at the time you use it.</p>
 
 <h2>18. Governing Law and Disputes</h2>
