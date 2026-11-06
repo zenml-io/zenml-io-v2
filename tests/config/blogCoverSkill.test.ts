@@ -100,6 +100,21 @@ describe("blog cover skill without Figma", () => {
     }
   });
 
+  it("keeps Photo 08 off Image Right", () => {
+    const illegal = (layout: string): boolean =>
+      planFor(
+        "there-is-no-best-model-for-your-agent",
+        "--brand",
+        "Kitaru",
+        "--layout",
+        layout,
+        "--bg",
+        "Photo 08",
+      ).questions.some((q) => q.includes("is illegal with layout"));
+    expect(illegal("Image Right")).toBe(true);
+    expect(illegal("Image Left")).toBe(false);
+  });
+
   it("rotates photos on half-half covers", () => {
     const siblings = JSON.stringify([
       {

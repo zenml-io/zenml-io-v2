@@ -688,6 +688,8 @@ function main(): void {
   );
   const isPhoto = (b: string | undefined): boolean => typeof b === "string" && /^Photo( 0[1-9])?$/.test(b);
   const freePhotos = legalBgs.filter((b) => isPhoto(b));
+  // Image Right shows a photo's right half, and Photo 08's is nearly plain grey.
+  const photosFor = (layout: string): BgStyle[] => freePhotos.filter((b) => !(layout === "Image Right" && b === "Photo 08"));
   // Neighbouring Panel Bottom covers are fine when both are photo covers (the photo rule wins).
   const photoPanelsMayTouch =
     freePhotos.length > 0 &&
@@ -695,7 +697,7 @@ function main(): void {
   const legalLayouts: Layout[] = LAYOUT_PREFERENCE.filter((l) => {
     if (l === "Full Bleed" && !isLaunch) return false;
     if (adjacentLayouts.has(l) && !(l === PHOTO_LAYOUT && photoPanelsMayTouch)) return false;
-    if (PHOTO_LAYOUTS.has(l) && freePhotos.length === 0) return false;
+    if (PHOTO_LAYOUTS.has(l) && photosFor(l).length === 0) return false;
     return true;
   });
 
@@ -711,14 +713,14 @@ function main(): void {
     return [...list].sort((a, b) => score(a) - score(b) || turn(a) - turn(b));
   };
   const neighbourLayouts: Layout[] = LAYOUT_PREFERENCE.filter(
-    (l) => !legalLayouts.includes(l) && l !== "Full Bleed" && (!PHOTO_LAYOUTS.has(l) || freePhotos.length > 0),
+    (l) => !legalLayouts.includes(l) && l !== "Full Bleed" && (!PHOTO_LAYOUTS.has(l) || photosFor(l).length > 0),
   );
   const variedLayouts: Layout[] = [...legalLayouts].sort(
     (a, b) => Number(b === "Full Bleed") - Number(a === "Full Bleed") || used("layout", a) - used("layout", b),
   );
 
   function bgsFor(layout: string): BgStyle[] {
-    if (PHOTO_LAYOUTS.has(layout)) return varied(freePhotos);
+    if (PHOTO_LAYOUTS.has(layout)) return varied(photosFor(layout));
     if (layout === "Full Bleed") return legalBgs.filter((b) => b === FULL_BLEED_BG);
     return varied(legalBgs.filter((b) => !isPhoto(b) && b !== FULL_BLEED_BG));
   }
