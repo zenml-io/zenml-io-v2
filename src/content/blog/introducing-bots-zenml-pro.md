@@ -40,6 +40,8 @@ For an AI document-processing workflow, the deliverable might be a comparison ex
 
 Results are recorded as artifacts: code diffs, pull requests, reports, charts, comparisons, and links to the relevant runs and model versions. You can find the proposed action and its evidence without reconstructing the investigation from a conversation.
 
+![A bot reports on failed pipeline runs, with an evidence note, remediation task, and run breakdown](https://assets.zenml.io/content/blog/introducing-bots-zenml-pro/61f44ee4/bot-pipeline-investigation.avif)
+
 ## Improve AI agents with Kitaru
 
 For agents, a successful execution does not necessarily mean good behavior. Repeated tool calls, unnecessary model requests, and poor tool selection can all leave room for improvement.
@@ -69,6 +71,8 @@ You do not need to start every investigation in a chat. Automations run a config
 For example, you could give a bot a daily task:
 
 > Review yesterday's failed pipeline runs. Investigate recurring failures, link the affected runs, and open draft pull requests where a code fix is clear. Report anything that needs an engineer's decision.
+
+![Creating a daily automation to investigate failed pipeline runs](https://assets.zenml.io/content/blog/introducing-bots-zenml-pro/46f7c246/bot-automation-setup.avif)
 
 Or give another bot a weekly cost review:
 
