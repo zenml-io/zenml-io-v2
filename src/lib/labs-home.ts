@@ -873,8 +873,8 @@ export interface StoryCardsContent {
 /* ---------------------------------------------------------------------- */
 
 export const LABS_HOME_CLOSE: LabsBandContent = {
-  headlineLines: ["Start with the evals", "you already run"],
-  deck: "Connect your repo and your tracing keys. By the end of the interview you know what your evals miss. 14 days free, no credit card.",
+  headlineLines: ["Better AI", "starts here"],
+  deck: "Connect your repo and your tracing keys. Your AI engineers get to work right away. 14 days free, no credit card.",
   cta: LABS_FINAL_SIGNUP,
 };
 
