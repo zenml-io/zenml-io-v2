@@ -1,19 +1,39 @@
 ---
 name: figma-blog-cover
 description: >-
-  Create a blog post's cover in Figma from the Blog Cover / 16:9 component (or a
-  Kitaru-vs-X comparison card from the VS template), export it, convert to AVIF +
-  JPEG, upload to R2 and print the mainImage / seo.ogImage frontmatter. Can also
-  add a missing ServiceLogo mark to the Hashi Design System library. Use for any
-  request to make, regenerate or fix a post's cover or comparison card, to add a
-  missing competitor logo, or when blog-post-contributor reaches its cover step.
+  Create a blog post's cover, with or without Figma: in code with render-cover.ts
+  (every layout and background, no Figma needed) or in Figma from the Blog Cover /
+  16:9 component, plus Kitaru-vs-X comparison cards from the VS template in Figma.
+  Converts to AVIF + JPEG, uploads to R2 and prints the mainImage / seo.ogImage
+  frontmatter. Can also add a missing ServiceLogo mark to the Hashi Design System
+  library. Use for any request to make, regenerate or fix a post's cover or
+  comparison card, to add a missing competitor logo, or when blog-post-contributor
+  reaches its cover step.
 ---
 
 # Figma Blog Cover
 
-## Quick start
+## Without Figma (the default when Figma is not connected)
 
-For a person:
+Nothing here needs a Figma account, a seat or `.env` Figma values. It covers every layout, background and brand, plus the ZenML Labs logo. Only VS cards still need Figma.
+
+```bash
+pnpm exec playwright install chromium   # once
+pnpm exec tsx .claude/skills/figma-blog-cover/scripts/render-cover.ts <slug> [flags]
+```
+
+Flags: `--layout`, `--bg`, `--brand`, `--logo "ZenML Labs"`, `--eyebrow "DEEP DIVE"`, `--title`, `--subtitle`, `--no-subtitle`, `--fallback "<reason>"`.
+
+1. With no flags it picks everything inside the rules: the layout and background the month has used least, skipping what the neighbouring covers show. Long copy moves to a layout that holds it. A subtitle derived from `seo.description` is left out if it would stop mid-sentence or repeat the headline, so write one with `--subtitle` when the post deserves it. Pass a flag to choose; an illegal choice stops with a question.
+2. It measures the real lines in Chromium, writes `.cache/covers/<slug>.png` at 3840 x 2160 and adds the cover to `assets/cover-manifest.json`. Commit that file with the post, because it is how the next cover sees this one. Exit 3 means find-slot has questions; exit 1 means no legal layout holds the copy, so shorten it.
+3. Look at the PNG, then apply the copy check in S6. Set `--eyebrow` from the post's kind: `BLOG`, `DEEP DIVE`, `GUIDE`, `CASE STUDY`, `RESEARCH`, `NEWSLETTER`, `RELEASE`, `COMPARISON`.
+4. Run S7 below on that PNG. Uploading needs the R2 values in `.env`; without them use `--no-upload` and hand the two files in `.cache/covers/` to someone who has them.
+
+Code covers do not appear on the Figma Blog Covers page. A comparison post without Figma takes `--fallback "<reason>"`, which gives a `Panel Bottom` cover. `references/code-renderer.md` has the spec and the test.
+
+## With Figma
+
+Quick start for a person:
 
 1. Open the ZenML Templates file in the Figma desktop app (the shared ZenML editor account, see `.env`).
 2. Make sure the post exists at `src/content/blog/<slug>.md` with a `date` and a `title`.
@@ -44,7 +64,7 @@ Read `references/figma-ids.md` before the first Figma call; the other references
 - `title` → `titleSource` → headline shortened to at most three lines (see Copy below); `seo.description` → `subtitleSource`, **input only** — the subtitle is present by default, one line derived from it; `date` → month section and slot.
 - `category == kitaru` or `kitaru ∈ tags` → Brand `Kitaru`, else `ZenML`.
 - Title matching `/alternatives|\bvs\b/i` → find-slot suggests `--comparison`; `/introducing|launch|release/i` → suggests `Full Bleed`.
-- Eyebrow `BLOG`; Site stays at the component default (`ZENML.IO`).
+- Eyebrow `BLOG` unless `--eyebrow` sets another; Site stays at the component default (`ZENML.IO`). Logo follows the Brand; `--logo "ZenML Labs"` is a ZenML-brand option on the code route only.
 - Layout and Background come from the legal set in `references/design-rules.md`, computed against the month's siblings. Long copy never goes in `Panel Bottom`: find-slot picks a layout with no division or two columns instead. Numbered photos are per brand (`P.brandPhotos`): the same image sits under both Brand variants, so only the brand's own photo numbers are legal. A photo background only ever goes with `Panel Bottom`.
 
 ## Steps
@@ -71,6 +91,8 @@ curl -sL -o "$S/<slug>.png" "<result export.url>"   # $S = scratch dir; the URL 
 Ignore the `rawImages` / `svgAssets` URLs in the result, and a `svgAssetsTruncated` / "select a smaller node" notice — a VS card's subtree holds more than 20 vectors, so it always says that; `export.url` is still the full PNG and it is not an error. `get_screenshot` is not an export path — it caps at the node's natural 1920x1080.
 
 **S7 publish.** `pnpm exec tsx .claude/skills/figma-blog-cover/scripts/publish-cover.ts <slug> "$S/<slug>.png" [--no-upload] [--allow-1x]`. It asserts the PNG is exactly 3840x2160 (1920x1080 only behind `--allow-1x`, with a printed warning), writes `<slug>-cover.avif` at 1920x1080 (quality 75, 4:4:4) and `<slug>-cover.jpg` at 1200x675 for Open Graph, uploads both to `content/blog/<slug>` on R2, HEADs the URLs, and prints JSON + the YAML block. `--no-upload` stops after the local files. (`--allow-any-source` — any 16:9 image ≥1200 px wide — exists for blog-post-contributor's "cover provided" path only; never for a Figma export.)
+
+**S8 record.** On the Figma route, `pnpm exec tsx .claude/skills/figma-blog-cover/scripts/render-cover.ts <slug> --record --layout "<layout>" --bg "<style>" --brand <brand>` adds the cover to `assets/cover-manifest.json`, so people working without Figma see it. Commit the file with the post.
 
 ## Copy: headline, subtitle, alt text
 
@@ -131,5 +153,5 @@ The two `sha8` segments differ (content-addressed keys). Do not edit the post's 
 - `references/traps.md` — ops budget and chunking, fonts, section-relative coordinates, stale API surface, export gotchas, what the first E2E run taught.
 - `references/vs-template.md` — live VS instance tree and the tile-swap recipe.
 - `references/service-logo-keys.md` — `ServiceLogo/<slug>` component keys (supplied, never discovered by `use_figma`).
-- `references/code-renderer.md` — the tested spec for a Figma-free renderer (not built yet): engine, measured values, traps, acceptance test.
+- `references/code-renderer.md` — the renderer behind `render-cover.ts`: engine, traps, test results, how to change it when the template changes.
 - `references/add-mark.md` — sub-flow for adding a missing `ServiceLogo/<slug>` mark: sourcing order, pre-fix checklist, normalize, Figma creation (M1/M2), key append, republish gate.

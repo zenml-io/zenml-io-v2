@@ -6,7 +6,12 @@
  *     [--siblings '<json array of {slug,layout,bgStyle,date?}>'] \
  *     [--brand ZenML|Kitaru] [--layout <Layout>] [--bg <Style>] \
  *     [--title <headline>] [--subtitle <text>] [--no-subtitle] [--comparison a,b,c] [--include-zenml True|False] \
- *     [--tile-batch <n>] [--fallback "<reason>"] [--allow-new-column] [--dry-run]
+ *     [--tile-batch <n>] [--fallback "<reason>"] [--allow-new-column] [--dry-run] \
+ *     [--renderer figma|code] [--logo ZenML|Kitaru|"ZenML Labs"] [--eyebrow <text>]
+ *
+ *   --renderer code is the route without Figma (render-cover.ts passes it): no account gate, and
+ *   siblings come from assets/cover-manifest.json alone. Both routes read the manifest, so a cover
+ *   rendered in code counts toward the rules when someone later works in Figma.
  *
  *   pnpm exec tsx .claude/skills/figma-blog-cover/scripts/find-slot.ts --month YYYY-MM [--siblings ...]
  *     Month mode: no target slug. Emits the section geometry and positions of every post of that
@@ -85,6 +90,7 @@ const REPO = resolve(SCRIPT_DIR, "../../../..");
 const BLOG_DIR = join(REPO, "src/content/blog");
 const KEY_TABLE = join(SKILL_DIR, "references/service-logo-keys.md");
 const ENV_FILE = join(REPO, ".env");
+const MANIFEST_FILE = join(SKILL_DIR, "assets/cover-manifest.json");
 
 // ── Grid + Figma constants ─────────────────────────────────────────────
 const GRID = {
@@ -143,6 +149,9 @@ const BRAND_PHOTOS: Record<"ZenML" | "Kitaru", readonly string[]> = {
   ZenML: ["Photo 02", "Photo 03", "Photo 04", "Photo 05", "Photo 06", "Photo 07", "Photo 09"],
 };
 const IMAGE_LAYOUTS: ReadonlySet<string> = new Set(["Image Left", "Image Right"]);
+// Full Bleed sets light type on the dark style; Text sets dark type, so it never takes Deep.
+const FULL_BLEED_BG = "Deep";
+const LOGOS = ["ZenML", "Kitaru", "ZenML Labs"] as const;
 
 // s3-vs-comparison.js: 1 create/reuse + 2 texts + N swaps ≤ 10 ops → at most 7 swaps per call.
 const MAX_SWAPS_PER_CALL = 7;
@@ -283,13 +292,16 @@ interface Args {
   includeZenml?: string;
   tileBatch?: string;
   fallback?: string;
+  renderer?: string;
+  logo?: string;
+  eyebrow?: string;
   allowNewColumn: boolean;
   dryRun: boolean;
   noSubtitle: boolean;
 }
 
 const USAGE =
-  "usage: find-slot.ts <slug> [--siblings JSON] [--brand ZenML|Kitaru] [--layout L] [--bg S] [--title T] [--subtitle T] [--no-subtitle] [--comparison a,b,c] [--include-zenml True|False] [--tile-batch N] [--fallback REASON] [--allow-new-column] [--dry-run]\n" +
+  "usage: find-slot.ts <slug> [--siblings JSON] [--brand ZenML|Kitaru] [--layout L] [--bg S] [--title T] [--subtitle T] [--no-subtitle] [--comparison a,b,c] [--include-zenml True|False] [--tile-batch N] [--fallback REASON] [--allow-new-column] [--dry-run] [--renderer figma|code] [--logo L] [--eyebrow T]\n" +
   "       find-slot.ts --month YYYY-MM [--siblings JSON] [--allow-new-column] [--dry-run]";
 
 function parseArgs(argv: string[]): Args {
@@ -306,6 +318,9 @@ function parseArgs(argv: string[]): Args {
     "--include-zenml": "includeZenml",
     "--tile-batch": "tileBatch",
     "--fallback": "fallback",
+    "--renderer": "renderer",
+    "--logo": "logo",
+    "--eyebrow": "eyebrow",
   };
   const boolFlags: Record<string, "allowNewColumn" | "dryRun" | "noSubtitle"> = {
     "--allow-new-column": "allowNewColumn",
@@ -354,6 +369,14 @@ function parseArgs(argv: string[]): Args {
   }
   if (args.fallback && args.layout) {
     console.error(`--fallback forces --layout "${FALLBACK_LAYOUT}"; drop --layout`);
+    process.exit(2);
+  }
+  if (args.renderer !== undefined && args.renderer !== "figma" && args.renderer !== "code") {
+    console.error(`--renderer must be figma or code, got ${args.renderer}`);
+    process.exit(2);
+  }
+  if (args.logo !== undefined && !(LOGOS as readonly string[]).includes(args.logo)) {
+    console.error(`--logo must be one of ${LOGOS.join(", ")}`);
     process.exit(2);
   }
   if (args.subtitle !== undefined && args.noSubtitle) {
@@ -520,10 +543,20 @@ interface Sibling {
 }
 
 // Siblings (live covers from S1) — cross-check against the collection.
+// Covers on record for the month: one row per cover, written by render-cover.ts. It stands in for
+// the Figma canvas on the code route. Rows for posts that left the month are ignored.
+function manifestSiblings(geo: MonthGeometry): Sibling[] {
+  if (!existsSync(MANIFEST_FILE)) return [];
+  const rows = JSON.parse(readFileSync(MANIFEST_FILE, "utf8")) as Sibling[];
+  const inMonth = new Set(geo.orderedSlugs);
+  return rows.filter((r) => inMonth.has(r.slug));
+}
+
 function parseSiblings(args: Args, geo: MonthGeometry, targetSlug: string | null, questions: string[], suggestions: string[]): Sibling[] {
+  const recorded = manifestSiblings(geo);
   if (!args.siblings) {
-    suggestions.push("No --siblings given: layout/bg rules were applied without live sibling data. Re-run with the S1 preflight siblings before S3.");
-    return [];
+    if (args.renderer !== "code") suggestions.push("No --siblings given: layout/bg rules were applied from the manifest only, without live Figma data. Re-run with the S1 preflight siblings before S3.");
+    return recorded;
   }
   let siblings: Sibling[] = [];
   try {
@@ -548,7 +581,8 @@ function parseSiblings(args: Args, geo: MonthGeometry, targetSlug: string | null
   if (uncovered.length > 0) {
     suggestions.push(`Post(s) dated ${geo.month} with no live cover yet in "${geo.sectionName}": ${uncovered.join(", ")}. Their slots stay reserved; run this skill for each after this one.`);
   }
-  return siblings;
+  // Live covers win; the manifest adds covers rendered in code that are not on the canvas.
+  return [...siblings, ...recorded.filter((r) => !live.has(r.slug))];
 }
 
 function emit(P: Record<string, unknown>, questions: string[]): void {
@@ -562,7 +596,9 @@ function main(): void {
   const questions: string[] = [];
   const suggestions: string[] = [];
   const posts = readAllPosts();
-  const gate = readGate(questions);
+  const codeRoute = args.renderer === "code";
+  // The code route has no Figma account to check.
+  const gate = codeRoute ? null : readGate(questions);
 
   // ── --month mode: geometry of one section, no target post ──
   if (args.month) {
@@ -662,10 +698,29 @@ function main(): void {
     return true;
   });
 
+  // Variety: inside the legal set, take what the month has used least and avoid what the neighbours
+  // show. The slug breaks ties, so a re-run lands on the same answer and an empty month still varies.
+  const others = siblings.filter((s) => s.slug !== post.slug);
+  const used = (key: "layout" | "bgStyle", value: string): number => others.filter((s) => s[key] === value).length;
+  const neighbourBgs = new Set(neighbourSlugs.map((s) => bySlug.get(s)?.bgStyle));
+  const slugHash = [...post.slug].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7);
+  const varied = (list: BgStyle[]): BgStyle[] => {
+    const turn = (b: BgStyle): number => (list.indexOf(b) + slugHash) % list.length;
+    const score = (b: BgStyle): number => used("bgStyle", b) + (neighbourBgs.has(b) ? 100 : 0);
+    return [...list].sort((a, b) => score(a) - score(b) || turn(a) - turn(b));
+  };
+  const neighbourLayouts: Layout[] = LAYOUT_PREFERENCE.filter(
+    (l) => !legalLayouts.includes(l) && l !== "Full Bleed" && (!IMAGE_LAYOUTS.has(l) || legalBgs.some((b) => IMAGE_LAYOUT_BGS.has(b))),
+  );
+  const variedLayouts: Layout[] = [...legalLayouts].sort(
+    (a, b) => Number(b === "Full Bleed") - Number(a === "Full Bleed") || used("layout", a) - used("layout", b),
+  );
+
   function bgsFor(layout: string): BgStyle[] {
-    if (layout === PHOTO_LAYOUT) return [...freePhotos, ...legalBgs.filter((b) => !isPhoto(b))];
-    if (IMAGE_LAYOUTS.has(layout)) return legalBgs.filter((b) => IMAGE_LAYOUT_BGS.has(b));
-    return legalBgs.filter((b) => !isPhoto(b));
+    if (layout === PHOTO_LAYOUT) return [...varied(freePhotos), ...varied(legalBgs.filter((b) => !isPhoto(b)))];
+    if (IMAGE_LAYOUTS.has(layout)) return varied(legalBgs.filter((b) => IMAGE_LAYOUT_BGS.has(b)));
+    if (layout === "Full Bleed") return legalBgs.filter((b) => b === FULL_BLEED_BG);
+    return varied(legalBgs.filter((b) => !isPhoto(b) && b !== FULL_BLEED_BG));
   }
 
   // Chosen layout (fallback, override, or first legal)
@@ -693,7 +748,7 @@ function main(): void {
   } else if (legalLayouts.length > 0) {
     const plannedTitle = args.title?.trim() ?? post.title;
     const plannedSubtitle = args.noSubtitle ? "" : (args.subtitle?.trim() ?? "");
-    chosenLayout = isVs ? legalLayouts[0] : (legalLayouts.find((l) => copyFits(l, plannedTitle, plannedSubtitle)) ?? legalLayouts[0]);
+    chosenLayout = isVs ? legalLayouts[0] : (variedLayouts.find((l) => copyFits(l, plannedTitle, plannedSubtitle)) ?? variedLayouts[0]);
   } else {
     chosenLayout = FALLBACK_LAYOUT;
     questions.push(`No layout satisfies the design rules for slot ${slotIndex} (adjacent layouts: ${[...adjacentLayouts].join(", ")}). Which layout should be used?`);
@@ -707,7 +762,7 @@ function main(): void {
     if (!(BG_STYLES as readonly string[]).includes(args.bg)) {
       questions.push(`--bg "${args.bg}" is not a numbered Photo 01–09 or Mesh/Deep/Chevron/Field/Tint (the legacy un-numbered "Photo" is never used on new covers). Confirm?`);
     } else if (!bgCandidates.includes(args.bg as BgStyle)) {
-      questions.push(`--bg "${args.bg}" is illegal with layout "${chosenLayout}" (photos only go in ${PHOTO_LAYOUT}), off-brand for ${brand} (${brand} photos: ${brandPhotos.join(", ")}) or already used this month (used photos: ${[...usedPhotos].join(", ") || "none"}). Confirm the override?`);
+      questions.push(`--bg "${args.bg}" is illegal with layout "${chosenLayout}" (legal here: ${bgCandidates.join(", ")}; photos only go in ${PHOTO_LAYOUT}), off-brand for ${brand} (${brand} photos: ${brandPhotos.join(", ")}) or already used this month (used photos: ${[...usedPhotos].join(", ") || "none"}). Confirm the override?`);
     }
   } else if (bgCandidates.length > 0) {
     chosenBg = bgCandidates[0];
@@ -766,7 +821,7 @@ function main(): void {
     if (post.description && normalizeCopy(subtitle) === normalizeCopy(post.description)) {
       questions.push("--subtitle equals seo.description. The subtitle is written by the agent (one line at most 55 chars that adds something the title does not say); seo.description is input only, never copied onto the cover. Pass a shorter line, or --no-subtitle.");
     } else if (subtitle && restatesHeadline(subtitle)) {
-      suggestions.push("--subtitle restates the headline. Keep a subtitle only when it adds something the title does not say; otherwise pass --no-subtitle.");
+      (codeRoute ? questions : suggestions).push("--subtitle restates the headline. Keep a subtitle only when it adds something the title does not say; otherwise pass --no-subtitle.");
     }
   } else if (args.noSubtitle) {
     subtitle = "";
@@ -775,10 +830,16 @@ function main(): void {
     const derived = deriveSubtitle(post.description, SUBTITLE_MAX);
     subtitle = derived.text;
     showSubtitle = subtitle.length > 0;
-    if (derived.isFallback) {
+    const repeats = subtitle.length > 0 && restatesHeadline(subtitle);
+    if (codeRoute && (derived.isFallback || repeats)) {
+      // Nobody reviews a canvas on this route, so a line that stops mid-sentence or repeats the headline never reaches the cover.
+      suggestions.push(`Left the subtitle out: "${subtitle}" ${repeats ? "repeats the headline" : "stops mid-sentence"}. Pass --subtitle "<line>" to add one.`);
+      subtitle = "";
+      showSubtitle = false;
+    } else if (derived.isFallback) {
       suggestions.push(`No clause boundary in seo.description fits ${SUBTITLE_MAX} chars, so the subtitle was cut at the last word boundary instead: "${subtitle}". Pass --subtitle "<better line>" for a cleaner cut.`);
     }
-    if (subtitle && restatesHeadline(subtitle)) {
+    if (showSubtitle && repeats) {
       suggestions.push(`Derived subtitle "${subtitle}" restates the headline. Pass --subtitle "<better line>" or --no-subtitle.`);
     }
   }
@@ -788,6 +849,30 @@ function main(): void {
     suggestions.push(`This copy is too long for "${chosenLayout}". ${remedy}`);
   }
   if (isLaunch && chosenLayout !== "Full Bleed") suggestions.push("Launch-style title: consider --layout 'Full Bleed'.");
+
+  // Logo: follows the brand; ZenML Labs is a ZenML-brand option and exists on the code route only,
+  // because the Figma template has no Labs variant and no cover uses one yet.
+  const logo = args.logo ?? brand;
+  if (logo === "ZenML Labs" && brand !== "ZenML") questions.push(`--logo "ZenML Labs" needs Brand ZenML; this post is ${brand}.`);
+  if (logo === "ZenML Labs" && !codeRoute) questions.push('--logo "ZenML Labs" works on the code route only: use render-cover.ts.');
+  if ((logo === "ZenML" || logo === "Kitaru") && logo !== brand) questions.push(`--logo "${logo}" does not match Brand ${brand}.`);
+
+  // What render-cover.ts tries, in order: it measures real lines and moves down the list when the
+  // copy does not hold. An explicit --layout or --bg narrows the list, never widens it.
+  const headlineFor = (l: Layout): string => args.title?.trim() ?? shortenTitle(post.title, TITLE_BUDGET[l]);
+  const layoutOptions =
+    args.layout || fallback
+      ? [{ layout: chosenLayout, bg: chosenBg, headline }]
+      : [
+          { layout: chosenLayout, bg: chosenBg, headline },
+          ...variedLayouts
+            .filter((l) => l !== chosenLayout && (!args.bg || bgsFor(l).includes(args.bg as BgStyle)) && bgsFor(l).length > 0)
+            .map((l) => ({ layout: l, bg: args.bg ?? bgsFor(l)[0], headline: headlineFor(l) })),
+          // Last resort: copy that fits nowhere else may repeat a neighbour's layout, because fit outranks adjacency.
+          ...neighbourLayouts
+            .filter((l) => !args.bg || bgsFor(l).includes(args.bg as BgStyle))
+            .map((l) => ({ layout: l, bg: args.bg ?? bgsFor(l)[0], headline: headlineFor(l), repeatsNeighbour: true })),
+        ];
 
   // Comparison (VS template)
   let comparison: Array<{ slug: string; key: string | null }> | null = null;
@@ -885,8 +970,10 @@ function main(): void {
       headline,
       subtitle,
       showSubtitle,
-      eyebrow: "BLOG",
+      eyebrow: (args.eyebrow?.trim() || "BLOG").toUpperCase(),
       brand,
+      logo,
+      layoutOptions,
       date: post.date,
       month: geo.month,
       sectionName,

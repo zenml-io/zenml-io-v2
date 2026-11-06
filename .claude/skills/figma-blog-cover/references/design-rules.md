@@ -10,6 +10,13 @@ Rules for every cover. find-slot applies them deterministically; flags may overr
 ## Brand
 
 - `category == kitaru` or `kitaru` in `tags` → `Brand=Kitaru`; everything else `Brand=ZenML`. Background `Brand` always equals the cover `Brand`.
+- The logo follows the Brand. `ZenML Labs` is the one alternative: ZenML brand only, for posts about the company rather than a product. It exists on the code route (`--logo "ZenML Labs"`), because the Figma template has no Labs option.
+
+## Variety
+
+- Inside the legal set, take the layout and background the month has used least, and avoid a background a neighbouring cover shows. find-slot does this and the post's slug breaks ties, so a re-run lands on the same cover and an empty month still varies. `Full Bleed` still comes first on a launch title.
+- Copy fit outranks adjacency. When no legal layout holds the copy, `render-cover.ts` may repeat a neighbour's layout and says so; `Full Bleed` still needs a launch title.
+- A code cover counts as soon as it is recorded in `assets/cover-manifest.json`. Both routes read that file.
 
 ## Layout
 
@@ -26,10 +33,11 @@ Rules for every cover. find-slot applies them deterministically; flags may overr
 - **No two covers inside one month section share a `Photo 0N`.** Round-robin the free numbers. No free number left → find-slot puts a question in `P`; stop and ask rather than repeat one.
 - **Photos only go in `Panel Bottom`** (photo on top, the panel holds the copy). find-slot gives `Panel Bottom` a free brand photo first, and never gives a photo to any other layout; S3 refuses and S5 reports a photo on another layout.
 - **Hard rule:** `Image Left` / `Image Right` only ever pair with `Mesh` or `Deep`. `Field` and `Tint` are too quiet to carry half a card.
+- `Full Bleed` only takes `Deep`, because its type is light. `Text` takes `Chevron`, `Mesh`, `Field` or `Tint`, never `Deep`, because its type is dark.
 
 ## Text
 
-- Eyebrow `BLOG`. Site stays at the component default `ZENML.IO`.
+- Eyebrow `BLOG` by default; live covers also use `DEEP DIVE`, `GUIDE`, `CASE STUDY`, `RESEARCH`, `NEWSLETTER`, `RELEASE` and `COMPARISON`, so a regenerated cover keeps its eyebrow. Site stays at the component default `ZENML.IO`.
 - **Cover copy stays minimal** — a card carrying the full four-line title with `seo.description` as a four-line subtitle is rejected. The post title and `seo.description` are inputs (`P.titleSource`, `P.subtitleSource`), never pasted onto the card.
 - Headline: **at most three lines, no orphan word on the last line.** The character budget is a copy cap, not a line count: about **90 characters** on `Text` and `Full Bleed` (two lines), about **60** on `Panel Bottom` / `Image Left` / `Image Right` (find-slot emits it as `P.titleBudget`). Shorten faithfully, never rewrite or invent: drop trailing clauses and questions, keep numbers and product names, keep the published title's meaning (including retired vocabulary if the title uses it). Example: `Braintrust Pricing Guide: How Much Does It Actually Cost?` → `Braintrust Pricing Guide`. find-slot cuts at a punctuation boundary itself; pass `--title` for a better cut.
 - How the headline breaks depends on the layout's title measure (`figma-ids.md`): `Image Left` / `Image Right` set it in **800 px**, `Text` / `Full Bleed` in 1680 px, `Panel Bottom` in 1760 px. At 800 px about 18 characters fit on a line (`Braintrust Pricing Guide` became `Braintrust Pricing / Guide` — an orphan). find-slot estimates the breaks (`P.titleLines`) and, when the last line would be a single word or a fourth line appears, suggests the widest legal layout for the slot; take it with `--layout` before S3, or re-cut with `--title`. The S6 screenshot is the final judge.
