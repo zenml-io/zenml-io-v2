@@ -10,7 +10,8 @@
 #     --force --out-dir .cache/marks/<slug> --preview .cache/marks/<slug>/<slug>.preview.png
 # (always --force on the normalizer's own out-dir write: that dir is this skill's scratch cache,
 # re-running the same slug against a different candidate is the normal workflow, not a collision).
-# Prints the normalizer's JSON verbatim, then, unless --no-monorepo, copies the normalized SVG to
+# Prints the normalizer's JSON verbatim, copies the normalized SVG to assets/service-logos/<slug>.svg
+# in this skill, then, unless --no-monorepo, to
 #   <monorepo>/shared/hashi/assets/service-logos/<slug>.svg
 # refusing to overwrite an existing file there unless THIS script's own --force is passed (distinct
 # from the normalizer's --force above, which only ever touches the scratch cache).
@@ -97,17 +98,32 @@ if [[ ! -f "$PREVIEW" ]]; then
   exit 1
 fi
 
+SKILL_LOGO="$SKILL_DIR/assets/service-logos/$SLUG.svg"
+DEST_DIR="$MONOREPO/shared/hashi/assets/service-logos"
+DEST="$DEST_DIR/$SLUG.svg"
+# Check both destinations first, so a refusal leaves neither changed.
+if [[ -f "$SKILL_LOGO" && "$FORCE" -eq 0 ]]; then
+  echo "$SKILL_LOGO already exists — pass --force to overwrite it" >&2
+  exit 1
+fi
+if [[ "$NO_MONOREPO" -eq 0 && -f "$DEST" && "$FORCE" -eq 0 ]]; then
+  echo "$DEST already exists — pass --force to overwrite it" >&2
+  exit 1
+fi
+
+mkdir -p "$(dirname "$SKILL_LOGO")" && cp "$NORMALIZED" "$SKILL_LOGO" || {
+  echo "could not copy the mark to $SKILL_LOGO" >&2
+  exit 1
+}
+echo "copied to $SKILL_LOGO" >&2
+
 if [[ "$NO_MONOREPO" -eq 1 ]]; then
   echo "--no-monorepo: normalized SVG left at $NORMALIZED, monorepo assets untouched" >&2
   exit 0
 fi
 
-DEST_DIR="$MONOREPO/shared/hashi/assets/service-logos"
-DEST="$DEST_DIR/$SLUG.svg"
-mkdir -p "$DEST_DIR"
-if [[ -f "$DEST" && "$FORCE" -eq 0 ]]; then
-  echo "$DEST already exists — pass --force to overwrite it" >&2
+mkdir -p "$DEST_DIR" && cp "$NORMALIZED" "$DEST" || {
+  echo "could not copy the mark to $DEST" >&2
   exit 1
-fi
-cp "$NORMALIZED" "$DEST"
+}
 echo "copied to $DEST" >&2

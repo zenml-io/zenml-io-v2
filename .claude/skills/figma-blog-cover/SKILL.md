@@ -3,7 +3,7 @@ name: figma-blog-cover
 description: >-
   Create a blog post's cover, with or without Figma: in code with render-cover.ts
   (every layout and background, no Figma needed) or in Figma from the Blog Cover /
-  16:9 component, plus Kitaru-vs-X comparison cards from the VS template in Figma.
+  16:9 component, plus ZenML and Kitaru comparison cards in either route.
   Converts to AVIF + JPEG, uploads to R2 and prints the mainImage / seo.ogImage
   frontmatter. Can also add a missing ServiceLogo mark to the Hashi Design System
   library. Use for any request to make, regenerate or fix a post's cover or
@@ -15,7 +15,7 @@ description: >-
 
 ## Without Figma (the default when Figma is not connected)
 
-Nothing here needs a Figma account, a seat or `.env` Figma values. It covers every layout, background and brand, plus the ZenML Labs logo. Only VS cards still need Figma.
+Nothing here needs a Figma account, a seat or `.env` Figma values. It covers every layout, background and brand, plus the ZenML Labs logo and VS cards with 1 to 10 competitors.
 
 ```bash
 pnpm exec playwright install chromium   # once
@@ -29,7 +29,9 @@ Flags: `--layout`, `--bg`, `--brand`, `--logo "ZenML Labs"`, `--eyebrow "DEEP DI
 3. Look at the PNG, then apply the copy check in S6. Set `--eyebrow` from the post's kind: `BLOG`, `DEEP DIVE`, `GUIDE`, `CASE STUDY`, `RESEARCH`, `NEWSLETTER`, `RELEASE`, `COMPARISON`.
 4. Run S7 below on that PNG. Uploading needs the R2 values in `.env`; without them use `--no-upload` and hand the two files in `.cache/covers/` to someone who has them.
 
-Code covers do not appear on the Figma Blog Covers page. A comparison post without Figma takes `--fallback "<reason>"`, which gives a `Panel Bottom` cover. `references/code-renderer.md` has the spec and the test.
+A VS card takes `--comparison a,b,c` (1 to 10 slugs from `assets/service-logos/`, in tile order), with `--brand` and `--include-zenml True|False` as on the Figma route. Long copy adapts in this order: the type steps down from 72/60 to 56/46, a derived for-line is dropped, then the headline wraps to two lines. An explicit `--subtitle` is never dropped; if it can't fit, the command stops and asks for shorter copy.
+
+Code covers do not appear on the Figma Blog Covers page. `references/code-renderer.md` has the spec and the test.
 
 ## With Figma
 
@@ -135,7 +137,7 @@ When a VS card needs a `ServiceLogo/<slug>` that isn't in `references/service-lo
 
 ## Report
 
-One JSON block `{figmaNodeId, sectionName, slot, layout, brand, bgStyle, headline, subtitle, png, avif, jpg, urls, fallback, questions}` (`subtitle` is `""` only when `--no-subtitle` was passed or `seo.description` is empty) followed by the paste-ready YAML:
+One JSON block `{figmaNodeId, sectionName, slot, layout, brand, bgStyle, headline, subtitle, png, avif, jpg, urls, fallback, questions}` (`subtitle` is `""` only when `--no-subtitle` was passed, `seo.description` is empty, or the code route left out a derived line; a VS card reports `forLine` from `render-cover.ts` the same way) followed by the paste-ready YAML:
 ```yaml
 mainImage:
   url: "https://assets.zenml.io/content/blog/<slug>/<sha8>/<slug>-cover.avif"
