@@ -140,7 +140,8 @@ type BgStyle = (typeof BG_STYLES)[number];
 // A photo background only ever sits in Panel Bottom (photo on top, the panel holds the copy);
 // every other layout takes a non-photo style, and the image layouts only Mesh or Deep.
 const PHOTO_LAYOUT = "Panel Bottom";
-const IMAGE_LAYOUT_BGS: ReadonlySet<string> = new Set(["Mesh", "Deep"]);
+// Layouts with an image area take photos only. The full backgrounds (Chevron, Mesh, Field, Tint, Deep) are for full covers.
+const PHOTO_LAYOUTS: ReadonlySet<string> = new Set([PHOTO_LAYOUT, "Image Left", "Image Right"]);
 // Photo 01–09 hold the same image under both Brand variants of Cover BG (150:1697), so the
 // Background's Brand prop does not make a photo on-brand. Only these numbers match each palette
 // (read 2026-10-29): Kitaru = the saturated orange/green photos, ZenML = the pale sage/peach ones.
@@ -694,7 +695,7 @@ function main(): void {
   const legalLayouts: Layout[] = LAYOUT_PREFERENCE.filter((l) => {
     if (l === "Full Bleed" && !isLaunch) return false;
     if (adjacentLayouts.has(l) && !(l === PHOTO_LAYOUT && photoPanelsMayTouch)) return false;
-    if (IMAGE_LAYOUTS.has(l) && !legalBgs.some((b) => IMAGE_LAYOUT_BGS.has(b))) return false;
+    if (PHOTO_LAYOUTS.has(l) && freePhotos.length === 0) return false;
     return true;
   });
 
@@ -710,27 +711,14 @@ function main(): void {
     return [...list].sort((a, b) => score(a) - score(b) || turn(a) - turn(b));
   };
   const neighbourLayouts: Layout[] = LAYOUT_PREFERENCE.filter(
-    (l) => !legalLayouts.includes(l) && l !== "Full Bleed" && (!IMAGE_LAYOUTS.has(l) || legalBgs.some((b) => IMAGE_LAYOUT_BGS.has(b))),
+    (l) => !legalLayouts.includes(l) && l !== "Full Bleed" && (!PHOTO_LAYOUTS.has(l) || freePhotos.length > 0),
   );
   const variedLayouts: Layout[] = [...legalLayouts].sort(
     (a, b) => Number(b === "Full Bleed") - Number(a === "Full Bleed") || used("layout", a) - used("layout", b),
   );
 
-  // Half-half covers switch: each takes the opposite kind, photo or gradient, of the nearest half-half cover.
-  function imageSideBgs(): BgStyle[] {
-    const here = orderedSlugs.indexOf(post.slug);
-    const distance = (s: string): number => Math.abs(orderedSlugs.indexOf(s) - here);
-    const nearest = orderedSlugs
-      .filter((s) => s !== post.slug && IMAGE_LAYOUTS.has(bySlug.get(s)?.layout ?? ""))
-      .sort((a, b) => distance(a) - distance(b))[0];
-    const photosFirst = nearest ? !isPhoto(bySlug.get(nearest)?.bgStyle) : slugHash % 2 === 0;
-    const gradientBgs = varied(legalBgs.filter((b) => IMAGE_LAYOUT_BGS.has(b)));
-    return photosFirst ? [...varied(freePhotos), ...gradientBgs] : [...gradientBgs, ...varied(freePhotos)];
-  }
-
   function bgsFor(layout: string): BgStyle[] {
-    if (layout === PHOTO_LAYOUT) return [...varied(freePhotos), ...varied(legalBgs.filter((b) => !isPhoto(b)))];
-    if (IMAGE_LAYOUTS.has(layout)) return imageSideBgs();
+    if (PHOTO_LAYOUTS.has(layout)) return varied(freePhotos);
     if (layout === "Full Bleed") return legalBgs.filter((b) => b === FULL_BLEED_BG);
     return varied(legalBgs.filter((b) => !isPhoto(b) && b !== FULL_BLEED_BG));
   }

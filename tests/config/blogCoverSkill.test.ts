@@ -75,7 +75,7 @@ describe("blog cover skill without Figma", () => {
 
   it("only offers legal background pairs", () => {
     for (const { layout, bg } of plan().layoutOptions) {
-      if (layout.startsWith("Image")) expect(bg).toMatch(/Mesh|Deep|Photo/);
+      if (layout.startsWith("Image")) expect(bg).toMatch(/^Photo/);
       if (layout === "Text") expect(bg).not.toMatch(/Deep|Photo/);
       if (layout === "Full Bleed") expect(bg).toBe("Deep");
     }
@@ -91,25 +91,32 @@ describe("blog cover skill without Figma", () => {
     ).not.toEqual([]);
   });
 
-  it("switches half-half covers between photos and gradients", () => {
-    const nextTo = (bgStyle: string): string => {
-      const siblings = JSON.stringify([
-        {
-          slug: "you-cant-pick-your-agents-next-model-from-a-diff",
-          layout: "Image Right",
-          bgStyle,
-        },
-      ]);
-      return planFor(
-        "there-is-no-best-model-for-your-agent",
-        "--layout",
-        "Image Left",
-        "--siblings",
-        siblings,
-      ).chosenBg;
-    };
-    expect(nextTo("Mesh")).toMatch(/^Photo/);
-    expect(nextTo("Photo 03")).toMatch(/^(Mesh|Deep)$/);
+  it("keeps full backgrounds off layouts with an image area", () => {
+    for (const layout of ["Image Left", "Image Right", "Panel Bottom"]) {
+      expect(plan("--layout", layout).chosenBg).toMatch(/^Photo/);
+      expect(plan("--layout", layout, "--bg", "Mesh").questions).not.toEqual(
+        [],
+      );
+    }
+  });
+
+  it("rotates photos on half-half covers", () => {
+    const siblings = JSON.stringify([
+      {
+        slug: "you-cant-pick-your-agents-next-model-from-a-diff",
+        layout: "Image Right",
+        bgStyle: "Photo 03",
+      },
+    ]);
+    const { chosenBg } = planFor(
+      "there-is-no-best-model-for-your-agent",
+      "--layout",
+      "Image Left",
+      "--siblings",
+      siblings,
+    );
+    expect(chosenBg).toMatch(/^Photo/);
+    expect(chosenBg).not.toBe("Photo 03");
   });
 
   it("gives the same answer on a re-run", () => {
