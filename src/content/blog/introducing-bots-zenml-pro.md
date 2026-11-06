@@ -54,6 +54,8 @@ For example:
 
 The deliverable is an experiment your team can inspect, with the sessions and evaluator results behind the recommendation. A candidate model or prompt change can be assessed against recorded behavior before you decide to roll it out.
 
+![A bot compares a current model and a candidate across reviewed sessions, including correctness, cost, latency, and tool calls](https://assets.zenml.io/content/blog/introducing-bots-zenml-pro/98d3fb8b/bot-kitaru-comparison.avif)
+
 This is particularly useful for model choice. You can ask a bot to help test whether a cheaper model handles a particular workload well enough, with a selected set of sessions and clear quality criteria. The comparison makes the trade-off visible.
 
 ## What this looks like: improving a claims agent over time
