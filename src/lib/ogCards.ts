@@ -215,6 +215,13 @@ export const OG_CARDS: readonly OgCard[] = [
 
   // Standalone pages that used to point at the migrated card
   {
+    key: "benchmarks",
+    eyebrow: "Benchmarks",
+    title: "The best model depends on your agent.",
+    subtitle:
+      "How models behave inside real agents, measured as cost per correct answer, with the method, noise and caveats published for every experiment.",
+  },
+  {
     key: "pricing",
     eyebrow: "Pricing",
     title: "Orchestrate AI workflows and ship agents with confidence",
