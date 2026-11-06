@@ -5,7 +5,6 @@ draft: false
 author: "alexej-penner"
 category: "zenml-updates"
 tags:
-  - "kitaru"
   - "zenml"
   - "agents"
   - "mlops"
