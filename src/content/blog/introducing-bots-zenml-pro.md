@@ -40,7 +40,7 @@ For an AI document-processing workflow, the deliverable might be a comparison ex
 
 Results are recorded as artifacts: code diffs, pull requests, reports, charts, comparisons, and links to the relevant runs and model versions. You can find the proposed action and its evidence without reconstructing the investigation from a conversation.
 
-![A bot reports on failed pipeline runs, with an evidence note, remediation task, and run breakdown](https://assets.zenml.io/content/blog/introducing-bots-zenml-pro/61f44ee4/bot-pipeline-investigation.avif)
+![A bot reports on failed pipeline runs, with an evidence note, remediation task, and run breakdown](https://assets.zenml.io/content/blog/introducing-bots-zenml-pro/2700046c/bot-pipeline-investigation.avif)
 
 ## Improve AI agents with Kitaru
 
@@ -54,7 +54,7 @@ For example:
 
 The deliverable is an experiment your team can inspect, with the sessions and evaluator results behind the recommendation. A candidate model or prompt change can be assessed against recorded behavior before you decide to roll it out.
 
-![A bot compares a current model and a candidate across reviewed sessions, including correctness, cost, latency, and tool calls](https://assets.zenml.io/content/blog/introducing-bots-zenml-pro/98d3fb8b/bot-kitaru-comparison.avif)
+![A bot compares a current model and a candidate across reviewed sessions, including correctness, cost, latency, and tool calls](https://assets.zenml.io/content/blog/introducing-bots-zenml-pro/beff46f2/bot-kitaru-comparison.avif)
 
 This is particularly useful for model choice. You can ask a bot to help test whether a cheaper model handles a particular workload well enough, with a selected set of sessions and clear quality criteria. The comparison makes the trade-off visible.
 
@@ -74,7 +74,7 @@ For example, you could give a bot a daily task:
 
 > Review yesterday's failed pipeline runs. Investigate recurring failures, link the affected runs, and open draft pull requests where a code fix is clear. Report anything that needs an engineer's decision.
 
-![Creating a daily automation to investigate failed pipeline runs](https://assets.zenml.io/content/blog/introducing-bots-zenml-pro/46f7c246/bot-automation-setup.avif)
+![Creating a daily automation to investigate failed pipeline runs](https://assets.zenml.io/content/blog/introducing-bots-zenml-pro/500fc2c5/bot-automation-setup.avif)
 
 Or give another bot a weekly cost review:
 
