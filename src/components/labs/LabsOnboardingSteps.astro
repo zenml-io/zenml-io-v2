@@ -2,9 +2,9 @@
 /**
  * LabsOnboardingSteps (`labs.onboarding-steps`) — the homepage's "how it
  * works" on a sage-50 band: eyebrow, headline and deck, then four steps.
- * Each step is a numeral, a title and a body with a product widget
- * (LabsOnboardingWidget, picked by `widget.kind`: connect, call, report,
- * review) in a window headed by the AI engineer's author row.
+ * Each step is a numeral, a title and a body with a thread and product widget
+ * (LabsOnboardingWidget, picked by `widget.kind`: report, results, pipeline)
+ * in a window headed by the AI engineer's author row.
  *
  * From lg with JS the section becomes one scroll moment: the step list sits
  * on the left and one product window on the right, both pinned while the
@@ -52,23 +52,26 @@ const numeral = (index: number) => String(index + 1).padStart(2, "0");
     <div class="onboarding-track reveal-child stagger-2 mt-space-xl">
       <div class="onboarding-pin">
         <ol class="onboarding-steps grid list-none grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {content.steps.map(({ title, body, widget }, index) => (
+          {content.steps.map((step, index) => (
             <li class="onboarding-step flex min-w-0 flex-col rounded-[20px] border border-(--color-border) bg-card p-6 md:p-8" data-step={index}>
               <div class="flex gap-4">
                 <span class="onboarding-numeral font-mono text-[13px] leading-[30px] text-(--color-sage-700)">{numeral(index)}</span>
                 <div class="min-w-0 flex-1">
-                  <h3 class="font-display text-[24px] leading-[30px] text-(--color-cream-900)">{title}</h3>
+                  <h3 class="font-display text-[24px] leading-[30px] text-(--color-cream-900)">{step.title}</h3>
+                  {step.tag && (
+                    <p class="mt-1.5 w-fit rounded-full border border-(--color-border) bg-(--secondary-fill) px-2 py-0.5 font-sans text-[11px] leading-4 text-(--color-cream-700)">{step.tag}</p>
+                  )}
                   <div class="onboarding-body">
                     <div class="min-h-0">
-                      <p class="pt-2 font-sans text-[16px] leading-[25px] text-(--color-cream-700)">{body}</p>
+                      <p class="pt-2 font-sans text-[16px] leading-[25px] text-(--color-cream-700)">{step.body}</p>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="onboarding-inline scroll-reveal-section mt-auto pt-8" aria-hidden="true">
                 <div class={WINDOW}>
-                  <LabsAiEngineerRow blink={index + 1} />
-                  <LabsOnboardingWidget widget={widget} />
+                  <LabsAiEngineerRow blink={index + 1} name={content.windowLabel} />
+                  <LabsOnboardingWidget step={step} />
                 </div>
               </div>
             </li>
@@ -77,7 +80,7 @@ const numeral = (index: number) => String(index + 1).padStart(2, "0");
 
         <div class="onboarding-stage" aria-hidden="true">
           <div class:list={[WINDOW, "w-full max-w-[640px]"]}>
-            <LabsAiEngineerRow blink={4}>
+            <LabsAiEngineerRow blink={4} name={content.windowLabel}>
               <span class="flex shrink-0 gap-1">
                 {content.steps.map((_, index) => (
                   <span class="onboarding-segment h-1 w-5 rounded-full bg-(--color-border)" data-segment={index}></span>
@@ -85,9 +88,9 @@ const numeral = (index: number) => String(index + 1).padStart(2, "0");
               </span>
             </LabsAiEngineerRow>
             <div class="onboarding-panels">
-              {content.steps.map(({ widget }, index) => (
+              {content.steps.map((step, index) => (
                 <div class="onboarding-panel" data-panel={index}>
-                  <LabsOnboardingWidget widget={widget} />
+                  <LabsOnboardingWidget step={step} />
                 </div>
               ))}
             </div>

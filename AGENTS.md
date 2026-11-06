@@ -5,8 +5,9 @@ Preact. ZenML Labs is the company; ZenML and Kitaru are its open-source
 foundations. The site leads with model choice: teams test their agent's real
 traffic on open, local, and cheaper models and choose on quality, cost, speed,
 and openness instead of being locked in. Do not name internal product concepts
-("Bots", "Kaizen") or give the paid offering its own product name, and do not
-name third-party agents in site copy. ZenML pages are the default; Kitaru lives under /product/kitaru,
+("Kaizen") or give the paid offering its own product name, and do not
+name third-party agents in site copy. "Bots" is the public name of the ZenML Pro
+feature; each bot is described as an AI engineer on your team. ZenML pages are the default; Kitaru lives under /product/kitaru,
 /compare/kitaru-vs-*, and Kitaru-origin blog posts. See CLAUDE.md for brand
 positioning; MERGE_PLAN.md records the merge history.
 

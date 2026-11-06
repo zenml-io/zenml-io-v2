@@ -1,7 +1,6 @@
 ---
 import BlogNewsletterCta from "../components/labs/BlogNewsletterCta.astro";
 import LabsEditorialSection from "../components/labs/LabsEditorialSection.astro";
-import LabsOpenRoles from "../components/labs/LabsOpenRoles.astro";
 import LabsPageHeader from "../components/labs/LabsPageHeader.astro";
 import LabsPeopleRoster from "../components/labs/LabsPeopleRoster.astro";
 import LabsValuesGrid from "../components/labs/LabsValuesGrid.astro";
@@ -11,7 +10,6 @@ import {
   COMPANY_HERO,
   COMPANY_SEO,
   COMPANY_VALUES,
-  OPEN_POSITIONS,
 } from "../lib/company";
 import { getPublishedTeamMembers } from "../lib/team";
 
@@ -50,7 +48,6 @@ const teamMembers = await getPublishedTeamMembers();
     />
 
     <LabsPeopleRoster members={teamMembers} heading="Meet the team" />
-    <LabsOpenRoles positions={OPEN_POSITIONS} />
     <BlogNewsletterCta />
   </main>
 </BaseLayout>

@@ -1,0 +1,290 @@
+---
+/**
+ * LabsProductDemo (`labs.product-demo`) — the homepage hero's visual: the
+ * ZenML Pro app drawn after the product prototype (icon rail on the page
+ * background, one inset white card with a breadcrumb header) showing the
+ * AI engineer's work feed on one claims agent. Entries arrive one at a
+ * time from the bottom and push older ones up, telling the whole story:
+ * traces imported from where they live, the agent's code read on GitHub,
+ * a gap in the evals, a fix tested as an experiment against what runs today, and a cheaper
+ * fine-tuned model. Then the feed
+ * loops.
+ *
+ * The feed scrolls: scrolling or touching it stops the loop and shows every
+ * entry. Without JS, or with reduced motion, every entry shows at once from
+ * the top. The figcaption carries
+ * the whole story as text; the drawn window is aria-hidden. A text link to the public benchmark sits under it. Copy
+ * arrives through `content` (LABS_HERO_DEMO).
+ */
+import type { ProductDemoContent } from "../../lib/labs-home";
+import LabsOrb from "./LabsOrb.astro";
+
+interface Props {
+  content: ProductDemoContent;
+}
+const { content } = Astro.props;
+
+/* Rail icons, after the prototype's lucide set: House, Inbox, Bot, Zap. */
+const RAIL = [
+  [
+    "M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8",
+    "M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z",
+  ],
+  [
+    "M22 12h-6l-2 3h-4l-2-3H2",
+    "M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z",
+  ],
+  [
+    "M12 8V4H8",
+    "M6 8h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2z",
+    "M2 14h2",
+    "M20 14h2",
+    "M15 13v2",
+    "M9 13v2",
+  ],
+  [
+    "M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z",
+  ],
+];
+const ICON =
+  "size-5 fill-none stroke-current [stroke-linecap:round] [stroke-linejoin:round] [stroke-width:1.75]";
+const CARD = "mt-2 ml-7 rounded-[8px] border border-(--color-border) bg-card";
+const CHIP =
+  "inline-flex items-center gap-1.5 rounded-[6px] border border-(--color-border) bg-(--color-cream-50) px-2 py-1 font-sans text-[12px] leading-4 text-(--color-cream-900)";
+---
+
+<div data-demo>
+  <figure class="pd-window overflow-hidden rounded-[14px] border border-(--color-border) bg-background shadow-[0_1px_2px_rgba(65,61,55,0.04),0_12px_32px_rgba(65,61,55,0.08)]">
+    <figcaption class="sr-only">{content.label}</figcaption>
+    <div aria-hidden="true" class="flex">
+      <div class="hidden w-14 shrink-0 flex-col items-center gap-1.5 py-3 sm:flex">
+        
+        {RAIL.map((paths, i) => (
+          <span class:list={["relative grid size-8 place-items-center rounded-[8px]", i === 2 ? "bg-card text-(--color-cream-900) shadow-[0_1px_2px_rgba(65,61,55,0.12),0_0_0_1px_var(--color-border)]" : "text-(--color-cream-700)"]}>
+            <svg viewBox="0 0 24 24" class={ICON}>{paths.map((d) => <path d={d} />)}</svg>
+            {i === 0 && <span class="absolute top-1 right-1 size-2 rounded-full border-2 border-background bg-(--color-orange-500)"></span>}
+          </span>
+        ))}
+      </div>
+
+      <div class="min-w-0 flex-1 p-1.5 sm:pl-0">
+        <div class="overflow-hidden rounded-[10px] border border-(--color-border) bg-card">
+          <div class="flex h-11 items-center gap-2 border-b border-(--color-border) px-4 font-sans text-[13px] leading-5">
+            <span class="hidden text-(--color-cream-700) sm:inline">{content.agent}</span>
+            <span class="hidden text-(--color-cream-400) sm:inline">/</span>
+            <LabsOrb size={18} />
+            <span class="truncate text-(--color-cream-900)">AI Engineer Bot</span>
+            <span class="ml-auto flex shrink-0 items-center gap-1.5 rounded-full bg-(--color-cream-100) px-2 py-0.5 font-sans text-[11.5px] leading-4 text-(--color-cream-800)">
+              <span class="pd-pulse size-1.5 rounded-full bg-(--color-sage-600)"></span>
+              Working
+            </span>
+          </div>
+
+          <div data-pd-viewport class="pd-viewport h-[460px] overflow-y-auto overscroll-contain sm:h-[420px]">
+            <ol data-pd-list class="flex flex-col gap-5 p-4">
+              {content.items.map((item, i) => (
+                <li data-pd-item={i} class="pd-item">
+                  <p class="flex items-center gap-2 font-sans text-[13.5px] leading-5 text-(--color-cream-900)">
+                    {item.kind === "finetune" ? (
+                      <span aria-hidden="true" class="size-5 shrink-0 rounded-full border border-dashed border-(--color-cream-400)" />
+                    ) : (
+                      <span class="grid size-5 shrink-0 place-items-center rounded-full bg-(--color-sage-100) text-[10px] text-(--color-sage-800)">✓</span>
+                    )}
+                    <span class="min-w-0">{item.text}</span>
+                    {item.kind === "finetune" && (
+                      <span class="ml-auto shrink-0 rounded-full border border-(--color-border) bg-(--secondary-fill) px-2 py-0.5 font-sans text-[11px] leading-4 text-(--color-cream-700)">{item.tag}</span>
+                    )}
+                  </p>
+
+                  {item.kind === "sources" && (
+                    <div class:list={[CARD, "flex flex-wrap items-center gap-2 p-3"]}>
+                      {item.sources.map((source) => (
+                        <span class={CHIP}>
+                          <img src={source.logo} alt="" aria-hidden="true" width="14" height="14" class="size-3.5" />
+                          {source.name}
+                        </span>
+                      ))}
+                      <span class="font-sans text-[12px] text-(--color-cream-500)">→</span>
+                      <span class="rounded-[6px] bg-(--color-sage-50) px-2 py-1 font-sans text-[12px] leading-4 font-semibold text-(--color-sage-800)">{item.count}</span>
+                    </div>
+                  )}
+
+                  {item.kind === "repo" && (
+                    <div class:list={[CARD, "p-3"]}>
+                      <p class="flex items-center gap-2 font-mono text-[12px] leading-4 text-(--color-cream-900)">
+                        <img src="/images/service-logos/github.svg" alt="" aria-hidden="true" width="14" height="14" class="size-3.5" />
+                        {item.repo}
+                      </p>
+                      <div class="mt-2 flex flex-wrap gap-1.5">
+                        {item.files.map((file) => (
+                          <span class="rounded-[4px] border border-(--color-border) bg-(--color-cream-50) px-1.5 py-0.5 font-mono text-[11.5px] leading-4 text-(--color-cream-800)">{file}</span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {item.kind === "gap" && (
+                    <div class="mt-2 ml-7 rounded-[8px] border border-destructive/25 bg-destructive/5 p-3">
+                      <p class="font-sans text-[14px] leading-5 font-semibold text-(--color-cream-900)">{item.title}</p>
+                      <p class="mt-0.5 font-sans text-[12.5px] leading-[18px] text-pretty text-(--color-cream-700)">{item.body}</p>
+                      <span class="mt-2 inline-block rounded-full border border-(--color-sage-400) bg-card px-2 py-0.5 font-mono text-[11.5px] leading-4 text-(--color-sage-800)">{item.check}</span>
+                    </div>
+                  )}
+
+                  {item.kind === "experiment" && (
+                    <div class:list={[CARD, "overflow-hidden"]}>
+                      <p class="px-3 pt-3 font-sans text-[13px] leading-5 font-semibold text-(--color-cream-900)">{item.title}</p>
+                      <table class="mt-2 w-full border-t border-(--color-border) font-sans text-[12.5px] leading-4">
+                        <thead>
+                          <tr class="bg-(--color-cream-50) text-left text-[11.5px] text-(--color-cream-700)">
+                            {item.columns.map((column, i) => (
+                              <th class:list={["px-3 py-1.5 font-medium", i > 0 && "text-right"]}>{column}</th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {item.rows.map((row) => (
+                            <tr class="border-t border-(--color-cream-100)">
+                              <td class="px-3 py-1.5 text-(--color-cream-800)">{row.label}</td>
+                              <td class="px-3 py-1.5 text-right tabular-nums text-(--color-cream-600)">{row.current || "–"}</td>
+                              <td class="px-3 py-1.5 text-right font-semibold tabular-nums text-(--color-sage-700)">{row.candidate}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                      <p class="border-t border-(--color-border) px-3 py-2 font-sans text-[12px] leading-4 text-(--color-cream-700)">{item.result}</p>
+                    </div>
+                  )}
+
+                  {item.kind === "finetune" && (
+                    <div class:list={[CARD, "p-3"]}>
+                      <p class="font-mono text-[12px] leading-4 text-(--color-cream-900)">{item.model}</p>
+                      <div class="mt-2 flex items-end gap-3">
+                        <dl class="flex min-w-0 flex-1 gap-5">
+                          {item.rows.map((row) => (
+                            <div>
+                              <dt class="font-sans text-[11.5px] leading-4 text-(--color-cream-600)">{row.label}</dt>
+                              <dd class:list={["font-sans leading-6 whitespace-nowrap tabular-nums", row.hot ? "text-[16px] font-semibold text-(--color-sage-700) sm:text-[18px]" : "text-[14px] font-medium text-(--color-cream-900)"]}>{row.value}</dd>
+                            </div>
+                          ))}
+                        </dl>
+                      </div>
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </figure>
+
+  <a
+    href={content.link.href}
+    data-analytics={content.link.analytics}
+    class="mt-4 inline-flex items-center gap-1.5 font-mono text-[12px] leading-4 uppercase tracking-[0.05em] text-(--color-cream-800) underline-offset-4 transition-colors duration-200 ease-out hover:text-(--color-cream-900) hover:underline"
+  >
+    {content.link.label} <span aria-hidden="true">→</span>
+  </a>
+</div>
+
+<style>
+  .pd-viewport {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-cream-300) transparent;
+  }
+  /* A soft top edge once the feed has scrolled. */
+  .pd-viewport[data-scrolled] {
+    mask-image: linear-gradient(to bottom, transparent, black 48px);
+  }
+  [data-playing] .pd-item:not([data-shown]) {
+    display: none;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .pd-window {
+      animation: pd-in 900ms var(--ease-out-expo) 100ms backwards;
+    }
+    [data-playing] .pd-item[data-shown] {
+      animation: pd-fade 500ms var(--ease-out-quint) backwards;
+    }
+    .pd-pulse {
+      animation: pd-pulse 1.6s var(--ease-out-quint) infinite;
+    }
+  }
+  @keyframes pd-in {
+    from {
+      opacity: 0;
+      filter: blur(8px);
+      transform: translateY(24px) scale(0.97);
+    }
+  }
+  @keyframes pd-fade {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes pd-pulse {
+    50% {
+      opacity: 0.3;
+    }
+  }
+</style>
+
+<script>
+  /** Time between entries, and how long the full feed holds before it loops. */
+  const STEP_MS = 1700;
+  const HOLD_MS = 3500;
+  const FADE = "opacity 400ms var(--ease-out-quint)";
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  for (const demo of document.querySelectorAll<HTMLElement>("[data-demo]")) {
+    const viewport = demo.querySelector<HTMLElement>("[data-pd-viewport]");
+    const list = demo.querySelector<HTMLElement>("[data-pd-list]");
+    if (!viewport || !list) continue;
+    const items = [...demo.querySelectorAll<HTMLElement>("[data-pd-item]")];
+
+    viewport.addEventListener(
+      "scroll",
+      () => viewport.toggleAttribute("data-scrolled", viewport.scrollTop > 4),
+      { passive: true },
+    );
+    if (reduced) continue;
+
+    let timer: number | undefined;
+    const toBottom = () => viewport.scrollTo({ top: viewport.scrollHeight, behavior: "smooth" });
+
+    const play = (n: number) => {
+      items[n]?.setAttribute("data-shown", "");
+      toBottom();
+      const last = n === items.length - 1;
+      timer = window.setTimeout(() => (last ? restart() : play(n + 1)), last ? HOLD_MS : STEP_MS);
+    };
+
+    const restart = () => {
+      list.style.transition = FADE;
+      list.style.opacity = "0";
+      timer = window.setTimeout(() => {
+        for (const el of items) el.removeAttribute("data-shown");
+        viewport.scrollTop = 0;
+        list.style.opacity = "1";
+        play(0);
+      }, 450);
+    };
+
+    /** A visitor who scrolls or touches the feed takes over: the loop stops,
+     *  every entry shows, and the scroll position stays theirs. */
+    const stop = () => {
+      window.clearTimeout(timer);
+      list.style.opacity = "1";
+      demo.removeAttribute("data-playing");
+      for (const type of ["wheel", "touchstart", "pointerdown"]) viewport.removeEventListener(type, stop);
+    };
+    for (const type of ["wheel", "touchstart", "pointerdown"]) {
+      viewport.addEventListener(type, stop, { passive: true });
+    }
+
+    demo.setAttribute("data-playing", "");
+    timer = window.setTimeout(() => play(0), 300);
+  }
+</script>

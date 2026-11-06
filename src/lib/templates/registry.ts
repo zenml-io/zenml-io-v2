@@ -1400,6 +1400,21 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     demoProps: {},
   },
   {
+    id: "labs.product-demo",
+    kind: "template",
+    componentPath: "src/components/labs/LabsProductDemo.astro",
+    variantAxes: ["feed step"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "The homepage hero's visual, mounted in LabsHero's `visual` slot on `/`, from `content: ProductDemoContent` (LABS_HERO_DEMO). The ZenML Pro app drawn after the product prototype (icon rail, inset card, breadcrumb with a Working pill) showing the AI engineer's work feed on one claims agent: traces imported from Langfuse, LangSmith and Braintrust, the agent's code read on GitHub, a gap in the evals, a fix tested as an experiment against what runs today, and a cheaper fine-tuned model. Entries arrive every 1.7s and the feed scrolls to the newest; it loops after a 3.5s hold. Scrolling or touching the feed stops the loop and shows every entry. Reduced motion and no JS show every entry at once, anchored to the bottom. A text link to the benchmark sits under it. The figcaption carries the story as text; the drawn window is aria-hidden.",
+    stage: false,
+    demoProps: {},
+  },
+
+  {
     id: "labs.missed-session-visual",
     kind: "template",
     componentPath: "src/components/labs/LabsMissedSessionVisual.astro",
@@ -1437,7 +1452,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "Homepage how-it-works on a sage-50 band from `content: OnboardingStepsContent` (LABS_ONBOARDING on `/`, and the industry pages): eyebrow, headline, deck, then four steps, each a mono numeral, title and body with a product widget (labs.onboarding-steps widget in LabsOnboardingWidget.astro, picked by `widget.kind`: connect, call, report or review) in a white window headed by the AI engineer's author row (LabsAiEngineerRow). Below lg, without JS or if the script fails, the steps sit in a 1 / 2 / 4 column grid, each with its own widget. From lg the script pins the section: the step list on the left (active step open, the others dimmed to their titles) and one window on a sage-100 stage on the right, headed by the same author row with a four-segment progress bar. The widgets follow the product's components (setup rows with checks, an ask row with keycapped answers, gap rows with count bars, a verdict card); on each step the old widget blurs out, the new one's blocks settle in 70ms apart, as do the inline widgets below lg when they scroll into view (checks pop and draw, the picked answer presses in) and the height eases to fit. Every arrival fills backwards only, so the finished state is always rendered; reduced motion keeps the mapping without transitions. Widgets are aria-hidden; the step text carries the meaning.",
+      "A how-it-works band on sage-50 from `content: OnboardingStepsContent` (LABS_ONBOARDING on `/`, right after the hero): eyebrow, headline, deck, then four engineers, each a mono numeral, title and body with a thread (the question, the answer and when it landed) and a product widget (labs.onboarding-steps widget in LabsOnboardingWidget.astro, picked by `widget.kind`: report, results or pipeline) in a white window headed by the AI engineer's author row (LabsAiEngineerRow). Below lg, without JS or if the script fails, the steps sit in a 1 / 2 / 4 column grid, each with its own widget. From lg the script pins the section: the step list on the left (active step open, the others dimmed to their titles) and one window on a sage-100 stage on the right, headed by the same author row with a four-segment progress bar. The widgets follow the product's components (gap rows with count bars, a results table, a pipeline's steps); on each step the old widget blurs out, the new one's blocks settle in 70ms apart, as do the inline widgets below lg when they scroll into view (bars grow) and the height eases to fit. Every arrival fills backwards only, so the finished state is always rendered; reduced motion keeps the mapping without transitions. Widgets are aria-hidden; the step text carries the meaning.",
     stage: false,
     demoProps: {},
   },
@@ -1521,7 +1536,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "A whole industry landing page from `content: IndustryPageContent` (/insurance, /financial-services): labs.hero with labs.gap-report-visual, labs.problem-band, labs.onboarding-steps, labs.trust-band, labs.benchmark-band (collapses when the industry has none), labs.logo-marquee, labs.faq and labs.close-cta, inside BaseLayout.",
+      "A whole industry landing page from `content: IndustryPageContent` (/insurance, /financial-services): labs.hero with labs.product-demo (the AI engineer's work feed on an industry agent), labs.problem-band, labs.trust-band, labs.benchmark-band (collapses when the industry has none), labs.logo-marquee, labs.faq and labs.close-cta, inside BaseLayout.",
     stage: false,
     demoProps: {},
   },
@@ -1529,13 +1544,13 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     id: "labs.stack-layer",
     kind: "template",
     componentPath: "src/components/labs/LabsStackLayer.astro",
-    variantAxes: ["journey stop"],
+    variantAxes: [],
     tones: ["default"],
     responsive: "reflow",
     island: false,
     paperPage: 0,
     notes:
-      'Homepage "how it fits" diagram from `content: StackLayerContent` (LABS_STACK_LAYER on `/`), drawn as one session\'s thread on a stone (secondary-fill) panel, laid out as the Paper "C3 · How it fits — Thread" board: a track with a dot over each of the four journey cards (numeral, tone tag, title, detail), then a divider and four source columns (each a row of service-mark tiles, names that have no mark as text chips, the AI engineer layer with the product\'s sage orb). Below lg the cards stack and the track becomes a rail down their left edge. Scroll-scrubbed through `initScrollProgress()`: a solid line fills the dashed track and each stop it reaches turns done, the newest active (ringed dot, sage card), the rest future (hollow dot, an empty dashed outline whose content settles in when reached); source column i lights up with stop i, its marks popping in one after another; scrolling back reverses it. The server renders the finished thread (three done, the last active), which JS off and reduced motion show. Install chip and trust-center link below, the underline on the label only.',
+      "The how-it-fits section on `/` and `/pro` from `content: StackLayerContent` (LABS_STACK_LAYER): eyebrow, headline, deck, then one card with three columns of named tools (traces, evals, agent) above a trust strip: where it runs, the compliance badges and the trust link. Static. House reveal only. No island.",
     stage: false,
     demoProps: {},
   },
@@ -1666,20 +1681,6 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 0,
     notes:
       "Headline block (no eyebrow, headline and deck both optional — absence collapses each independently) over the auto-cycling FeatureTabsSlider island (vertical 40% tab menu + 60% figure panel, collapsing to a stacked column below 1024). The panes are server-rendered here as the island's children: each tab draws its inline SVG highlight figure (highlights/<product>/<slug>.astro) or, without a figure id, its image; the island only toggles the current pane. Below 768px each figure shows its narrow portrait drawing instead of the shrunk wide one. Tab switches get a pane rise/fade plus the figure's play-once staggered reveal (edges draw in), all under 1.2s and off under reduced motion. Mounts FeatureTabsSlider with client:load, defaultIndex min(3, tabs − 1) (the fourth tab where there are that many, else the last — /deployments ships three), autoDurationMs 9000 — the page's one non-ambient island; its auto-cycle is user-pausable interaction (click resets), not a motion moment. Content comes from ZENML_FEATURE_TABS (FeatureTabsContent: headline?, deck?, tabs). The old stats grid is not ported.",
-    stage: false,
-    demoProps: {},
-  },
-  {
-    id: "labs.model-cost",
-    kind: "template",
-    componentPath: "src/components/labs/LabsModelCost.astro",
-    variantAxes: ["month note"],
-    tones: ["default"],
-    responsive: "reflow",
-    island: false,
-    paperPage: 0,
-    notes:
-      'Homepage "beyond evals" moment from `content: ModelCostContent` (LABS_MODEL_COST on `/`): text on the left (eyebrow, headline, deck, numbered notes), a stone chart panel on the right (stacked below lg). Stacked monthly bars split frontier model (orange-500, top, 4px rounded) and fine-tuned model (sage-700, under a 2px gap), recessive $10k gridlines, direct total labels on the first and last bars, numbered dark markers above the months the notes point to, and a legend in the caption. Each bar is focusable and shows its split in a tooltip on hover or focus; a visually hidden table carries the same numbers. Bars render at final height; house reveal only. No island.',
     stage: false,
     demoProps: {},
   },

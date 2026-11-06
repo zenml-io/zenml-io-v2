@@ -34,7 +34,7 @@ export const KITARU_STARTER_LIMITS = {
 } as const;
 /** What one agent is, for pricing. Said the same way everywhere. */
 export const KITARU_AGENT_DEFINITION =
-  "An AI agent is anything you want your AI engineer to watch: its code, in one repo or several, and the traces it sends.";
+  "An AI agent is anything you want your AI engineers to watch: its code, in one repo or several, and the traces it sends.";
 
 /** Trial terms shown next to every signup CTA. */
 export const KITARU_TRIAL_NOTE = `${KITARU_TRIAL_DAYS}-day free trial · Full access · No credit card`;
@@ -74,7 +74,7 @@ export const KITARU_ADAPTERS_TEXT = orList(KITARU_ADAPTERS);
  * same way every time; it matches the homepage pitch. Used verbatim by the
  * /pricing Kitaru FAQ and the /product/kitaru FAQ.
  */
-export const KITARU_VS_OBSERVABILITY_ANSWER = `They show you what happened. Our AI engineer reads those traces next to your evals and shows you which evals are wrong or missing, then Kitaru replays your agent to test the fix against real sessions. Kitaru imports from ${KITARU_IMPORTERS_TEXT}, so your tracing tool stays your system of record.`;
+export const KITARU_VS_OBSERVABILITY_ANSWER = `They show you what happened. Our AI engineers read those traces next to your evals and show you which evals are wrong or missing, then Kitaru replays your agent to test the fix against real sessions. Kitaru imports from ${KITARU_IMPORTERS_TEXT}, so your tracing tool stays your system of record.`;
 
 /**
  * The 90-second launch video behind the hero's poster card. The iframe is
@@ -105,7 +105,7 @@ export const KITARU_LINKS = {
 
 export const PRODUCT_KITARU_SEO = {
   title: "Kitaru: insights and evals from your agent's traces | ZenML Labs",
-  description: `Kitaru is the open-source core under our AI engineer. Import traces from ${KITARU_IMPORTERS_TEXT}, get insights across every session, turn what you find into checks, and replay a fix before it ships. Runs on your machine, with your keys.`,
+  description: `Kitaru is the open-source core under our AI engineers. Import traces from ${KITARU_IMPORTERS_TEXT}, get insights across every session, turn what you find into checks, and replay a fix before it ships. Runs on your machine, with your keys.`,
   ogImage: defaultOgUrl("pages", "product-kitaru"),
 } as const;
 
@@ -122,9 +122,9 @@ export const PRODUCT_KITARU_MARKDOWN = {
   installCmd: KITARU_INSTALL_CMD,
   license: KITARU_LICENSE,
   summary: [
-    "Our AI engineer reads your agent's traces next to your evals and shows you what they miss. Kitaru is the open-source part underneath it.",
+    "Our AI engineers read your agent's traces next to your evals and show you what they miss. Kitaru is the open-source part underneath them.",
     `Kitaru imports the traces you already have, or records new ones through an adapter. Insights show the patterns across every session, you turn what you find into checks, and you can replay your agent through its own framework to test a fix before it ships.`,
-    `Kitaru is ${KITARU_LICENSE}. Install it in one line and run it on your own machine, with your own model keys. Our AI engineer is the hosted part: it reads every new trace around the clock and asks you only when a session needs your call. It costs ${KITARU_CLOUD_PRICE} a month on Starter, with one ML project included; see https://www.zenml.io/pricing.`,
+    `Kitaru is ${KITARU_LICENSE}. Install it in one line and run it on your own machine, with your own model keys. Our AI engineers are the hosted part: they read every new trace around the clock and ask you only when a session needs your call. It costs ${KITARU_CLOUD_PRICE} a month on Starter, with one ML project included; see https://www.zenml.io/pricing.`,
   ],
   steps: [
     {
@@ -137,7 +137,7 @@ export const PRODUCT_KITARU_MARKDOWN = {
     },
     {
       name: "Turn findings into checks",
-      body: "Read the sessions behind an insight. What you find becomes a check that runs on every session, next to the evals you already have. Our AI engineer can do the reading and ask you only what it can't work out.",
+      body: "Read the sessions behind an insight. What you find becomes a check that runs on every session, next to the evals you already have. Our AI engineers can do the reading and ask you only what it can't work out.",
     },
     {
       name: "Replay a fix",
