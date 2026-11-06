@@ -41,7 +41,7 @@ Now we see the same pattern with agents. Building one takes hours. Keeping it sa
 
 Agents break quietly. Customers ask something nobody planned for. A one-line prompt change breaks what worked yesterday. The model bill keeps climbing.
 
-So we built Kitaru. It finds where your agent goes wrong, and it tests every change, from a prompt to a new model, on real production sessions before you ship.
+So we built [Kitaru](https://github.com/zenml-io/kitaru). It finds where your agent goes wrong, and it tests every change, from a prompt to a new model, on real production sessions before you ship.
 
 This led us to talk with teams running agents in security, insurance, healthcare, banking and fintech.
 
@@ -69,7 +69,7 @@ Our goal is simple. AI in production shouldn't need babysitting. It should keep 
 
 We start with agents because that's where things break fastest. In [our claims benchmark](https://www.zenml.io/benchmarks/claims-over-time), switching to a cheaper open model left about 1 in 10 appeals ending with no decision. A general coding agent, asked to improve things, reduced the damage but never fixed the cause. Our AI engineer agent did, and finished 3.3 points ahead over 800 real appeals. The test favored us on purpose, and the write-up says how.
 
-Finding that took counting how every session ended, an eval nobody had written. That's why we start by improving your evals. Most teams find out what broke from a customer, not from their evals.
+Finding that took counting how every session ended, an eval nobody had written. Most teams find out what broke from a customer, probably when it's too late. That's why we start by improving your evals.
 
 Your evals are probably right most of the time. Say 80%. The rest of your problems hides in thousands of traces, and that last 20% is where your customers get hurt. Nobody can read every trace. A sample can tell you something's wrong, but rarely why, or what else is hiding.
 
