@@ -15,6 +15,18 @@ interface Props {
   content: StackLayerContent;
 }
 const { content } = Astro.props;
+
+/** Lucide paths for the marks that have no logo. */
+const ICONS = {
+  scale: [
+    "m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z",
+    "m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z",
+    "M7 21h10",
+    "M12 3v18",
+    "M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2",
+  ],
+  gauge: ["m12 14 4-4", "M3.34 19a10 10 0 1 1 17.32 0"],
+} as const;
 ---
 
 <section class="py-24 md:py-32" aria-labelledby="stack-layer-title">
@@ -37,9 +49,11 @@ const { content } = Astro.props;
                 <li class="flex items-center gap-3 font-sans text-[16px] leading-6 text-(--color-cream-800)">
                   {mark.logo ? (
                     <img src={mark.logo} alt="" aria-hidden="true" width="28" height="28" class="size-7 shrink-0 object-contain" loading="lazy" />
-                  ) : (
-                    <span aria-hidden="true" class="size-7 shrink-0"></span>
-                  )}
+                  ) : mark.icon ? (
+                    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="size-7 shrink-0 text-(--color-cream-700)">
+                      {ICONS[mark.icon].map((d) => <path d={d} />)}
+                    </svg>
+                  ) : null}
                   {mark.name}
                 </li>
               ))}

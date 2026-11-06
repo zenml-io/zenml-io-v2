@@ -47,7 +47,7 @@ This led us to talk with teams running agents in security, insurance, healthcare
 
 Nobody asked for another dashboard. They wanted someone to do the work. That's a different kind of tool.
 
-## Dev tools are becoming agent harnesses
+## Tools that do the work
 
 Dev tools were built for people. A dashboard to click through. A CLI to type into.
 
