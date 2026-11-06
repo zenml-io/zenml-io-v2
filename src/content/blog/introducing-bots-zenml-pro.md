@@ -18,9 +18,11 @@ seo:
   canonical: "https://www.zenml.io/blog/introducing-bots-zenml-pro"
 ---
 
+You may have noticed a new look in ZenML Pro. We’ll share more about that next week. Today, we’re introducing something new: Bots.
+
 There are failed runs to investigate, expensive workflows to revisit, and agent behaviors that could be improved. The hard part is giving that work consistent attention alongside everything else you need to ship.
 
-Today we are introducing Bots in ZenML Pro: an always-on team of AI engineers for those tasks. Ask a bot to investigate, or schedule it to run a recurring review. Give it a concrete deliverable: a pull request, a validated fix, a cost investigation, or an experiment comparing an agent change against a baseline.
+Bots in ZenML Pro give you an always-on team of AI engineers for those tasks. Ask a bot to investigate, or schedule it to run a recurring review. Give it a concrete deliverable: a pull request, a validated fix, a cost investigation, or an experiment comparing an agent change against a baseline.
 
 Bots work across your repositories, ZenML runs, and Kitaru agent sessions. That connects the work of maintaining ML pipelines and AI workflows with the work of improving the agents running in them. Below, we look at the results bots can produce, a claims-agent benchmark, and how to put recurring investigations on a schedule.
 
