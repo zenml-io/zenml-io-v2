@@ -31,8 +31,9 @@ Rules for every cover. find-slot applies them deterministically; flags may overr
 - New covers use **`Photo 01`–`Photo 09` only**, never the legacy un-numbered `Photo`. The legacy `Photo` on existing covers is not a number and does not count toward uniqueness.
 - **Photos are per brand.** `Photo 01`–`Photo 09` hold the same image under both `Brand` variants of Cover BG (`150:1697`), so setting the Background's `Brand` does not make a photo on-brand. Kitaru uses only `Photo 01` and `Photo 08` (the saturated orange/green photos); ZenML uses only `Photo 02`–`07` and `Photo 09` (the pale sage/peach ones). find-slot emits the list as `P.brandPhotos`, S3 refuses and S5 reports an off-brand photo. Read 2026-10-29 from the variants; update this list and `BRAND_PHOTOS` in find-slot together if the photo set changes.
 - **No two covers inside one month section share a `Photo 0N`.** Round-robin the free numbers. No free number left → find-slot puts a question in `P`; stop and ask rather than repeat one.
-- **Photos only go in `Panel Bottom`** (photo on top, the panel holds the copy). find-slot gives `Panel Bottom` a free brand photo first, and never gives a photo to any other layout; S3 refuses and S5 reports a photo on another layout.
-- **Hard rule:** `Image Left` / `Image Right` only ever pair with `Mesh` or `Deep`. `Field` and `Tint` are too quiet to carry half a card.
+- **Photos go in `Panel Bottom` and the image side of `Image Left` / `Image Right`.** find-slot gives `Panel Bottom` a free brand photo first.
+- **Full covers never take a photo.** `Text` and `Full Bleed` have no image side, so they use the full backgrounds below.
+- **Half-half covers switch.** `Image Left` / `Image Right` take a photo, `Mesh` or `Deep`, and find-slot takes the opposite kind, photo or gradient, of the nearest half-half cover in the month. `Field` and `Tint` are too quiet to carry half a card.
 - `Full Bleed` only takes `Deep`, because its type is light. `Text` takes `Chevron`, `Mesh`, `Field` or `Tint`, never `Deep`, because its type is dark.
 
 ## Text

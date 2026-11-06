@@ -75,11 +75,41 @@ describe("blog cover skill without Figma", () => {
 
   it("only offers legal background pairs", () => {
     for (const { layout, bg } of plan().layoutOptions) {
-      if (layout.startsWith("Image")) expect(["Mesh", "Deep"]).toContain(bg);
+      if (layout.startsWith("Image")) expect(bg).toMatch(/Mesh|Deep|Photo/);
       if (layout === "Text") expect(bg).not.toMatch(/Deep|Photo/);
       if (layout === "Full Bleed") expect(bg).toBe("Deep");
     }
     expect(plan("--layout", "Text", "--bg", "Deep").questions).not.toEqual([]);
+  });
+
+  it("keeps photos off full covers", () => {
+    expect(plan("--layout", "Text", "--bg", "Photo 03").questions).not.toEqual(
+      [],
+    );
+    expect(
+      plan("--layout", "Full Bleed", "--bg", "Photo 03").questions,
+    ).not.toEqual([]);
+  });
+
+  it("switches half-half covers between photos and gradients", () => {
+    const after = (bgStyle: string): string => {
+      const siblings = JSON.stringify([
+        {
+          slug: "you-cant-pick-your-agents-next-model-from-a-diff",
+          layout: "Image Right",
+          bgStyle,
+        },
+      ]);
+      return planFor(
+        "there-is-no-best-model-for-your-agent",
+        "--layout",
+        "Image Left",
+        "--siblings",
+        siblings,
+      ).chosenBg;
+    };
+    expect(after("Mesh")).toMatch(/^Photo/);
+    expect(after("Photo 03")).toMatch(/^(Mesh|Deep)$/);
   });
 
   it("gives the same answer on a re-run", () => {

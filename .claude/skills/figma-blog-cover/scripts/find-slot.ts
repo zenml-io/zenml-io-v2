@@ -716,9 +716,21 @@ function main(): void {
     (a, b) => Number(b === "Full Bleed") - Number(a === "Full Bleed") || used("layout", a) - used("layout", b),
   );
 
+  // Half-half covers switch: each takes the opposite kind, photo or gradient, of the nearest half-half cover.
+  function imageSideBgs(): BgStyle[] {
+    const here = orderedSlugs.indexOf(post.slug);
+    const distance = (s: string): number => Math.abs(orderedSlugs.indexOf(s) - here);
+    const nearest = orderedSlugs
+      .filter((s) => s !== post.slug && IMAGE_LAYOUTS.has(bySlug.get(s)?.layout ?? ""))
+      .sort((a, b) => distance(a) - distance(b))[0];
+    const photosFirst = nearest ? !isPhoto(bySlug.get(nearest)?.bgStyle) : slugHash % 2 === 0;
+    const gradientBgs = varied(legalBgs.filter((b) => IMAGE_LAYOUT_BGS.has(b)));
+    return photosFirst ? [...varied(freePhotos), ...gradientBgs] : [...gradientBgs, ...varied(freePhotos)];
+  }
+
   function bgsFor(layout: string): BgStyle[] {
     if (layout === PHOTO_LAYOUT) return [...varied(freePhotos), ...varied(legalBgs.filter((b) => !isPhoto(b)))];
-    if (IMAGE_LAYOUTS.has(layout)) return varied(legalBgs.filter((b) => IMAGE_LAYOUT_BGS.has(b)));
+    if (IMAGE_LAYOUTS.has(layout)) return imageSideBgs();
     if (layout === "Full Bleed") return legalBgs.filter((b) => b === FULL_BLEED_BG);
     return varied(legalBgs.filter((b) => !isPhoto(b) && b !== FULL_BLEED_BG));
   }
@@ -762,7 +774,7 @@ function main(): void {
     if (!(BG_STYLES as readonly string[]).includes(args.bg)) {
       questions.push(`--bg "${args.bg}" is not a numbered Photo 01–09 or Mesh/Deep/Chevron/Field/Tint (the legacy un-numbered "Photo" is never used on new covers). Confirm?`);
     } else if (!bgCandidates.includes(args.bg as BgStyle)) {
-      questions.push(`--bg "${args.bg}" is illegal with layout "${chosenLayout}" (legal here: ${bgCandidates.join(", ")}; photos only go in ${PHOTO_LAYOUT}), off-brand for ${brand} (${brand} photos: ${brandPhotos.join(", ")}) or already used this month (used photos: ${[...usedPhotos].join(", ") || "none"}). Confirm the override?`);
+      questions.push(`--bg "${args.bg}" is illegal with layout "${chosenLayout}" (legal here: ${bgCandidates.join(", ")}), off-brand for ${brand} (${brand} photos: ${brandPhotos.join(", ")}) or already used this month (used photos: ${[...usedPhotos].join(", ") || "none"}). Confirm the override?`);
     }
   } else if (bgCandidates.length > 0) {
     chosenBg = bgCandidates[0];
