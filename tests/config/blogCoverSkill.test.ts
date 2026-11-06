@@ -103,7 +103,7 @@ describe("blog cover skill without Figma", () => {
   it("keeps Photo 08 off Image Right", () => {
     const illegal = (layout: string): boolean =>
       planFor(
-        "there-is-no-best-model-for-your-agent",
+        "12-factors-of-reproducible-machine-learning-in-production",
         "--brand",
         "Kitaru",
         "--layout",
